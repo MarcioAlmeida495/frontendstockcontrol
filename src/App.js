@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { Configurations } from "./Components/Configurations";
+import { ItensControl } from "./Components/ItensControl";
+import { LeftMenu } from "./Components/LeftMenu";
+import { ListItens } from "./Components/ListItens";
+import { StyledBody } from "./Styles/styledBody";
+import { StyledContentBody } from "./Styles/styledContentBody";
+import { StyledLeftMenu } from "./Styles/styledLeftMenu";
+import { StyledTopMenu } from "./Styles/styledTopMenu";
+import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StyledBody>
+      <BrowserRouter>
+          {/* <StyledTopMenu>
+            <Link to='/' onClick={()=>{
+
+            }} >Home</Link>
+            <Link to='/teste'>teste</Link>
+          </StyledTopMenu> */}
+          <LeftMenu>
+            
+          </LeftMenu>
+          <StyledContentBody>
+            <Routes>
+              <Route path="/" element={<h1>HELLO</h1>}/>
+              <Route path="/itens" element={<ItensControl />}/>
+              <Route path="/getitens" element={<ListItens />}/>
+              <Route path="/conf" element={<Configurations />}/>
+              
+            </Routes>
+          </StyledContentBody>
+      </BrowserRouter>
+    </StyledBody>
   );
 }
 
