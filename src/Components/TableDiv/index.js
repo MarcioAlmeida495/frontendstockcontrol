@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { dataFetch } from "../../utils/functions";
+import { useEffect, useRef, useState } from "react"
+import { dataFetch, formatInit } from "../../utils/functions";
 import { getItens } from "../../utils/getURLs";
 import styled from "styled-components";
 import { StyledInput } from "../../Styles/styledInput";
@@ -51,29 +51,57 @@ const StyledHead = styled(StyledItemDiv)`
 
 export const TableDiv = ({urlItens} = {}) => {
     const [itens, setItens] = useState();
-    const [keys, setKeys] = useState();
     const [search, setSearch] = useState('');
-
+    const [page, setPage] = useState(0);
+    const [countItens, setCountItens] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const inputRef = useRef(null);
+    
     useEffect(()=>{
-        dataFetch({simpleurl: getItens}).then(r=>{
-            if(r.length > 0){
-
-                console.log(r);
-                setItens(r);
-                setKeys(Object.keys(r[0]));
-            }
-            
+        dataFetch({simpleurl: 'getcountitems'}).then(r=>{
+            setCountItens(r.count);
         })
     },[])
+
+    useEffect(()=>{
+        dataFetch({simpleurl: 'getitens', init : formatInit({data : {limit: itemsPerPage, page: 0}})}).then(r=>
+            {
+                console.log('RESPOSTA:: ', r);
+                setItens(r)
+            }
+        )
+    },[itemsPerPage])
+
+    useEffect(()=>{
+        dataFetch({simpleurl: 'getitens', init : formatInit({data : {limit: itemsPerPage, page: page}})}).then(r=>
+            {
+                console.log('RESPOSTA:: ', r);
+                if(r.length > 0)setItens(r)
+                else setPage(page-1);
+            }
+        ).catch(err=>{
+            console.log(err)
+        })
+    }, [page, itemsPerPage])
 
     useEffect(()=>{
         console.log(itens);
     },[itens])
 
 
+
     if(itens){
 
         return <StyledTableDiv>
+            <div style={{display: "flex"}}>
+                <StyledInput ref={inputRef} defaultValue={itemsPerPage} type="number"/>
+            <button onClick={()=>{
+                setItemsPerPage(inputRef.current.value);
+                setPage(0);
+                console.log(countItens);
+            }}>alterar</button>
+            </div>
+            
         <StyledInput value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Pesquisar item" width={'100%'}/>
         {itens&& <StyledHead width={`${100/(Object.keys(itens[0]).length+1)}%`}>
             {Object.keys(itens[0]).map((key, index)=>{
@@ -90,6 +118,10 @@ export const TableDiv = ({urlItens} = {}) => {
                 }
                 else return null
             })}
+            <div style={{display: "flex"}}>
+                {(page-1) >= 0 && <button onClick={()=>{setPage(page-1)}}>before</button>}
+                {(page+1)*itemsPerPage < countItens && <button onClick={()=>{setPage(page+1)}}>next</button>}
+            </div>
     </StyledTableDiv>
     }
     else return <></>

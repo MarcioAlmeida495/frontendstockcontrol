@@ -3,7 +3,7 @@ import { backendURL } from "./getURLs";
 
 export const dataFetch = async ({ simpleurl, init } = {}) => {
   const url = `${backendURL}${simpleurl}`
-  console.log(init)
+  console.log('init::',init)
   if (!url) {
       throw new Error("URL é obrigatória!");
   }
@@ -27,6 +27,7 @@ export const dataFetch = async ({ simpleurl, init } = {}) => {
 
 
 export const formatInit = ({data} = {}) => {
+  console.log('DATA:: ',data)
     return {
         method: "POST", // Ou "POST", "PUT", "DELETE", etc.
         headers: {

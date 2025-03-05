@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { dataFetch } from "../../utils/functions";
+import { dataFetch, formatInit } from "../../utils/functions";
 import { TableDiv } from "../TableDiv";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ItensForm } from "../Forms/ItensForm";
@@ -18,19 +18,10 @@ const Div = styled.div`
 export const ListItens = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [itens, setItens] = useState();
-    useEffect(()=>{
-        dataFetch({simpleurl: 'getitens'}).then(r=>
-            setItens(r)
-        )
-    }, [])
 
     return <Div>
-        <DinamicForm object={{nome : 'text', valor: 'number', teste : 'checkbox'}}/>
+        {/* <DinamicForm object={{nome : 'text', valor: 'number', teste : 'checkbox'}}/> */}
         <ItensForm onSuccess={()=>onSuccess(navigate)}/>
-        {itens && <>
-            <TableDiv key={location.key}/>
-            {/* <Table object={itens}/> */}
-        </>}
+        <TableDiv key={location.key}/>
     </Div>
 }
