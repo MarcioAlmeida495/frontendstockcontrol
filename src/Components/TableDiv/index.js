@@ -10,10 +10,15 @@ const StyledTableDiv = styled.div`
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
-    justify-content: center;
+    height: 90vh;
+    overflow: auto;
     border-radius: 5px;
     width: 100%;
     border-radius: 3px;
+    & > div{
+        height: 50px;
+        min-height: 50px;
+    }
 `
 export const StyledItemDiv = styled.div`
     border-radius: 10px;
@@ -22,7 +27,7 @@ export const StyledItemDiv = styled.div`
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    height: 40px;
+    height: 50px;
     width: 100%;
     &:hover{
         background-color: rgba(0,0,0,0.1);
@@ -49,17 +54,20 @@ const StyledHead = styled(StyledItemDiv)`
     }
 `
 
-export const TableDiv = ({urlItens} = {}) => {
+export const TableDiv = () => {
     const [itens, setItens] = useState();
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(0);
     const [countItens, setCountItens] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState();
     const inputRef = useRef(null);
     
     useEffect(()=>{
         dataFetch({simpleurl: 'getcountitems'}).then(r=>{
             setCountItens(r.count);
+        });
+        dataFetch({simpleurl: 'limitconfig'}).then(r=>{
+            setItemsPerPage(r.limit);
         })
     },[])
 
@@ -83,12 +91,6 @@ export const TableDiv = ({urlItens} = {}) => {
             console.log(err)
         })
     }, [page, itemsPerPage])
-
-    useEffect(()=>{
-        console.log(itens);
-    },[itens])
-
-
 
     if(itens){
 

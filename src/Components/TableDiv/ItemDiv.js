@@ -4,6 +4,7 @@ import { ItensForm } from "../Forms/ItensForm";
 import { UpdateItemsForm } from "../Forms/UpdateItemsForm";
 import { useNavigate } from 'react-router-dom';
 import { onSuccess } from "../../handles/handles";
+import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
 
 export const ItemDiv = ({item, width}) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -17,7 +18,7 @@ export const ItemDiv = ({item, width}) => {
             </div>
         })}
         <div>
-        <button onClick={()=>setIsEditing(!isEditing)}>Editar</button>
+        <StyledConfirmButton onClick={()=>setIsEditing(!isEditing)}>Editar</StyledConfirmButton>
         <button>Excluir</button>
         </div>
     </StyledItemDiv>

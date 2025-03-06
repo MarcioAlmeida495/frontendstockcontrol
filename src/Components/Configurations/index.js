@@ -1,14 +1,25 @@
+import { useEffect, useState } from "react";
 import { StyledInput } from "../../Styles/styledInput"
-import {dataFetch} from '../../utils/functions';
+import {dataFetch, formatInit} from '../../utils/functions';
 
 export const Configurations = () => {
+    const [serverData, setServerData] = useState('');
+
+    useEffect(()=>{
+        dataFetch({simpleurl: 'config'}).then(r=>{
+            setServerData(r);
+        })
+    },[])
+
+
+
     return <>
-        <StyledInput onKeyUp={(e)=>{
+        <StyledInput width='80%' defaultValue={serverData.bdDirectory} onKeyUp={(e)=>{
             console.log(e.key);
             if(e.key === 'Enter'){
-                dataFetch({simpleurl : 'config'})
+                dataFetch({simpleurl : 'newconfig', init: formatInit({data: {bdDirectory: e.target.value}})})
             }
         }} placeholder="diretório do bd"/>
-
+        
     </>
 }
