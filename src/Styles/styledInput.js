@@ -5,7 +5,8 @@ export const StyledInput = styled.input`
     box-sizing: border-box;
     padding: 5px;
     background-color: white;
-    border-bottom: 1px solid white;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 3px;
     text-align: center;
     width: ${(props) => props.width || 'auto'};
     &:focus{

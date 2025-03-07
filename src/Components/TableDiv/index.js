@@ -10,7 +10,7 @@ const StyledTableDiv = styled.div`
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
-    height: 90vh;
+    height: 80%;
     overflow: auto;
     border-radius: 5px;
     width: 100%;
@@ -94,37 +94,39 @@ export const TableDiv = () => {
 
     if(itens){
 
-        return <StyledTableDiv>
+        return <div style={{height: '90vh'}}>
             <div style={{display: "flex"}}>
                 <StyledInput ref={inputRef} defaultValue={itemsPerPage} type="number"/>
             <button onClick={()=>{
                 setItemsPerPage(inputRef.current.value);
                 setPage(0);
-                console.log(countItens);
+                dataFetch({simpleurl: 'setlimitconfig', init: formatInit({data: { limit: inputRef.current.value}})})
             }}>alterar</button>
             </div>
             
         <StyledInput value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Pesquisar item" width={'100%'}/>
-        {itens&& <StyledHead width={`${100/(Object.keys(itens[0]).length+1)}%`}>
+        {itens && <StyledHead width={`${100/(Object.keys(itens[0]).length+1)}%`}>
             {Object.keys(itens[0]).map((key, index)=>{
                 return <div key={index}>{key.toUpperCase()}</div>
             })}
             <div>FUNÇOES</div>
         </StyledHead>}
-        {itens && itens.map((item, index)=>{
-            console.log('item div table', item);
-            if(search === '' || item.nome.toUpperCase().includes(search.toUpperCase())){ 
-                return <>
-                    <ItemDiv item={item} width={`${(100/Object.keys(itens[0]).length+1)}%`}/>
-                </> 
+        <StyledTableDiv>
+            {itens && itens.map((item, index)=>{
+                console.log('item div table', item);
+                if(search === '' || item.nome.toUpperCase().includes(search.toUpperCase())){ 
+                    return <>
+                        <ItemDiv key={index} item={item} width={`${(100/Object.keys(itens[0]).length+1)}%`}/>
+                    </> 
                 }
-                else return null
+                    else return null
             })}
+        </StyledTableDiv>
             <div style={{display: "flex"}}>
                 {(page-1) >= 0 && <button onClick={()=>{setPage(page-1)}}>before</button>}
                 {(page+1)*itemsPerPage < countItens && <button onClick={()=>{setPage(page+1)}}>next</button>}
             </div>
-    </StyledTableDiv>
+    </div> 
     }
     else return <></>
 }
