@@ -29,10 +29,15 @@ export const StyledItemDiv = styled.div`
     justify-content: center;
     align-items: center;
     height: 50px;
+    border: 1px rgba(0,0,0,0) solid;
     width: 100%;
+    transition: background-color 300ms ease-in-out, border 300ms ease;
     &:hover{
         background-color: rgba(0,0,0,0.1);
+        border-bottom: 1px white solid;
+        border-top: 1px white solid;
     }
+
     & > * {
         height: 100%;
         display: flex;

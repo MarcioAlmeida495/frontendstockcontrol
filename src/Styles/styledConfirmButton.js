@@ -5,14 +5,19 @@ export const StyledConfirmButton = styled.button`
     color: white;
     height: 80%;
     width: 50%;
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(115,115,115,1);
+    border: 1px solid rgba(0,0,0,0);
     text-align: center;
     text-justify: center;
-    transition: border-radius 200ms ease-in-out;
-    
+    transition: border-radius 200ms ease-in-out, font-weight 200ms ease-in-out, border 400ms ease-in-out;
+    border-radius: 2px;
     &:hover{
         background-color: #555;
+        border: 1px white solid;
         border-radius: 10px;
+        cursor: pointer;
+        color: white;
+        font-weight: bolder;
     }
 
 `
