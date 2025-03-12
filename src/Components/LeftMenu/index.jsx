@@ -16,12 +16,16 @@ export const LeftMenu = ({children}) => {
             }}
         >
             {show && <>
-             <StyledLink to={'/getitens'}>
-                <h3>ITEMS</h3>
+                <StyledLink to={'/getitens'}>
+                    <h3>ITEMS</h3>
+                </StyledLink>
+                <StyledLink to={'/getclients'}>
+                    <h3>CLIENTES</h3>
                 </StyledLink>
                 <StyledLink to={'/conf'}>
                     <h3>CONFIGURAÇÕES</h3>
                 </StyledLink>
+                
                
             </>
             }

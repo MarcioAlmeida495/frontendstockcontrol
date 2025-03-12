@@ -3,6 +3,7 @@ import styled from "styled-components"
 export const StyledInput = styled.input`
     all: unset;
     box-sizing: border-box;
+    height: 35px;
     padding: 5px;
     background-color: white;
     border: 1px solid rgba(0,0,0,0);

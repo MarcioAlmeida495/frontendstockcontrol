@@ -1,6 +1,7 @@
 import { Configurations } from "./Components/Configurations";
 import { ItensControl } from "./Components/ItensControl";
 import { LeftMenu } from "./Components/LeftMenu";
+import { ListClients } from "./Components/ListClients";
 import { ListItens } from "./Components/ListItens";
 import { StyledBody } from "./Styles/styledBody";
 import { StyledContentBody } from "./Styles/styledContentBody";
@@ -26,6 +27,7 @@ function App() {
               <Route path="/" element={<h1>HELLO</h1>}/>
               <Route path="/itens" element={<ItensControl />}/>
               <Route path="/getitens" element={<ListItens />}/>
+              <Route path="/getclients" element={<ListClients />}/>
               <Route path="/conf" element={<Configurations />}/>
               
             </Routes>

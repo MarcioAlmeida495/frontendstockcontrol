@@ -3,14 +3,14 @@ import { dataFetch, formatInit } from "../../utils/functions";
 import { getItens } from "../../utils/getURLs";
 import styled from "styled-components";
 import { StyledInput } from "../../Styles/styledInput";
-import { ItemDiv } from "./ItemDiv";
+import { ItemDiv } from "../TableDiv/ItemDiv"
 
 const StyledTableDiv = styled.div`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
-    height: 80%;
+    height: calc(100% - 100px);
     overflow: auto;
     border-radius: 5px;
     width: 100%;
@@ -54,7 +54,7 @@ const StyledHead = styled(StyledItemDiv)`
     }
 `
 
-export const TableDiv = () => {
+export const ListClients = () => {
     const [itens, setItens] = useState();
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(0);
@@ -94,14 +94,14 @@ export const TableDiv = () => {
 
     if(itens){
 
-        return <div style={{height: '90vh'}}>
-            <div style={{display: "flex"}}>
-                <StyledInput ref={inputRef} defaultValue={itemsPerPage} type="number"/>
-            <button onClick={()=>{
-                setItemsPerPage(inputRef.current.value);
-                setPage(0);
-                dataFetch({simpleurl: 'setlimitconfig', init: formatInit({data: { limit: inputRef.current.value}})})
-            }}>alterar</button>
+        return <div style={{height: '90vh', width: '90%'}}>
+            <div style={{display: "flex", width: '100%'}}>
+                <StyledInput ref={inputRef} defaultValue={itemsPerPage} width={'50px'} type="number"/>
+                <button onClick={()=>{
+                    setItemsPerPage(inputRef.current.value);
+                    setPage(0);
+                    dataFetch({simpleurl: 'setlimitconfig', init: formatInit({data: { limit: inputRef.current.value}})})
+                }}>alterar</button>
             </div>
             
         <StyledInput value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Pesquisar item" width={'100%'}/>

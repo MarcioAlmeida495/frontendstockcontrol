@@ -2,23 +2,27 @@ import { backendURL } from "./getURLs";
 
 
 export const dataFetch = async ({ simpleurl, init } = {}) => {
-  const url = `${backendURL}${simpleurl}`
-  console.log('init::',init)
+  const url = `${backendURL}${simpleurl}`;
   if (!url) {
       throw new Error("URL é obrigatória!");
   }
 
   try {
       const response = await fetch(url, init); // `init` pode ser passado opcionalmente
-      console.log("response:: ", response);
 
       if (!response.ok) {
           throw new Error(`Erro HTTP! Status: ${response.status}`);
       }
-
-      const inJson = await response.json();
-      console.log("INJSON:: ", inJson);
-      return inJson;
+      console.log('RESPONSE-->', response)
+      try {
+        var inJson = await response.json();
+        return inJson;
+      } catch (error) {
+        console.log('trying to fetch :: ', url);
+        console.log(`response:: ${response}, error:: ${error}`);
+        console.log(response);
+        return false;
+      }
   } catch (error) {
       console.error("Erro ao buscar dados:", error);
       return null; // Ou lançar o erro, dependendo do caso

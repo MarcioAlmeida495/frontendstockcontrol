@@ -9,7 +9,7 @@ import { DinamicForm } from "../Forms/DinamicForm";
 
 const Div = styled.div`
     box-sizing: border-box;
-    padding: 10px;
+    height: 100vh;
     & > * {
         margin: 5px;
     }
@@ -21,7 +21,7 @@ export const ListItens = () => {
 
     return <Div>
         {/* <DinamicForm object={{nome : 'text', valor: 'number', teste : 'checkbox'}}/> */}
-        <ItensForm onSuccess={()=>onSuccess(navigate)}/>
-        <TableDiv key={location.key}/>
+        {/* <ItensForm onSuccess={()=>onSuccess(navigate)}/> */}
+        <TableDiv  onSuccess={()=>onSuccess(navigate)} key={location.key}/>
     </Div>
 }
