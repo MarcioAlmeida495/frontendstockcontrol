@@ -11,7 +11,7 @@ export const dataFetch = async ({ simpleurl, init } = {}) => {
       const response = await fetch(url, init); // `init` pode ser passado opcionalmente
 
       if (!response.ok) {
-          throw new Error(`Erro HTTP! Status: ${response.status}`);
+          return new Error(`Erro HTTP! Status: ${response.status}`);
       }
       console.log('RESPONSE-->', response)
       try {
@@ -25,7 +25,7 @@ export const dataFetch = async ({ simpleurl, init } = {}) => {
       }
   } catch (error) {
       console.error("Erro ao buscar dados:", error);
-      return null; // Ou lançar o erro, dependendo do caso
+      return error; // Ou lançar o erro, dependendo do caso
   }
 };
 

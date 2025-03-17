@@ -4,6 +4,16 @@ import { getItens } from "../../utils/getURLs";
 import styled from "styled-components";
 import { StyledInput } from "../../Styles/styledInput";
 import { ItemDiv } from "../TableDiv/ItemDiv"
+import { DinamicForm } from "../Forms/DinamicForm";
+
+const Div = styled.div`
+    height: 100vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+`
 
 const StyledTableDiv = styled.div`
     display: flex;
@@ -53,80 +63,30 @@ const StyledHead = styled(StyledItemDiv)`
         background-color: #ccc;
     }
 `
+const getClientsUrl = 'clients/getclients';
 
 export const ListClients = () => {
-    const [itens, setItens] = useState();
-    const [search, setSearch] = useState('');
-    const [page, setPage] = useState(0);
-    const [countItens, setCountItens] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState();
-    const inputRef = useRef(null);
-    
+    const [clients, setClients] = useState([]);
     useEffect(()=>{
-        dataFetch({simpleurl: 'getcountitems'}).then(r=>{
-            setCountItens(r.count);
-        });
-        dataFetch({simpleurl: 'limitconfig'}).then(r=>{
-            setItemsPerPage(r.limit);
-        })
-    },[])
+        dataFetch({simpleurl: getClientsUrl}).then(r=>{setClients(r)});
+    },[]);
 
-    useEffect(()=>{
-        dataFetch({simpleurl: 'getitens', init : formatInit({data : {limit: itemsPerPage, page: 0}})}).then(r=>
-            {
-                console.log('RESPOSTA:: ', r);
-                setItens(r)
-            }
-        )
-    },[itemsPerPage])
-
-    useEffect(()=>{
-        dataFetch({simpleurl: 'getitens', init : formatInit({data : {limit: itemsPerPage, page: page}})}).then(r=>
-            {
-                console.log('RESPOSTA:: ', r);
-                if(r.length > 0)setItens(r)
-                else setPage(page-1);
-            }
-        ).catch(err=>{
-            console.log(err)
-        })
-    }, [page, itemsPerPage])
-
-    if(itens){
-
-        return <div style={{height: '90vh', width: '90%'}}>
-            <div style={{display: "flex", width: '100%'}}>
-                <StyledInput ref={inputRef} defaultValue={itemsPerPage} width={'50px'} type="number"/>
-                <button onClick={()=>{
-                    setItemsPerPage(inputRef.current.value);
-                    setPage(0);
-                    dataFetch({simpleurl: 'setlimitconfig', init: formatInit({data: { limit: inputRef.current.value}})})
-                }}>alterar</button>
-            </div>
-            
-        <StyledInput value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Pesquisar item" width={'100%'}/>
-        {itens && <StyledHead width={`${100/(Object.keys(itens[0]).length+1)}%`}>
-            {Object.keys(itens[0]).map((key, index)=>{
+    return <Div><h1>Lista de Clientes</h1>
+        <DinamicForm object={{nome: '', email: '', telefone: ''}}/>
+        {clients.length > 0 && <>
+            <StyledHead width={`${100/(Object.keys(clients[0]).length+1)}%`}>
+            {Object.keys(clients[0]).map((key, index)=>{
                 return <div key={index}>{key.toUpperCase()}</div>
             })}
             <div>FUNÇOES</div>
-        </StyledHead>}
+        </StyledHead>
         <StyledTableDiv>
-            {itens && itens.map((item, index)=>{
-                console.log('item div table', item);
-                if(search === '' || item.nome.toUpperCase().includes(search.toUpperCase())){ 
-                    return <>
-                        <ItemDiv key={index} item={item} width={`${(100/Object.keys(itens[0]).length+1)}%`}/>
-                    </> 
-                }
-                    else return null
+
+            {clients.map((client, index) => {
+                return <ItemDiv width={'20%'} item={client} key={index} />
             })}
-        </StyledTableDiv>
-            <div style={{display: "flex"}}>
-                {(page-1) >= 0 && <button onClick={()=>{setPage(page-1)}}>before</button>}
-                {(page+1)*itemsPerPage < countItens && <button onClick={()=>{setPage(page+1)}}>next</button>}
-            </div>
-    </div> 
-    }
-    else return <></>
+            </StyledTableDiv>
+        </>
+        }
+    </Div>
 }

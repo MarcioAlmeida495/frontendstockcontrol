@@ -1,4 +1,6 @@
 import { Configurations } from "./Components/Configurations";
+import { DinamicTable } from "./Components/DinamicTable";
+import { DinamicForm } from "./Components/Forms/DinamicForm";
 import { ItensControl } from "./Components/ItensControl";
 import { LeftMenu } from "./Components/LeftMenu";
 import { ListClients } from "./Components/ListClients";
@@ -29,7 +31,7 @@ function App() {
               <Route path="/getitens" element={<ListItens />}/>
               <Route path="/getclients" element={<ListClients />}/>
               <Route path="/conf" element={<Configurations />}/>
-              
+              <Route path="/test" element={<DinamicTable object={{nome: '', tel: ''}} crudUrls={{c: 'clients/addclient', r:'clients/getclients'}} allowEdit={true}/>}/>
             </Routes>
           </StyledContentBody>
       </BrowserRouter>

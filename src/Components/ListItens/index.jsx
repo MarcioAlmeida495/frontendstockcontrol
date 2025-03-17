@@ -9,7 +9,8 @@ import { DinamicForm } from "../Forms/DinamicForm";
 
 const Div = styled.div`
     box-sizing: border-box;
-    height: 100vh;
+    height: 100%;
+    overflow: auto;
     & > * {
         margin: 5px;
     }

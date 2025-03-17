@@ -11,7 +11,7 @@ const StyledTableDiv = styled.div`
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
-    height: calc(100% - 100px);
+    height: calc(100% - 150px);
     overflow: auto;
     border-radius: 5px;
     width: 100%;
@@ -20,6 +20,7 @@ const StyledTableDiv = styled.div`
         height: 50px;
         min-height: 50px;
     }
+    
 `
 export const StyledItemDiv = styled.div`
     border-radius: 2px;
@@ -91,7 +92,7 @@ export const TableDiv = ({onSuccess = () => {}}) => {
 
     return <>
         <ItensForm nomeChange={(value) => {setSearch(value)}}  onSuccess={()=>onSuccess()}/>
-        {itens && <div style={{height: '90vh'}}>
+        {itens && <div style={{height: 'calc(100% - 70px)'}}>
             <div style={{display: "flex", width: '100%'}}>
                 <StyledInput ref={inputRef} defaultValue={itemsPerPage} width={'50px'} type="number"/>
                 <button onClick={()=>{

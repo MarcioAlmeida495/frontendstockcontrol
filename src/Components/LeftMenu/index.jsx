@@ -24,6 +24,8 @@ export const LeftMenu = ({children}) => {
                 </StyledLink>
                 <StyledLink to={'/conf'}>
                     <h3>CONFIGURAÇÕES</h3>
+                </StyledLink><StyledLink to={'/test'}>
+                    <h3>test</h3>
                 </StyledLink>
                 
                

@@ -5,7 +5,8 @@ export const StyledForm = styled.form`
     box-sizing: border-box;
     height: 35px;
     flex-direction: ${({$flexdirection}) => $flexdirection || 'row'};
-    width: 99%;
+    width: 98%;
+    width: ${({width}) => width || '98%'};
     margin-inline: auto;
     align-items: center;
     justify-content: space-between;
