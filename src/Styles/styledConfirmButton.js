@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledConfirmButton = styled.button`
     all: unset;
     color: white;
-    height: 80%;
+    height: ${({height})=> height || '80%'};
     width: 50%;
     background-color: rgba(115,115,115,1);
     border: 1px solid rgba(0,0,0,0);

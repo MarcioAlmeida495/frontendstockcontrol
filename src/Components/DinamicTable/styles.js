@@ -7,7 +7,6 @@ export const Table = styled.div`
     flex-direction: column;
     width: 80%;
     height: 80%;
-    overflow: auto;
 `;
 export const Head = styled.div`
     display: flex;
@@ -26,6 +25,7 @@ export const TBody = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow: auto;
     & > * {
         min-height: 30px;
         max-height: 50px;
@@ -34,7 +34,7 @@ export const TBody = styled.div`
 export const TRow = styled.div`
     display: flex;
     width: 100%;
-    
+    height: 30px;
     & > * {
         display: flex;
         justify-content: center;

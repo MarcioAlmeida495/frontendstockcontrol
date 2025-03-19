@@ -3,7 +3,7 @@ import { dataFetch, formatInit } from "../../utils/functions";
 import { TableDiv } from "../TableDiv";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ItensForm } from "../Forms/ItensForm";
-import { onSuccess } from "../../handles/handles";
+import { onNavigate, onSuccess } from "../../handles/handles";
 import styled from "styled-components";
 import { DinamicForm } from "../Forms/DinamicForm";
 
@@ -23,6 +23,6 @@ export const ListItens = () => {
     return <Div>
         {/* <DinamicForm object={{nome : 'text', valor: 'number', teste : 'checkbox'}}/> */}
         {/* <ItensForm onSuccess={()=>onSuccess(navigate)}/> */}
-        <TableDiv  onSuccess={()=>onSuccess(navigate)} key={location.key}/>
+        <TableDiv  onSuccess={()=>onNavigate(navigate, '/getitens')} key={location.key}/>
     </Div>
 }

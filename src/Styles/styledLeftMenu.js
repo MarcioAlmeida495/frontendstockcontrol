@@ -27,13 +27,14 @@ const animationLeftShow = keyframes`
 export const StyledLeftMenu = styled.div`
     float: left;
     display: flex;
-    position: fixed;
+    position: absolute;
+    top: 0;
+    z-index: 999;
     flex-direction: column;
     width: ${squareSize};
     height: 100vh;
     background: linear-gradient(90deg, #fff,#ccc,#aaa);
     border-right: rgba(0, 0, 0, 0.5) 1px solid;
-
     gap: 10px;
     padding-top: 10px;
     padding-left: 10px;

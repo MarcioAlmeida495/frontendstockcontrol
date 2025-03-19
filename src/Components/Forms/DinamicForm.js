@@ -5,11 +5,11 @@ import { StyledConfirmButton } from '../../Styles/styledConfirmButton';
 import { StyledInput } from '../../Styles/styledInput';
 import { dataFetch, formatInit } from '../../utils/functions';
 
-export const DinamicForm = ({object, submitUrl = '', width = undefined}) => {
+export const DinamicForm = ({object, submitUrl = 'clients/addclient', width = undefined}) => {
     const {register, handleSubmit} = useForm();
     const [keys, setKeys] = useState();
     const onSubmit = (data) => {
-        dataFetch({simpleurl: 'clients/addclient', init: formatInit({data: data})}).then((r)=>{window.alert(r)}).catch((err)=>window.alert(err));
+        dataFetch({simpleurl: submitUrl, init: formatInit({data: data})}).then((r)=>{window.alert(r)}).catch((err)=>window.alert(err));
     }
  
     useEffect(()=>{
