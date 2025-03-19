@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const Stylediframe = styled.iframe`
-  width: calc(100% - 100px);
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   margin: auto;
-  position: absolute;
+  position: relative;
   resize: both;
+  border: 0px;
   z-index: 100;
 `

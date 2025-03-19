@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-const squareSize = '40px'
+export const squareSize = '40px'
 
 const animationLeftHide = keyframes`
     from{
