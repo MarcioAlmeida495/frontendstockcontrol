@@ -20,6 +20,11 @@ export const HeadColumn = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 1.2em;
+    &:hover{
+        background-color: rgba(0,0,0,0.2);
+        color: white;
+        cursor: pointer;
+    }
 `
 export const TBody = styled.div`
     display: flex;

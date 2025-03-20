@@ -10,7 +10,7 @@ export const DinamicFormReturnData = ({onSubmit = () => {}, onSuccess = () => {}
     
     return <StyledForm height={height} margin={margin} width={width} onSubmit={handleSubmit(onSubmit)}>
         {Object.keys(object).map((key, index) => {
-            return <StyledInput  placeholder={key} {...register(key)} defaultValue={object[key]} />
+            return <StyledInput key={index} placeholder={key} {...register(key)} defaultValue={object[key]} />
         })}
             <StyledFlexRow>
             <StyledConfirmButton height={'98%'} onClick={()=>{handleSubmit(onSubmit);

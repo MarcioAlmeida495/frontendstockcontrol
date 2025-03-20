@@ -41,3 +41,11 @@ export const formatInit = ({data} = {}) => {
         body: JSON.stringify({data:data}), // Apenas para métodos como POST ou PUT
       }
 }
+
+export const orderByKey = (array, key) => {
+  return array.slice().sort((a, b) => {
+      if (a[key] < b[key]) return -1;
+      if (a[key] > b[key]) return 1;
+      return 0;
+  });
+}
