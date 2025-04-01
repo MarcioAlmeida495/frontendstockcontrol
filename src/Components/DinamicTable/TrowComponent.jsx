@@ -10,7 +10,7 @@ export const TrowComponent = ({row = {}, rowNames = [], allowEdit = false, onSub
 
     return <TRow> 
         {editing ?
-            <DinamicFormReturnData margin={'0px'} width='50%'  onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.u, init: formatInit({data: values})}).then(r=>{if(r) reset()})}} onCancel={()=>{setEditing(false)}} object={row}/>
+            <DinamicFormReturnData margin={'0px'} width='100%'  onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.u, init: formatInit({data: values})}).then(r=>{if(r) reset()})}} onCancel={()=>{setEditing(false)}} object={row}/>
             :
             Object.values(row).map((each, index) => {
                 return <div key={index} >{each}</div>

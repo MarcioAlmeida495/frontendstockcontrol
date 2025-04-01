@@ -49,3 +49,12 @@ export const orderByKey = (array, key) => {
       return 0;
   });
 }
+
+export const removeAccents = (str) => {
+  try {
+    const normalized =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return normalized;
+  } catch (error) {
+    return str;
+  } 
+}

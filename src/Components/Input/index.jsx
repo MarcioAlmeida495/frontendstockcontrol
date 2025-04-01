@@ -19,10 +19,6 @@ const DivInput = styled.div`
 `
 
 export const Input = ({legend}) => {
-    const refDivInp = useRef(null);
-    return <DivInput className={''} ref={refDivInp} legend={legend}>
-            <StyledInput width={'50%'} type="text" onClick={()=>{
-        }}/>
-    </DivInput>
+    return <StyledInput width={'50%'} type="text" placeholder={legend} onClick={()=>{}}/>
 
 }

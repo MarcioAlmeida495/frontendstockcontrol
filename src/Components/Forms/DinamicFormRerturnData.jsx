@@ -10,9 +10,9 @@ export const DinamicFormReturnData = ({onSubmit = () => {}, onSuccess = () => {}
     
     return <StyledForm height={height} margin={margin} width={width} onSubmit={handleSubmit(onSubmit)}>
         {Object.keys(object).map((key, index) => {
-            return <StyledInput key={index} placeholder={key} {...register(key)} defaultValue={object[key]} />
+            return <StyledInput width={`${100/(Object.keys(object).length + 1)}%`} key={index} placeholder={key} {...register(key)} defaultValue={object[key]} />
         })}
-            <StyledFlexRow>
+            <StyledFlexRow width={`${100/(Object.keys(object).length+1)}%`}>
             <StyledConfirmButton height={'98%'} onClick={()=>{handleSubmit(onSubmit);
             }}>Confirmar</StyledConfirmButton>
             {onCancel && <StyledCancelButton height={'98%'} onClick={()=>{onCancel()}}>Cancelar</StyledCancelButton>}

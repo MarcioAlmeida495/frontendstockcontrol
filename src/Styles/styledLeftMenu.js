@@ -32,21 +32,21 @@ export const StyledLeftMenu = styled.div`
     z-index: 999;
     flex-direction: column;
     width: ${squareSize};
-    height: 100vh;
+    height: ${squareSize};
     background: linear-gradient(90deg, #fff,#ccc,#aaa);
     border-right: rgba(0, 0, 0, 0.5) 1px solid;
     gap: 10px;
     padding-top: 10px;
     padding-left: 10px;
     overflow: hidden;
-    transition: width 200ms ease-in-out;
+    transition: width 200ms ease-in-out, height 200ms ease-in-out;
     & > *{
         width: 0px;
         display: none;
     }
     &:hover{
-        width: 300px;
-
+        width: 250px;
+        height: 100vh;
     }
     &:hover > * {
         display: block;

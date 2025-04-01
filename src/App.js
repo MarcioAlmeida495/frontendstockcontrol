@@ -13,6 +13,12 @@ import { StyledLink } from "./Styles/styledLink";
 import { StyledTopMenu } from "./Styles/styledTopMenu";
 import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
 import { Iframe } from "./Components/Iframe";
+import { Clients } from "./Pages/clients";
+import { Suppliers } from "./Pages/Suppliers";
+import { Orders } from "./Pages/Orders";
+import { Items } from "./Pages/Items";
+import { Tests } from "./Pages/Tests";
+import { CatalogSuppliers } from "./Pages/catalogsupplier";
 
 
 
@@ -31,6 +37,15 @@ function App() {
             <StyledLink to={'/getsuppliers'}>
                 <h3>FORNECEDORES</h3>
             </StyledLink>
+            <StyledLink to={'/getorders'}>
+                <h3>COMPRAS</h3>
+            </StyledLink>
+            <StyledLink to={'/tests'}>
+                <h3>Tests</h3>
+            </StyledLink>
+            <StyledLink to={'/catalogs'}>
+                <h3>CATALOGS</h3>
+            </StyledLink>
             <StyledLink to={'/'}>
                 <h3>SISTEMA ANTIGO</h3>
             </StyledLink>
@@ -38,37 +53,13 @@ function App() {
           <StyledContentBody>
             <Routes>
               <Route path="/" element={<Iframe show={true}/>}/>
-              <Route path="/itens" element={<ItensControl />}/>
-              {/* <Route path="/getitens" element={<ListItens />}/> */}
-              <Route path="/getitens" element={<DinamicTable 
-                object={{nome: '', quantidade: '', preco: ''}} 
-                crudUrls={{
-                  c: 'items/createiten', 
-                  r:'items/getitems', 
-                  u: 'items/updateitem', 
-                  d: 'items/deleteitem'}} 
-                allowEdit={true}
-              />} />
-              {/* <Route path="/getclients" element={<ListClients />}/> */}
+              <Route path="/getitens" element={<Items />} />
               <Route path="/conf" element={<Configurations />}/>
-              <Route path="/getclients" element={<DinamicTable 
-                object={{nome: '', telefone: '', email: ''}} 
-                crudUrls={{
-                  c: 'clients/addclient', 
-                  r:'clients/getclients', 
-                  u: 'clients/updateclient', 
-                  d: 'clients/deleteclient'}} 
-                allowEdit={true}/>
-              }/>
-              <Route path="/getsuppliers" element={<DinamicTable 
-                object={{nome: '', telefone: '', email: ''}} 
-                crudUrls={{
-                  c: 'supplier/addsupplier', 
-                  r:'supplier/getsuppliers', 
-                  u: 'supplier/updatesupplier', 
-                  d: 'supplier/deletesupplier'}} 
-                allowEdit={true}/>
-              }/>
+              <Route path="/getclients" element={<Clients/>}/>
+              <Route path="/getsuppliers" element={<Suppliers />}/>
+              <Route path="/getorders" element={<Orders />}/>
+              <Route path="/tests" element={<Tests />}/>
+              <Route path="/catalogs" element={<CatalogSuppliers/>} />
             </Routes>
           </StyledContentBody>
       </BrowserRouter>
