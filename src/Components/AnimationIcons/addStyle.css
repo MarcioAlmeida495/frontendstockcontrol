@@ -13,7 +13,9 @@
 .TEST:hover .masterbox{
     transform: rotate(180deg);
 }
-
+.TEST:hover .rotated{
+    transform: rotate(225deg);
+}
 .masterbox{
     width: 20px;
     height: 20px;
@@ -21,4 +23,8 @@
     justify-content: center;
     align-items: center;
     transition: transform 200ms linear;
+}
+
+.rotated{
+    transform: rotate(45deg);
 }

@@ -20,11 +20,12 @@ const AbsoluteDiv = styled.div`
     height: 35px;
 `
 
-export const Select = ({url, defaultPlaceholder, getSelected = () => {}}) => {
+export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width = undefined}) => {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState('');
     const [search, setSearch] = useState('');
     const [isSearching, setIsSearching] = useState(false);
+    const [title, setTitle] = useState('');
     const refSelect = useRef(null);
 
     useEffect(()=>{
@@ -32,28 +33,36 @@ export const Select = ({url, defaultPlaceholder, getSelected = () => {}}) => {
     }, [url]);
 
     useEffect(()=>{
-        console.log(selected);
+        console.log(`SELECTED :: ${selected} no USEEFFECT`);
         getSelected(selected);
+        setTitle('');
     }, [selected, getSelected])
 
     useEffect(() => {
         if(refSelect.current.options[0]) {
             refSelect.current.value = refSelect.current.options[0].value;
+            data.map((each) => {
+                if(Number(each.id) === Number(refSelect.current.value)){
+                    console.log('encontrado');
+                    setSelected(each);
+                    return true;
+                }
+                else return null;
+                })
             console.log(refSelect.current.options[0])
-            setSelected(refSelect.current.options[0]);
         }
-    },[search])
+    },[search, data])
 
-    return <Div>
+    return <Div width={`${width ? width : undefined}`}>
             {isSearching ? <>
                     <StyledInput autoFocus onBlur={()=>{setIsSearching(false)}} defaultValue={search} placeholder={`PESQUISE O ${defaultPlaceholder}`} onChange={(e)=>{setSearch(e.target.value)}} width={'300px'} type="search"/> 
-                    <StyledConfirmButton margin={'2px'} height={'99%'} width={'35px'} onClick={()=>{setIsSearching(false)}}>OK</StyledConfirmButton>
+                    <StyledConfirmButton margin={'2px'} height={'99%'} width={'65px'} onClick={()=>{setIsSearching(false)}}>OK</StyledConfirmButton>
             </>
                 :   
                 <>
                 
         <AbsoluteDiv>
-                <div style={{position: 'relative', top: '5px', left: '5px'}} >
+                <div style={{position: 'absolute', top: '5px', left: '5px'}} >
                     <img alt="searchicon" onClick={()=>{setIsSearching(true)}} style={{width: '25px'}} src="icons/loupe.png" />
                     {search && <div style={{display: 'block', position: 'absolute', top: '0px', right: '-5px', width: '3px', height: '3px', border: '4px solid red', borderRadius: '5px'}}/>}
                         
@@ -62,10 +71,11 @@ export const Select = ({url, defaultPlaceholder, getSelected = () => {}}) => {
             </AbsoluteDiv>
                 </>    
             }
-        {<StyledSelect  ref={refSelect} onChange={(e)=>{data.map((each, index) => {
+        {<StyledSelect title={title} ref={refSelect} onChange={(e)=>{data.map((each) => {
             if(Number(each.id) === Number(e.target.value)){
                 console.log('encontrado');
                 setSelected(each);
+                return true;
             }
             else return null;
             })}}>

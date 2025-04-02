@@ -3,6 +3,9 @@ import { StyledInput } from "../../Styles/styledInput"
 import { Select } from "../Select"
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { StyledCancelButton } from "../../Styles/styledConfirmButton";
+import { AddIcon } from "../AnimationIcons/Add";
+import { CancelIcon } from "../AnimationIcons/Cancel";
 
 const Div = styled.div`
     display: flex;
@@ -12,7 +15,7 @@ const Div = styled.div`
     max-width: 700px;
 `
 
-export const ItemsFormForOrders = ({getData = () => {}, register, index = 0, setValue = () => {}, getValues = () => {}}) => {
+export const ItemsFormForOrders = ({getData = () => {}, remove, register, index = 0, setValue = () => {}, getValues = () => {}}) => {
     const [selectedItems, setSelectedItem] = useState();
 
     useEffect(()=>{
@@ -53,5 +56,6 @@ export const ItemsFormForOrders = ({getData = () => {}, register, index = 0, set
             }
             
         type="Number"/>
+        <StyledCancelButton height={'100%'} width={'60px'} onClick={()=>{remove(index)}} ><CancelIcon/></StyledCancelButton>
         </Div>
 }

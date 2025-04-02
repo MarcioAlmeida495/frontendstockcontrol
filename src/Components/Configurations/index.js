@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { StyledInput } from "../../Styles/styledInput"
 import {dataFetch, formatInit} from '../../utils/functions';
+import { Div } from "../../Styles/styledDiv";
 
 export const Configurations = () => {
     const [serverData, setServerData] = useState('');
@@ -13,7 +14,7 @@ export const Configurations = () => {
 
 
 
-    return <>
+    return <Div>
         <StyledInput width='80%' defaultValue={serverData.bdDirectory} onKeyUp={(e)=>{
             console.log(e.key);
             if(e.key === 'Enter'){
@@ -21,5 +22,5 @@ export const Configurations = () => {
             }
         }} placeholder="diretório do bd"/>
         
-    </>
+    </Div>
 }

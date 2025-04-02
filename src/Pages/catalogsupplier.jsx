@@ -8,9 +8,10 @@ import { RowDiv } from '../Styles/styledRowDiv';
 import { StyledConfirmButton } from '../Styles/styledConfirmButton';
 import { useCallback, useEffect, useState } from 'react';
 import { dataFetch, formatInit } from '../utils/functions';
+import { Div } from '../Styles/styledDiv';
 
 export const CatalogSuppliers = () => {
-    const {register, handleSubmit, setValue} = useForm();
+    const {register, handleSubmit, setValue, getValues} = useForm();
     const [selected, setSelected] = useState();
     const [data, setData] = useState([]);
     const [dataOfItem, setDataOfItem] = useState();
@@ -37,7 +38,8 @@ export const CatalogSuppliers = () => {
         });
     }
 
-    return <>
+    return <Div width={'100%'}>
+        <h1>CATÁLOGOS DE FORNECEDORES</h1>
         <Select {...register('fornecedor_id')} defaultPlaceholder={'FORNECEDOR'} getSelected={(value)=>{setSelected(value); setValue('fornecedor_id', value.id)}} url={'supplier/getsuppliers'}/>
     <RowDiv>
         <Select {...register('item_id')} defaultPlaceholder={'PRODUTO'} getSelected={(value) => {
@@ -49,7 +51,7 @@ export const CatalogSuppliers = () => {
         <StyledConfirmButton onClick={handleSubmit(onSubmit)} height={'97%'}>Adicionar</StyledConfirmButton>
     </RowDiv>
     {selected && <DinamicTable allowEdit={true} defaultData={data} crudUrls={{r: `catalog/getcatalogitems/${selected.id}`, u: 'catalog/updatecatalogvalue', d: 'catalog/deletecatalogitem'}}/>}
-    </>
+    </Div>
 }
 
 // r: `catalog/getcatalogbyitem/${selected.id}`, 
