@@ -17,8 +17,9 @@ import { Clients } from "./Pages/clients";
 import { Suppliers } from "./Pages/Suppliers";
 import { Orders } from "./Pages/Orders";
 import { Items } from "./Pages/Items";
-import { Tests } from "./Pages/Tests";
 import { CatalogSuppliers } from "./Pages/catalogsupplier";
+import { NewSupplierOrder } from "./Pages/NewSupplierOrder";
+import { SupplierOrders } from "./Pages/SupplierOrders";
 
 
 
@@ -40,8 +41,11 @@ function App() {
             <StyledLink to={'/getorders'}>
                 <h3>COMPRAS</h3>
             </StyledLink>
-            <StyledLink to={'/tests'}>
-                <h3>Tests</h3>
+            <StyledLink to={'/newsupplierorder'}>
+                <h3>NOVO PEDIDO</h3>
+            </StyledLink>
+            <StyledLink to={'/supplierorders'}>
+                <h3>PEDIDOS</h3>
             </StyledLink>
             <StyledLink to={'/catalogs'}>
                 <h3>CATALOGS</h3>
@@ -58,7 +62,8 @@ function App() {
               <Route path="/getclients" element={<Clients/>}/>
               <Route path="/getsuppliers" element={<Suppliers />}/>
               <Route path="/getorders" element={<Orders />}/>
-              <Route path="/tests" element={<Tests />}/>
+              <Route path="/supplierorders" element={<SupplierOrders />}/>
+              <Route path="/newsupplierorder" element={<NewSupplierOrder />}/>
               <Route path="/catalogs" element={<CatalogSuppliers/>} />
             </Routes>
           </StyledContentBody>

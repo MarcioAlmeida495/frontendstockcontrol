@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { dataFetch, removeAccents } from "../../utils/functions";
 import { StyledSelect } from "../../Styles/styledSelect";
 import styled from "styled-components";
 import { StyledInput } from "../../Styles/styledInput";
 import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
+import { RefreshIcon } from "../AnimationIcons/Refresh";
 
 const Div = styled.div`
     display: flex;
@@ -28,9 +29,13 @@ export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width =
     const [title, setTitle] = useState('');
     const refSelect = useRef(null);
 
-    useEffect(()=>{
+    const attData = useCallback(()=>{
         dataFetch({simpleurl: url}).then(r=>{setData(r); setSelected(r[0]);}).catch(error => window.alert(error));
-    }, [url]);
+    },[url])
+
+    useEffect(()=>{
+        attData();
+    }, [attData]);
 
     useEffect(()=>{
         console.log(`SELECTED :: ${selected} no USEEFFECT`);
@@ -78,11 +83,18 @@ export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width =
                 return true;
             }
             else return null;
-            })}}>
+        })}}>
             {data && data.map((element, index) => {
-                if(removeAccents(element.nome).toUpperCase().includes(removeAccents(search.toUpperCase()))) return <option value={element.id} key={index}>{element.nome}</option>
+                try {
+                    var test = false;
+                    test = removeAccents(element.nome).toUpperCase().includes(removeAccents(search.toUpperCase()));
+                } catch (error) {
+                    
+                }
+                if(test) return <option value={element.id} key={index}>{element.nome}</option>
                 else return null;
             })}
         </StyledSelect>}
+            <StyledConfirmButton width={'30px'} onClick={()=>{attData()}}><RefreshIcon/></StyledConfirmButton>
     </Div>
 }

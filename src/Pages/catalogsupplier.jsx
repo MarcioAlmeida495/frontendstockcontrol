@@ -41,6 +41,7 @@ export const CatalogSuppliers = () => {
     return <Div width={'100%'}>
         <h1>CATÁLOGOS DE FORNECEDORES</h1>
         <Select {...register('fornecedor_id')} defaultPlaceholder={'FORNECEDOR'} getSelected={(value)=>{setSelected(value); setValue('fornecedor_id', value.id)}} url={'supplier/getsuppliers'}/>
+        {selected ? <>
     <RowDiv>
         <Select {...register('item_id')} defaultPlaceholder={'PRODUTO'} getSelected={(value) => {
             setValue('item_id', value.id); 
@@ -51,7 +52,12 @@ export const CatalogSuppliers = () => {
         <StyledConfirmButton onClick={handleSubmit(onSubmit)} height={'97%'}>Adicionar</StyledConfirmButton>
     </RowDiv>
     {selected && <DinamicTable allowEdit={true} defaultData={data} crudUrls={{r: `catalog/getcatalogitems/${selected.id}`, u: 'catalog/updatecatalogvalue', d: 'catalog/deletecatalogitem'}}/>}
-    </Div>
+        </>
+        :
+        <h2>
+            Adicione previamente um fornecedor
+        </h2>
+    }</Div>
 }
 
 // r: `catalog/getcatalogbyitem/${selected.id}`, 

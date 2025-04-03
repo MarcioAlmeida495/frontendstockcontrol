@@ -7,8 +7,11 @@ import { DinamicFormReturnData } from "../Components/Forms/DinamicFormRerturnDat
 import { AddIcon } from "../Components/AnimationIcons/Add";
 import { ItemsFormForOrders } from "../Components/Forms/ItemsFormForOrders";
 import { Div } from "../Styles/styledDiv";
+import { dataFetch, formatInit } from "../utils/functions";
 
-export const Tests = () => {
+export const NewSupplierOrder = () => {
+    const [selectedID, setSelectedID] = useState();
+
     const {register, setValue, getValues, handleSubmit, control} = useForm({
         defaultValues: {
             items: [],
@@ -19,26 +22,24 @@ export const Tests = () => {
         control,
         name: 'items',
     })
-    const [itemsForm, setItemsForm] = useState([]);
 
 
     return <Div width={'700px'}>
         <h1>NOVO PEDIDO</h1>
                 <Select defaultPlaceholder={'FORNECEDOR'} {...register('supplier_ID')} getSelected={(value)=>{
-                    console.log('VALOR::', value)
+                    setSelectedID(value.id);
                     setValue('supplier_ID', value.id);
             }} url={`supplier/getsuppliers`}/>
 
             <StyledConfirmButton width={'100%'} margin={'5px'} height={'30px'} onClick={()=>{append()}}><AddIcon /></StyledConfirmButton>
         
             {fields.map((field, index) => {
-                return <ItemsFormForOrders remove={remove} key={field.id} register={register} setValue={setValue} getValues={getValues} index={index}/>
+                return <ItemsFormForOrders supplier={getValues('supplier_ID')} remove={remove} key={field.id} register={register} setValue={setValue} getValues={getValues} index={index}/>
             })}
             
-            {itemsForm && itemsForm.map((eachItemForm, index) => {
-                return eachItemForm;
-            })}
-            
-            <StyledConfirmButton width={'100%'} margin={'5px'} height={'30px'} onClick={()=>console.log(getValues())}>Salvar Pedido de Abastecimento</StyledConfirmButton>
+            <StyledConfirmButton width={'100%'} margin={'5px'} height={'30px'} onClick={()=>{
+                console.log(getValues())
+                dataFetch({simpleurl: 'supplierorders/createorder', init: formatInit({data: getValues()})})
+            }}>Salvar Pedido de Abastecimento</StyledConfirmButton>
         </Div>
 }
