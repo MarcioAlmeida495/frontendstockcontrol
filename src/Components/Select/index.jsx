@@ -12,7 +12,6 @@ const Div = styled.div`
     align-items: center;
     justify-content: start;
     width: 100%;
-    max-width: 600px;
     gap: 5px;
 `
 
@@ -95,6 +94,6 @@ export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width =
                 else return null;
             })}
         </StyledSelect>}
-            <StyledConfirmButton width={'30px'} onClick={()=>{attData()}}><RefreshIcon/></StyledConfirmButton>
+            <StyledConfirmButton width={'30px'} height={'30px'} onClick={()=>{attData()}}><RefreshIcon/></StyledConfirmButton>
     </Div>
 }

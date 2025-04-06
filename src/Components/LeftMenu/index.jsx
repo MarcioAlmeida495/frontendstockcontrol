@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { StyledLeftMenu } from '../../Styles/styledLeftMenu'
+import { squareSize, StyledLeftMenu } from '../../Styles/styledLeftMenu'
 import { StyledLink } from '../../Styles/styledLink';
+import { MenuButton } from '../MenuButton';
 
 
 export const LeftMenu = ({children}) => {
@@ -8,21 +9,13 @@ export const LeftMenu = ({children}) => {
 
     return <>
         <StyledLeftMenu id='leftMenu' 
-            onMouseEnter={()=>{
-                setShow(true);
-            }}
-            onMouseLeave={()=>{
-                setShow(false);
-            }}
+            className={show ? 'active' : ''}
+            
         >
-            {show && <>
-                <StyledLink to={'/conf'}>
-                    <h3>CONFIGURAÇÕES</h3>
-                </StyledLink>
-                {children} 
-               
-            </>
-            }
+            
+            <MenuButton onClick={()=>{setShow(!show)}}/> 
+            {children} 
+
         </StyledLeftMenu>
     </>
 

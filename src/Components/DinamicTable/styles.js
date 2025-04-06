@@ -5,7 +5,7 @@ import styled from "styled-components";
 export const Table = styled.div`
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     height: 80%;
 `;
 export const Head = styled.div`

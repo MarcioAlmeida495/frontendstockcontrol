@@ -20,6 +20,7 @@ import { Items } from "./Pages/Items";
 import { CatalogSuppliers } from "./Pages/catalogsupplier";
 import { NewSupplierOrder } from "./Pages/NewSupplierOrder";
 import { SupplierOrders } from "./Pages/SupplierOrders";
+import { Links } from "./Components/Link/LeftMenuLink";
 
 
 
@@ -29,6 +30,22 @@ function App() {
     <StyledBody>
       <BrowserRouter>
           <LeftMenu>
+            <Links links={
+              {
+                'CONFIGURAÇÕES': '/conf',
+                'CLIENTES': '/getclients',
+                'ITEMS': '/getitens',
+                'FORNECEDORES': '/getsuppliers',
+                'COMPRAS': '/getorders',
+                'NOVO PEDIDO': '/newsupplierorder',
+                'PEDIDOS': '/supplierorders',
+                'CATÁLOGOS': '/catalogs',
+                'SISTEMA ANTIGO': '/'
+              }
+            }/>
+            {/* <StyledLink to={'/conf'}>
+                    <h3>CONFIGURAÇÕES</h3>
+                </StyledLink>
           <StyledLink to={'/getclients'}>
                 <h3>CLIENTES</h3>
             </StyledLink>
@@ -52,7 +69,7 @@ function App() {
             </StyledLink>
             <StyledLink to={'/'}>
                 <h3>SISTEMA ANTIGO</h3>
-            </StyledLink>
+            </StyledLink> */}
           </LeftMenu>
           <StyledContentBody>
             <Routes>

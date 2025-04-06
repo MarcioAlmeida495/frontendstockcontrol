@@ -3,15 +3,12 @@ import styled from "styled-components";
 
 export const StyledLink = styled(Link)`
     all: unset;
-    color: #111;
-    transition: color 1s linear forwards;
+    color: #444;
+    transition: color 1s linear forwards, opacity 2s linear;
     display: flex;
     position: relative;
 
-    &:hover{
-        color: #444;
-        cursor: pointer;
-    }
+    
     &::before{
         content: '';
         display: block;
@@ -23,5 +20,18 @@ export const StyledLink = styled(Link)`
     }
     &:hover::before{
         width: 80%;
+    }
+    &.active{
+        color: black;
+        &::before{
+        width: 80%;
+    }
+    }
+    &.lowopacity{
+            opacity: 0.5;
+    }&:hover{
+        color: black;
+        cursor: pointer;
+        opacity: 1;
     }
 `

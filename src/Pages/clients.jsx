@@ -1,7 +1,10 @@
 import { DinamicTable } from "../Components/DinamicTable"
+import { Div } from "../Styles/styledDiv"
 
 export const Clients = () => {
-    return <DinamicTable 
+    return <Div width={'700px'}>
+
+    <DinamicTable 
         object={{nome: '', telefone: '', email: ''}} 
         defaultData={[]}
         crudUrls={{
@@ -9,6 +12,7 @@ export const Clients = () => {
             r:'clients/getclients', 
             u: 'clients/updateclient', 
             d: 'clients/deleteclient'}} 
-        allowEdit={true}
-    />
+            allowEdit={true}
+            />
+            </Div>
 }

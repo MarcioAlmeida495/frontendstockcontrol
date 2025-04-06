@@ -38,7 +38,7 @@ export const CatalogSuppliers = () => {
         });
     }
 
-    return <Div width={'100%'}>
+    return <Div width={'700px'}>
         <h1>CATÁLOGOS DE FORNECEDORES</h1>
         <Select {...register('fornecedor_id')} defaultPlaceholder={'FORNECEDOR'} getSelected={(value)=>{setSelected(value); setValue('fornecedor_id', value.id)}} url={'supplier/getsuppliers'}/>
         {selected ? <>

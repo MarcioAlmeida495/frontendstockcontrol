@@ -26,7 +26,7 @@ export const NewSupplierOrder = () => {
 
     return <Div width={'700px'}>
         <h1>NOVO PEDIDO</h1>
-                <Select defaultPlaceholder={'FORNECEDOR'} {...register('supplier_ID')} getSelected={(value)=>{
+                <Select width={'100%'} defaultPlaceholder={'FORNECEDOR'} {...register('supplier_ID')} getSelected={(value)=>{
                     setSelectedID(value.id);
                     setValue('supplier_ID', value.id);
             }} url={`supplier/getsuppliers`}/>

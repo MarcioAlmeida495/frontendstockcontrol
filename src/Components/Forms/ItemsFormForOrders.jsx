@@ -7,6 +7,7 @@ import { StyledCancelButton } from "../../Styles/styledConfirmButton";
 import { AddIcon } from "../AnimationIcons/Add";
 import { CancelIcon } from "../AnimationIcons/Cancel";
 import { dataFetch, formatInit } from "../../utils/functions";
+import { DinamicTable } from "../DinamicTable";
 
 const Div = styled.div`
     display: flex;
@@ -21,7 +22,7 @@ const InfoDiv = styled.div`
     display: flex;
     flex-direction: column;
     position: absolute;
-    width: 20px;
+    width: 22px;
     height: 30px;
     background-color: white;
     color: rgba(0,0,0,0);
@@ -58,16 +59,11 @@ const InfoDiv = styled.div`
         color: black;
         width: auto;
         height: auto;
+        min-height: 30px;
         background-color: white;
-        padding: 20px;
+        padding: 10px;
         
         cursor: pointer;
-
-        & ::before{
-            content: '';
-            width: 0px;
-            height: 0px;
-        }
     }
 `
 
@@ -78,7 +74,7 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
 
     useEffect(()=>{
         console.log(selectedItem);
-        if(selectedItem)dataFetch({simpleurl: 'catalog/getcatalogbyitem', init: formatInit({data: {item_id: selectedItem.id}})}).then(r=>setInfo(r))
+        if(selectedItem)dataFetch({simpleurl: 'catalog/getcatalogbyitemsimple', init: formatInit({data: {item_id: selectedItem.id}})}).then(r=>setInfo(r))
     }, [selectedItem]);
 
     useEffect(()=>{
@@ -116,6 +112,7 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
         />
         <div style={{position: 'relative', width: '50px', height: '30px'}}>
         {<InfoDiv>
+            {/* <DinamicTable object={info.data} crudUrls={{}} defaultData={}/> */}
             {info.data && info.data.map((each, index) => {
                 return <span key={index}>
                     {Object.values(each).map((value, index) => {

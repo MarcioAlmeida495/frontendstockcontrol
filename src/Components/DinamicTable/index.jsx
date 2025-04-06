@@ -13,13 +13,13 @@ const { Head, HeadColumn, TBody, Table } = require("./styles");
 const Div = styled.div`
     display: flex;
     position: relative;
-    width: 80%;
+    width: 100%;
     height: 100vh;
     flex-direction: column;
     align-items: center;
 `
 const DivLabel = styled.div`
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: row;
 
@@ -90,7 +90,7 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
         setData(defaultData);
     }, [defaultData])
 
-    return <Div key={key}>
+    return <Div  key={key}>
         {(!crudUrls.c || !data) && <InfoDiv>
             {!crudUrls.c && <span>url para 'create' não encontrada</span>}
             {!crudUrls.r && <span>url para 'read' não encontrada</span>}
@@ -99,11 +99,11 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
             {!data && <span>NENHUM DADO</span>}
         </InfoDiv> }
             {crudUrls.c &&
-                <DinamicFormReturnData margin={'10px'} width={'80%'} height={'30px'} onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.c, init: formatInit({data: values})}).then(r=>{window.alert(r);setKey(key+1)})}} object={object}/>
+                <DinamicFormReturnData margin={'10px'} width={'100%'} height={'30px'} onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.c, init: formatInit({data: values})}).then(r=>{window.alert(r);setKey(key+1)})}} object={object}/>
                 
             }
             {data && <DivLabel>
-                <StyledInput value={search} onChange={(e)=>{setSearch(removeAccents(e.target.value))}} placeholder="PESQUISE" width={'80%'}/>
+                <StyledInput value={search} onChange={(e)=>{setSearch(removeAccents(e.target.value))}} placeholder="PESQUISE" width={'100%'}/>
                 <StyledConfirmButton>Pesquisar</StyledConfirmButton>
             </DivLabel>
         }{
