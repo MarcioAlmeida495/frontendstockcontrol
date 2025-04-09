@@ -31,19 +31,23 @@ export const TBody = styled.div`
     flex-direction: column;
     width: 100%;
     overflow: auto;
+    position: relative;
     & > * {
         min-height: 30px;
-        max-height: 50px;
+        max-height: 100px;
     }
 `;
 export const TRow = styled.div`
     display: flex;
     width: 100%;
     height: 30px;
+    position: relative;
     border: 1px solid rgba(0,0,0,0.1);
     &:hover{
-    border: 1px solid rgba(0,0,0,0.1);
-    background-color: rgba(0,0,0,0.1);
+        border: 1px solid rgba(0,0,0,0.1);
+        background-color: rgba(180,180,180, 1);
+        height: 30px;
+        z-index: 999;
     }
     & > * {
         display: flex;

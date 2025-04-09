@@ -70,7 +70,7 @@ export const InfoDiv = styled.div`
     }
 `
 
-export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEdit = false, defaultData = []}) => {
+export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEdit = false, defaultData = [], onClickInaRow = () => {}}) => {
     const [data, setData] = useState([]);
     const location = useLocation();
     const [key, setKey] = useState(0);
@@ -89,6 +89,9 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
     useEffect(()=>{
         setData(defaultData);
     }, [defaultData])
+
+    useEffect(()=>{console.log(data)},[data])
+
 
     return <Div  key={key}>
         {(!crudUrls.c || !data) && <InfoDiv>
@@ -123,7 +126,7 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
                     for(var i = 0; i < values.length; i++){
                         try {
                             if(removeAccents(values[i]).toUpperCase().includes(search.toUpperCase())) 
-                                component = <TrowComponent row={each} width={'80%'} key={index} reset={()=>setKey(key+1)} allowEdit={allowEdit} crudUrls={crudUrls}/>
+                                component = <TrowComponent onClickInaRow={onClickInaRow} row={each} width={'80%'} key={index} reset={()=>setKey(key+1)} allowEdit={allowEdit} crudUrls={crudUrls}/>
                             
                         } catch (error) {
                             

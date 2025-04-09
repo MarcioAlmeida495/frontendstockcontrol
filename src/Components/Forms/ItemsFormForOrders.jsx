@@ -73,8 +73,8 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
     const [info, setInfo] = useState([]);
 
     useEffect(()=>{
-        console.log(selectedItem);
-        if(selectedItem)dataFetch({simpleurl: 'catalog/getcatalogbyitemsimple', init: formatInit({data: {item_id: selectedItem.id}})}).then(r=>setInfo(r))
+        console.log('SELECTEDTIEM ::', selectedItem);
+        if(selectedItem)dataFetch({simpleurl: 'catalog/getcatalogbyitemsimple', init: formatInit({data: {item_id: selectedItem.id}})}).then(r=>setInfo(r));
     }, [selectedItem]);
 
     useEffect(()=>{
@@ -83,7 +83,12 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
             setValue(`items.${index}.valor`, 0);
             setValue(`items.${index}.total`, 0)
         }
+        
     }, [checked, index, setValue]);
+
+    useEffect(()=>{
+        console.log(selectedItem)
+    })
 
     return <Div>
         <StyledInput {...register(`items.${index}.quantidade`)} defaultValue={1} width={'100px'} placeholder="qtd" type="Number" 
@@ -98,12 +103,15 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
             getSelected={
                 (value) => {
                     try {
+                        console.log('funcao rodada');
                         setValue(`items.${index}.id`, value.id);
                         setSelectedItem(value);
+
                         if(checked){
-                            setValue(`items.${index}.valor`, parseFloat((Number(value.valor.replace(',','.')))).toFixed(2));
-                            console.log(`${value.valor} :: ${typeof value.valor} :: ${(Number(value.valor.replace(',','.')))}`)
-                            setValue(`items.${index}.total`, parseFloat(getValues(`items.${index}.quantidade`)*(Number(value.valor.replace(',','.')))).toFixed(2));
+                            console.log('AQUI');
+                            var newValue = `${typeof value.valor === 'string' ? parseFloat((Number(value.valor.replace(',','.')))).toFixed(2) : parseFloat(value.valor).toFixed(2)}`
+                            setValue(`items.${index}.valor`, newValue);
+                            setValue(`items.${index}.total`, parseFloat(getValues(`items.${index}.quantidade`)*newValue));
                         }
                     } catch (error) {
                     }
