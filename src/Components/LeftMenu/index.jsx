@@ -19,7 +19,7 @@ export const LeftMenu = ({children}) => {
             
         > 
             
-            <MenuButton onMouseEnter={()=>setShow(true)} clicked={clicked} onClick={()=>{setClicked(!clicked);setShow(!show); console.log(`${clicked} ${show}`)}}/> 
+            <MenuButton onMouseEnter={()=>setShow(true)} clicked={clicked} onClick={()=>{setClicked(!clicked);}}/> 
             {children} 
 
         </StyledLeftMenu>

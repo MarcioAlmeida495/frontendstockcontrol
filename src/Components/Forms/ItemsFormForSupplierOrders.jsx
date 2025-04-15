@@ -15,6 +15,9 @@ const Div = styled.div`
     gap: 5px;
     width: 100%;
     max-width: 700px;
+    padding-right: 10px;
+    padding: 5px;
+    overflow: none;
 `
 
 const InfoDiv = styled.div`
@@ -34,7 +37,7 @@ const InfoDiv = styled.div`
     transition: height 200ms linear, width 200ms linear, background-color 200ms linear, color 200ms linear;
     border-radius: 3px;
     border: 1px solid rgba(0,0,0,0.5);
-    
+    z-index: 999;
     & > span{
         font-size: 13px;
         display: block;

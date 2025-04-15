@@ -32,7 +32,7 @@ export const NewSupplierOrder = () => {
             }} url={`supplier/getsuppliers`}/>
 
             <StyledConfirmButton width={'100%'} margin={'0px'} height={'30px'} onClick={()=>{prepend()}}><AddIcon /></StyledConfirmButton>
-            <div style={{maxHeight: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto', gap: '10px'}}>
+            <div style={{maxHeight: '100%', display: 'flex', flexDirection: 'column', overflowY: 'scroll', gap: '5px', width: '100%'}}>
 
             {fields.map((field, index) => {
                 return <ItemsFormForOrders supplier={getValues('supplier_ID')} remove={remove} key={field.id} register={register} setValue={setValue} getValues={getValues} index={index}/>

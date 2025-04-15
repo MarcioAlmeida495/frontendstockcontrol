@@ -9,7 +9,6 @@ const Overlay = styled.div.attrs(() => ({}))`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -17,9 +16,9 @@ const Overlay = styled.div.attrs(() => ({}))`
 
 
 const ModalContent = styled.div`
-  background: rgba(255,255,255, 0.6);
+  background: rgba(255,255,255, 1);
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 5px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   min-width: 800px;
   max-width: 80%;

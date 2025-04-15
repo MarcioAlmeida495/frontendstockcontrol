@@ -35,7 +35,7 @@ function App() {
               {
                 'CONFIGURAÇÕES': '/conf',
                 'CLIENTES': '/getclients',
-                'REALIZAR COMPRA': '/realizeorder',
+                'CONTAS': '/accounts',
                 'ITEMS': '/getitens',
                 'FORNECEDORES': '/getsuppliers',
                 'COMPRAS': '/getorders',
@@ -84,7 +84,7 @@ function App() {
               <Route path="/supplierorders" element={<SupplierOrders />}/>
               <Route path="/newsupplierorder" element={<NewSupplierOrder />}/>
               <Route path="/catalogs" element={<CatalogSuppliers/>} />
-              <Route path="/realizeorder" element={<ClientOrder />} />
+              <Route path="/accounts" element={<ClientOrder />} />
             </Routes>
           </StyledContentBody>
       </BrowserRouter>

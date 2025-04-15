@@ -22,6 +22,7 @@ const Master = styled.div`
 const Div1 = styled.div`
     width: 100%;
     height: 4px;
+    border: 1px solid white;
     border-radius: 5px;
     background-color: black;
     transition: 0.3s;
