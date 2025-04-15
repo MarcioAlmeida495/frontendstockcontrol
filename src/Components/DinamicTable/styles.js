@@ -11,6 +11,7 @@ export const Table = styled.div`
 export const Head = styled.div`
     display: flex;
     width: 100%;
+    max-width: 100%;
     & > * {
         flex: 1;
     }   
@@ -24,6 +25,7 @@ export const HeadColumn = styled.div`
         background-color: rgba(0,0,0,0.2);
         color: white;
         cursor: pointer;
+        width: auto;
     }
 `
 export const TBody = styled.div`
@@ -46,8 +48,8 @@ export const TRow = styled.div`
     &:hover{
         border: 1px solid rgba(0,0,0,0.1);
         background-color: rgba(180,180,180, 1);
-        height: 30px;
         z-index: 999;
+        
     }
     & > * {
         display: flex;
@@ -59,4 +61,5 @@ export const TRow = styled.div`
         overflow: hidden;
         cursor: default;
     }
+    
 `;

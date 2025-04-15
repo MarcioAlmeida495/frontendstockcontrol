@@ -18,12 +18,12 @@ export const TrowComponent = ({row = {}, rowNames = [], allowEdit = false, onSub
             <DinamicFormReturnData margin={'0px'} width='100%'  onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.u, init: formatInit({data: values})}).then(r=>{if(r) reset()})}} onCancel={()=>{setEditing(false)}} object={row}/>
             :
             Object.values(row).map((each, index) => {
-                return <div key={index} >{each}</div>
+                return <div onClick={()=>{setShow(!show);setInfo(each)}} onMouseLeave={()=>{setShow(false)}} key={index} >{each}</div>
             })
         }
         {allowEdit && <>
             {!editing ? 
-                <div>
+                <div >
                     <StyledConfirmButton onClick={()=>{setEditing(true)}}>Editar</StyledConfirmButton>
                     <StyledCancelButton onClick={()=>{dataFetch({simpleurl: crudUrls.d, init: formatInit({data: row})}).then(r=>reset())}}>Excluir</StyledCancelButton>
                 </div>

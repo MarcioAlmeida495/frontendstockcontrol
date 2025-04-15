@@ -13,7 +13,6 @@ const Div = styled.div`
     display: flex;
     position: relative;
     gap: 5px;
-    margin: 5px;
     width: 100%;
     max-width: 700px;
 `
@@ -67,9 +66,8 @@ const InfoDiv = styled.div`
     }
 `
 
-export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, register, index = 0, setValue = () => {}, getValues = () => {}}) => {
+export const ItemsFormForClientOrders = ({getData = () => {}, supplier = 1, remove, register, index = 0, setValue = () => {}, getValues = () => {}, showInfo = true}) => {
     const [selectedItem, setSelectedItem] = useState();
-    const [checked, setChecked] = useState(false);
     const [info, setInfo] = useState([]);
 
     useEffect(()=>{
@@ -78,13 +76,11 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
     }, [selectedItem]);
 
     useEffect(()=>{
-        if(!checked) {
             setValue(`items.${index}.quantidade`, 1);
             setValue(`items.${index}.valor`, 0);
             setValue(`items.${index}.total`, 0)
-        }
         
-    }, [checked, index, setValue]);
+    }, [index, setValue]);
 
     useEffect(()=>{
         console.log(selectedItem)
@@ -98,7 +94,6 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
                 setValue(`items.${index}.total`, parseFloat(getValues(`items.${index}.quantidade`)*getValues(`items.${index}.valor`)).toFixed(2))
             }}
         />
-        <input title="marque para selecionar somente produtos do catálogo" type="checkbox" onClick={()=>{setChecked(!checked)}}/>
         <Select {...register(`items.${index}.id`)} defaultPlaceholder={'ITEM'} 
             getSelected={
                 (value) => {
@@ -107,19 +102,17 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
                         setValue(`items.${index}.id`, value.id);
                         setSelectedItem(value);
 
-                        if(checked){
                             console.log('AQUI');
                             var newValue = `${typeof value.valor === 'string' ? parseFloat((Number(value.valor.replace(',','.')))).toFixed(2) : parseFloat(value.valor).toFixed(2)}`
                             setValue(`items.${index}.valor`, newValue);
                             setValue(`items.${index}.total`, parseFloat(getValues(`items.${index}.quantidade`)*newValue));
-                        }
                     } catch (error) {
                     }
                 }} 
-                url={checked ? `catalog/getcatalogitemsbysupplier/${supplier}` : 'items/getitems'}
+                url={'items/getitems'}
         />
-        <div style={{position: 'relative', width: '50px', height: '30px'}}>
-        {<InfoDiv>
+        {showInfo &&<div style={{position: 'relative', width: '50px', height: '30px'}}>
+        { <InfoDiv>
             {/* <DinamicTable object={info.data} crudUrls={{}} defaultData={}/> */}
             {info.data && info.data.map((each, index) => {
                 return <span key={index}>
@@ -129,7 +122,7 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
                 </span>
             })}
         </InfoDiv>}
-        </div>
+        </div>}
         <StyledInput {...register(`items.${index}.valor`)} placeholder="Valor" width={'100px'}
             onBlur={(e)=>{
                 setValue(`items.${index}.valor`, parseFloat(e.target.value).toFixed(2));

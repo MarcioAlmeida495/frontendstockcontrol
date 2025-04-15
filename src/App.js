@@ -21,6 +21,7 @@ import { CatalogSuppliers } from "./Pages/catalogsupplier";
 import { NewSupplierOrder } from "./Pages/NewSupplierOrder";
 import { SupplierOrders } from "./Pages/SupplierOrders";
 import { Links } from "./Components/Link/LeftMenuLink";
+import { ClientOrder } from "./Pages/clientOrder";
 
 
 
@@ -34,13 +35,14 @@ function App() {
               {
                 'CONFIGURAÇÕES': '/conf',
                 'CLIENTES': '/getclients',
+                'REALIZAR COMPRA': '/realizeorder',
                 'ITEMS': '/getitens',
                 'FORNECEDORES': '/getsuppliers',
                 'COMPRAS': '/getorders',
                 'NOVO PEDIDO': '/newsupplierorder',
                 'PEDIDOS': '/supplierorders',
                 'CATÁLOGOS': '/catalogs',
-                'SISTEMA ANTIGO': '/'
+                'SISTEMA ANTIGO': '/',
               }
             }/>
             {/* <StyledLink to={'/conf'}>
@@ -82,6 +84,7 @@ function App() {
               <Route path="/supplierorders" element={<SupplierOrders />}/>
               <Route path="/newsupplierorder" element={<NewSupplierOrder />}/>
               <Route path="/catalogs" element={<CatalogSuppliers/>} />
+              <Route path="/realizeorder" element={<ClientOrder />} />
             </Routes>
           </StyledContentBody>
       </BrowserRouter>

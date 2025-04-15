@@ -20,7 +20,7 @@ const AbsoluteDiv = styled.div`
     height: 35px;
 `
 
-export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width = undefined}) => {
+export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width = undefined, showInfo = true}) => {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState('');
     const [search, setSearch] = useState('');

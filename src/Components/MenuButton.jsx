@@ -43,10 +43,10 @@ const Checkbox = styled.input`
     }
 `
 
-export const MenuButton = ({ onClick = () => {} }) => {
+export const MenuButton = ({ onClick = () => {}, onMouseEnter = () => {}, clicked = false}) => {
     return (
-        <DivPai>
-            <Checkbox type="checkbox" onClick={()=>{onClick(); console.log('clicado')}} />
+        <DivPai onMouseEnter={() => onMouseEnter()}>
+            <Checkbox type="checkbox" value={clicked} onClick={()=>{onClick(); console.log('clicado')}} />
             <Master>
                 <Div1 />
                 <Div1 />

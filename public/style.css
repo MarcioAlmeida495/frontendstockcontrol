@@ -19,7 +19,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* Estilizando a barra de rolagem para navegadores Webkit (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 7px;
 }
 
 /* Cor de fundo da barra de rolagem */

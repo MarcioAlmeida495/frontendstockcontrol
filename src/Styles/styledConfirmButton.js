@@ -8,7 +8,6 @@ export const StyledConfirmButton = styled.button`
     background-color: rgba(115,115,115,1);
     margin: ${({margin}) => margin || '0px'};
     text-align: center;
-    text-justify: center;
     transition: border-radius 200ms ease-in-out, font-weight 200ms ease-in-out, border 400ms ease-in-out;
     border-radius: 3px;
     &:hover{
