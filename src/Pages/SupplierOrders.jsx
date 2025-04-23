@@ -2,6 +2,7 @@ import { useState } from "react"
 import { DinamicTable } from "../Components/DinamicTable"
 import { Div } from "../Styles/styledDiv"
 import { Modal } from "../Components/Modal";
+import { SupplierOrder } from "../Components/SupplierOrderTable";
 
 export const SupplierOrders = () => {
     const [show, setShow] = useState(false);
@@ -16,7 +17,8 @@ export const SupplierOrders = () => {
             r:'supplierorders/getallorders'
             }}
             allowEdit={false}
-            onClickInaRow={(row)=>{setShow(true); console.log(row.id); setInfo(<DinamicTable crudUrls={{r: `supplierorders//getorderbyid/${row.id}`}} defaultData={[]}/>)}}
+            // onClickInaRow={(row)=>{setShow(true); console.log(row.id); setInfo(<DinamicTable crudUrls={{r: `supplierorders/getorderbyid/${row.id}`}} defaultData={[]}/>)}}
+            onClickInaRow={(row)=>{setShow(true); console.log('row -- > ',row); setInfo(<SupplierOrder supplierOrder={row} url={`supplierorders/getorderbyid/${row.id}`} />)}}
             />
     </Div> 
     

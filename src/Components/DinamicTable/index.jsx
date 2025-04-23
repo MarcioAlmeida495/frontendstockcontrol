@@ -77,21 +77,22 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
     const [orderBy, setOrderBy] = useState('id');
     const [search, setSearch] = useState('');
     const [info, setInfo] = useState('');
-
+    const [counter, setcounter ] = useState(0);
     useEffect(()=>{
         if(crudUrls.r) dataFetch({ simpleurl: crudUrls.r }).then(r=>{setData(r)});
-    },[key, crudUrls])
+        else setData(defaultData);
+    },[key, crudUrls, defaultData])
 
     useEffect(()=>{
         setData((d) => orderByKey(d, orderBy))
     }, [orderBy])
  
-    useEffect(()=>{
-        setData(defaultData);
-    }, [defaultData])
+    // useEffect(()=>{
+    //     setData(defaultData);
+    // }, [defaultData])
 
-    useEffect(()=>{console.log(data)},[data])
-
+    // useEffect(()=>{console.log(data)},[data])
+    // useEffect(()=>{setcounter(c => c+1); console.log(counter)})
 
     return <Div  key={key}>
         {(!crudUrls.c || !data) && <InfoDiv>
@@ -102,11 +103,11 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
             {!data && <span>NENHUM DADO</span>}
         </InfoDiv> }
             {crudUrls.c &&
-                <DinamicFormReturnData margin={'10px'} width={'100%'} height={'30px'} onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.c, init: formatInit({data: values})}).then(r=>{window.alert(r);setKey(key+1)})}} object={object}/>
+                <DinamicFormReturnData upName={(value)=>{ setSearch(value);}} $margin={'10px'} width={'100%'} height={'30px'} onSubmit={(values)=>{dataFetch({simpleurl: crudUrls.c, init: formatInit({data: values})}).then(r=>{window.alert(r);setKey(key+1)})}} object={object}/>
                 
             }
             {data && <DivLabel>
-                <StyledInput value={search} onChange={(e)=>{setSearch(removeAccents(e.target.value))}} placeholder="PESQUISE" width={'100%'}/>
+                <StyledInput value={search} onChange={(e)=>{setSearch(removeAccents(e.target.value))}} placeholder="PESQUISE" $width={'100%'}/>
                 <StyledConfirmButton>Pesquisar</StyledConfirmButton>
             </DivLabel>
         }{
@@ -115,9 +116,9 @@ export const DinamicTable = ({rowNames = [], object = {}, crudUrls = {}, allowEd
             {data.length > 0 && <>
             <Head>
                 {Object.keys(data[0]).map((key, index) => {
-                    return <HeadColumn onClick={()=>{setOrderBy(key)}} key={index} >{key.toUpperCase()}</HeadColumn>
+                    return <HeadColumn className={`${typeof data[0][key] === 'string' ? 'col-string' : 'col-number'}`} onClick={()=>{setOrderBy(key)}} key={index} >{key.toUpperCase()}</HeadColumn>
                 })}
-                {allowEdit && <HeadColumn>FUNÇÕES</HeadColumn>}
+                {allowEdit && <HeadColumn className="col-functions" >FUNÇÕES</HeadColumn>}
             </Head>
             <TBody key={location.key}>
                 {data.map((each, index) => {

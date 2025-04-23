@@ -18,7 +18,7 @@ export const NewSupplierOrder = () => {
         }
     });
 
-    const {fields, prepend, remove} = useFieldArray({
+    const {fields, append, remove} = useFieldArray({
         control,
         name: 'items',
     })
@@ -31,15 +31,15 @@ export const NewSupplierOrder = () => {
                     setValue('supplier_ID', value.id);
             }} url={`supplier/getsuppliers`}/>
 
-            <StyledConfirmButton width={'100%'} margin={'0px'} height={'30px'} onClick={()=>{prepend()}}><AddIcon /></StyledConfirmButton>
+            <StyledConfirmButton width={'100%'} $margin={'0px'} height={'30px'} onClick={()=>{append()}}><AddIcon /></StyledConfirmButton>
             <div style={{maxHeight: '100%', display: 'flex', flexDirection: 'column', overflowY: 'scroll', gap: '5px', width: '100%'}}>
-
+            
             {fields.map((field, index) => {
                 return <ItemsFormForOrders supplier={getValues('supplier_ID')} remove={remove} key={field.id} register={register} setValue={setValue} getValues={getValues} index={index}/>
             })}
             
             </div>
-            <StyledConfirmButton width={'100%'} margin={'0px'} height={'30px'} onClick={()=>{
+            <StyledConfirmButton width={'100%'} $margin={'0px'} height={'30px'} onClick={()=>{
                 console.log(getValues())
                 dataFetch({simpleurl: 'supplierorders/createorder', init: formatInit({data: getValues()})})
             }}>Salvar Pedido de Abastecimento</StyledConfirmButton>

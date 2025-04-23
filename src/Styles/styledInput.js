@@ -10,7 +10,7 @@ export const StyledInput = styled.input`
     border: 1px solid rgba(0,0,0,0);
     border-radius: 3px;
     text-align: center;
-    width: ${(props) => props.width || 'auto'};
+    width: ${({$width}) => $width || 'auto'};
     &:focus{
         border-bottom: 1px solid black;
     }

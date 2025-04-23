@@ -5,12 +5,19 @@ import { StyledCancelButton, StyledConfirmButton } from "../../Styles/styledConf
 import { StyledFlexRow } from "../../Styles/styledFlexRow";
 
 
-export const DinamicFormReturnData = ({onSubmit = () => {}, onSuccess = () => {}, object = {}, width = '30%', onCancel = undefined, margin = undefined, height = undefined,functions = <></>}) => {
+export const DinamicFormReturnData = ({onSubmit = () => {}, upName = () => {}, onSuccess = () => {}, object = {}, width = '30%', onCancel = undefined, margin = undefined, height = undefined,functions = <></>}) => {
     const {register, handleSubmit} = useForm();
     
-    return <StyledForm height={height} margin={margin} width={width} onSubmit={handleSubmit(onSubmit)}>
+    return <StyledForm height={height} $margin={margin} $width={width} onSubmit={handleSubmit(onSubmit)}>
         {Object.keys(object).map((key, index) => {
-            return <StyledInput width={`${100/(Object.keys(object).length + 1)}%`} key={index} placeholder={key} {...register(key)} defaultValue={object[key]} />
+            var classname = '';
+            if(typeof each === 'string') classname = 'col-string';
+            else if(typeof each === 'number') classname = 'col-number';
+            if(key !== 'id'){ 
+                return <StyledInput $width={`${100/(Object.keys(object).length + 1)}%`} className={classname} key={index} placeholder={key} {...register(key, {onChange: (e)=>{upName(e.target.value)}})} defaultValue={object[key]} />
+            }else {
+                return <StyledInput $width={`0px`} type="hidden" className={classname} key={index} placeholder={key} {...register(key)} defaultValue={object[key]} />
+            };
         })}
             <StyledFlexRow width={`${100/(Object.keys(object).length+1)}%`}>
             <StyledConfirmButton height={'98%'} onClick={()=>{handleSubmit(onSubmit);

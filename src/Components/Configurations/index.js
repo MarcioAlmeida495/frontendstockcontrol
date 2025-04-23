@@ -15,7 +15,7 @@ export const Configurations = () => {
 
 
     return <Div width={'700px'}>
-        <StyledInput width='80%' defaultValue={serverData.bdDirectory} onKeyUp={(e)=>{
+        <StyledInput $width='80%' defaultValue={serverData.bdDirectory} onKeyUp={(e)=>{
             console.log(e.key);
             if(e.key === 'Enter'){
                 dataFetch({simpleurl : 'newconfig', init: formatInit({data: {bdDirectory: e.target.value}})})

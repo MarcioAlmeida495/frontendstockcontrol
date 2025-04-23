@@ -82,8 +82,8 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
     useEffect(()=>{
         if(!checked) {
             setValue(`items.${index}.quantidade`, 1);
-            setValue(`items.${index}.valor`, 0);
-            setValue(`items.${index}.total`, 0)
+            setValue(`items.${index}.valor`, parseFloat('0').toFixed(2));
+            setValue(`items.${index}.total`, parseFloat('0').toFixed(2))
         }
         
     }, [checked, index, setValue]);
@@ -93,7 +93,7 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
     })
 
     return <Div>
-        <StyledInput {...register(`items.${index}.quantidade`)} defaultValue={1} width={'100px'} placeholder="qtd" type="Number" 
+        <StyledInput {...register(`items.${index}.quantidade`)} defaultValue={1} $width={'100px'} placeholder="qtd" type="Number" 
             onChange={(e)=>{
                 setValue(`items.${index}.quantidade`, e.target.value);
                 setValue(`items.${index}.valor`, parseFloat(getValues(`items.${index}.valor`)).toFixed(2));
@@ -133,14 +133,13 @@ export const ItemsFormForOrders = ({getData = () => {}, supplier = 1, remove, re
         </InfoDiv>}
         </div>}
         
-        <StyledInput {...register(`items.${index}.valor`)} placeholder="Valor" width={'100px'}
+        <StyledInput {...register(`items.${index}.valor`)} placeholder="Valor" $width={'100px'}
             onBlur={(e)=>{
                 setValue(`items.${index}.valor`, parseFloat(e.target.value).toFixed(2));
                 setValue(`items.${index}.total`, parseFloat(getValues(`items.${index}.quantidade`)*e.target.value).toFixed(2))}
             }
-            
             type="Number"/>
-        <StyledInput {...register(`items.${index}.total`)} placeholder="Total" width={'100px'} 
+        <StyledInput {...register(`items.${index}.total`)} placeholder="Total" $width={'100px'} 
             onBlur={(e)=>{
                 setValue(`items.${index}.total`, parseFloat(e.target.value).toFixed(2));
             }}

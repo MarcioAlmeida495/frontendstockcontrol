@@ -67,7 +67,7 @@ export const Select = ({url, defaultPlaceholder, getSelected = () => {}, width =
                 
         <AbsoluteDiv>
                 <div style={{position: 'absolute', top: '5px', left: '5px'}} >
-                    <img alt="searchicon" onClick={()=>{setIsSearching(true)}} style={{width: '25px'}} src="icons/loupe.png" />
+                    <img className="lupeimg" alt="searchicon" onClick={()=>{setIsSearching(true)}} style={{width: '25px'}} src="icons/loupe.png" />
                     {search && <div style={{display: 'block', position: 'absolute', top: '0px', right: '-5px', width: '3px', height: '3px', border: '4px solid red', borderRadius: '5px'}}/>}
                         
                 

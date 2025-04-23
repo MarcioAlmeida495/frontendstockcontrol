@@ -16,7 +16,7 @@ export const dataFetch = async ({ simpleurl, init } = {}) => {
       console.log('RESPONSE-->', response)
       try {
         var inJson = await response.json();
-        console.log(inJson)
+        // console.log(inJson)
         return inJson;
       } catch (error) {
         console.log('trying to fetch :: ', url);

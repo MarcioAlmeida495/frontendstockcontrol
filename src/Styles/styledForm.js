@@ -2,7 +2,7 @@ import styled from "styled-components";
 export const StyledForm = styled.form`
     display: flex;
     box-sizing: border-box;
-    margin: ${({ margin }) => margin || '10px'};
+    margin: ${({ $margin }) => $margin || '10px'};
     flex-direction: ${({ $flexdirection }) => $flexdirection || 'row'};
     width: ${({ width }) => width || '98%'};
     max-width: ${({ width }) => width || '100%'};

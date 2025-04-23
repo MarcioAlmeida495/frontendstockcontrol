@@ -8,8 +8,8 @@ export const StyledLeftMenu = styled.div`
     top: 0;
     z-index: 999;
     flex-direction: column;
-    width: ${squareSize};
-    height: ${squareSize};
+    width: 35px;
+    height: 35px;
     background-color: rgba(0,0,0,0);
     gap: 10px;
     overflow: hidden;

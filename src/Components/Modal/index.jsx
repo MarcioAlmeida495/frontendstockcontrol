@@ -22,7 +22,8 @@ const ModalContent = styled.div`
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   min-width: 800px;
   max-width: 80%;
-  height: 80%;
+  height: ${({$width}) => $width ||  '80%'};
+  overflow: auto;
   position: relative;
 `;
 
@@ -36,10 +37,10 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const Modal = ({ show, onClose, children }) => {
+export const Modal = ({ show, onClose, children, width }) => {
   return (
     <Overlay $show={show} onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
+      <ModalContent $width={width} onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         {children}
       </ModalContent>
