@@ -13,14 +13,14 @@ export const dataFetch = async ({ simpleurl, init } = {}) => {
       if (!response.ok) {
           return new Error(`Erro HTTP! Status: ${response.status}`);
       }
-      console.log('RESPONSE-->', response)
+      // console.log('RESPONSE-->', response)
       try {
         var inJson = await response.json();
         // console.log(inJson)
         return inJson;
       } catch (error) {
-        console.log('trying to fetch :: ', url);
-        console.log(`response:: ${response}, error:: ${error}`);
+        // console.log('trying to fetch :: ', url);
+        // console.log(`response:: ${response}, error:: ${error}`);
         return false;
       }
   } catch (error) {
@@ -31,7 +31,7 @@ export const dataFetch = async ({ simpleurl, init } = {}) => {
 
 
 export const formatInit = ({data} = {}) => {
-  console.log('DATA:: ',data)
+  // console.log('DATA:: ',data)
     return {
         method: "POST", // Ou "POST", "PUT", "DELETE", etc.
         headers: {

@@ -1,0 +1,33 @@
+.clientAccount {
+  height: 100vh;
+  width: 100vw;
+  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  padding-left: 100px;
+}
+.newOrder {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  width: 80%;
+  background-color: black;
+}
+.rowdiv {
+  display: flex;
+  gap: 10px;
+}
+.alltabs {
+  height: 100%;
+  width: 300px;
+  background-color: white;
+}
+.newitem {
+  display: flex;
+  padding: 3px;
+  gap: 3px;
+  height: 35px;
+  width: 90%;
+  background-color: red;
+}

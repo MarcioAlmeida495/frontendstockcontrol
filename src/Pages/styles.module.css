@@ -1,0 +1,38 @@
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  position: relative;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 2px;
+  box-sizing: border-box;
+}
+.modalInfo {
+  display: flex;
+  flex-direction: column;
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  /* position: absolute; */
+  overflow-y: auto;
+  transition: all 1s ease;
+  z-index: 10000;
+}
+.modalInfo:hover {
+  width: 400px;
+}
+.w100 {
+  width: 100px;
+}
+.w200 {
+  width: 200px;
+}
+.w300 {
+  width: 300px;
+}

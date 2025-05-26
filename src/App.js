@@ -1,4 +1,7 @@
 import styled from "styled-components";
+// import "./Styles/global.css";
+import "./Styles/globalstyles.css";
+import styles from "./Styles/global.module.css";
 import { Configurations } from "./Components/Configurations";
 import { DinamicTable } from "./Components/DinamicTable";
 import { DinamicForm } from "./Components/Forms/DinamicForm";
@@ -21,31 +24,28 @@ import { CatalogSuppliers } from "./Pages/catalogsupplier";
 import { NewSupplierOrder } from "./Pages/NewSupplierOrder";
 import { SupplierOrders } from "./Pages/SupplierOrders";
 import { Links } from "./Components/Link/LeftMenuLink";
-import { ClientOrder } from "./Pages/clientOrder";
-
-
+import { ClientsAccounts } from "./Pages/ClientsAccounts";
 
 function App() {
-
   return (
     <StyledBody>
       <BrowserRouter>
-          <LeftMenu>
-            <Links links={
-              {
-                'CONFIGURAÇÕES': '/conf',
-                'CLIENTES': '/getclients',
-                'CONTAS': '/accounts',
-                'ITEMS': '/getitens',
-                'FORNECEDORES': '/getsuppliers',
-                'COMPRAS': '/getorders',
-                'NOVO PEDIDO': '/newsupplierorder',
-                'PEDIDOS': '/supplierorders',
-                'CATÁLOGOS': '/catalogs',
-                'SISTEMA ANTIGO': '/',
-              }
-            }/>
-            {/* <StyledLink to={'/conf'}>
+        <LeftMenu>
+          <Links
+            links={{
+              CONFIGURAÇÕES: "/conf",
+              CLIENTES: "/getclients",
+              CONTAS: "/accounts",
+              ITEMS: "/getitens",
+              FORNECEDORES: "/getsuppliers",
+              COMPRAS: "/getorders",
+              "NOVO PEDIDO": "/newsupplierorder",
+              PEDIDOS: "/supplierorders",
+              CATÁLOGOS: "/catalogs",
+              "SISTEMA ANTIGO": "/",
+            }}
+          />
+          {/* <StyledLink to={'/conf'}>
                     <h3>CONFIGURAÇÕES</h3>
                 </StyledLink>
           <StyledLink to={'/getclients'}>
@@ -72,21 +72,21 @@ function App() {
             <StyledLink to={'/'}>
                 <h3>SISTEMA ANTIGO</h3>
             </StyledLink> */}
-          </LeftMenu>
-          <StyledContentBody>
-            <Routes>
-              <Route path="/" element={<Iframe show={true}/>}/>
-              <Route path="/getitens" element={<Items />} />
-              <Route path="/conf" element={<Configurations />}/>
-              <Route path="/getclients" element={<Clients/>}/>
-              <Route path="/getsuppliers" element={<Suppliers />}/>
-              <Route path="/getorders" element={<Orders />}/>
-              <Route path="/supplierorders" element={<SupplierOrders />}/>
-              <Route path="/newsupplierorder" element={<NewSupplierOrder />}/>
-              <Route path="/catalogs" element={<CatalogSuppliers/>} />
-              <Route path="/accounts" element={<ClientOrder />} />
-            </Routes>
-          </StyledContentBody>
+        </LeftMenu>
+        <StyledContentBody>
+          <Routes>
+            <Route path="/" element={<Iframe show={true} />} />
+            <Route path="/getitens" element={<Items />} />
+            <Route path="/conf" element={<Configurations />} />
+            <Route path="/getclients" element={<Clients />} />
+            <Route path="/getsuppliers" element={<Suppliers />} />
+            <Route path="/getorders" element={<Orders />} />
+            <Route path="/supplierorders" element={<SupplierOrders />} />
+            <Route path="/newsupplierorder" element={<NewSupplierOrder />} />
+            <Route path="/catalogs" element={<CatalogSuppliers />} />
+            <Route path="/accounts" element={<ClientsAccounts />} />
+          </Routes>
+        </StyledContentBody>
       </BrowserRouter>
     </StyledBody>
   );
