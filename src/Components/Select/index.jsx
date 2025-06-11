@@ -8,9 +8,10 @@ import { RefreshIcon } from "../AnimationIcons/Refresh";
 
 const Div = styled.div`
   display: flex;
-  height: auto;
   align-items: center;
   justify-content: start;
+  height: 100%;
+  max-height: 30px;
   width: 100%;
   gap: 5px;
 `;
@@ -71,7 +72,7 @@ export const Select = ({
   }, [search, data]);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
     if (selectedId) {
       for (var i = 0; i < data.length; i++) {
         console.log(`testando ${selectedId} e ${data[i].id}`);
@@ -182,7 +183,6 @@ export const Select = ({
       {refresh && (
         <StyledConfirmButton
           width={"30px"}
-          height={"30px"}
           onClick={() => {
             attData();
           }}

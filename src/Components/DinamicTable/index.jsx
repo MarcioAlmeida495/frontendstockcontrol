@@ -52,7 +52,7 @@ export const InfoDiv = styled.div`
   top: -7px;
   left: -7px;
   transition: height 200ms linear, width 200ms linear,
-    background-color 200ms linear, color 200ms linear;
+    background-color 400ms linear, color 200ms linear;
   border: 1px solid rgba(0, 0, 0, 0);
 
   & > span {
@@ -95,8 +95,6 @@ export const DinamicTable = ({
   const [key, setKey] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [search, setSearch] = useState("");
-  const [info, setInfo] = useState("");
-  const [counter, setcounter] = useState(0);
   useEffect(() => {
     if (crudUrls.r)
       dataFetch({ simpleurl: crudUrls.r }).then((r) => {

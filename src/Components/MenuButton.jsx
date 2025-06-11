@@ -5,8 +5,9 @@ const DivPai = styled.label`
   height: 30px;
   position: fixed;
   z-index: 999;
-  top: 5px;
+  top: 8px;
   left: 5px;
+
   display: block;
   cursor: pointer;
 `;

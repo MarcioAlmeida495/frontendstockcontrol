@@ -8,12 +8,15 @@ export const StyledInput = styled.input`
   padding: 5px;
   background-color: white;
   border: 2px solid rgb(182, 178, 236);
-  border-bottom: 2px solid rgb(133, 210, 255);
   border-radius: 3px;
   text-align: center;
   width: ${({ $width }) => $width || "auto"};
   transition: all 200ms ease;
   &:focus {
-    border: 2px solid rgb(41, 103, 184);
+    border: 2px solid rgb(63, 142, 245);
+  }
+  &:hover:not(:focus) {
+    border: 2px solid rgb(0, 54, 126);
+    color: blue;
   }
 `;

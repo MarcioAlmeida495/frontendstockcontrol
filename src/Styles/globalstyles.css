@@ -4,6 +4,6 @@
   padding: 0;
 }
 :root {
-  --primary-bg: rgb(248, 246, 255);
+  --primary-bg: rgba(246, 246, 255, 0.815);
   --secondary-bg: rgb(216, 234, 250);
 }
