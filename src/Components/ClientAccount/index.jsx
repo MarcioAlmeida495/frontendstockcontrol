@@ -14,10 +14,13 @@ import { ArrayField } from "./ArrayField";
 import { ColDiv, Head, RowDiv } from "./styles";
 import { Payment } from "./Payment";
 import { dataFetch, formatInit } from "../../utils/functions";
+import { MyContext } from "../Context";
 export const ClientAccount = ({ client }) => {
   const [infoModal, setInfoModal] = useState(false);
   const [counterReset, setCounterReset] = useState(0);
   const [tabs, setTabs] = useState([]);
+  const [reset, setReset] = useState(0);
+  const [checkedTabs, setCheckedTabs] = useState([]);
   const { register, setValue, getValues, control, watch } = useForm({
     defaultValues: {
       items: [],
@@ -29,8 +32,9 @@ export const ClientAccount = ({ client }) => {
     console.log(url);
     dataFetch({ simpleurl: url }).then((r) => {
       setTabs(r);
+      console.log(r);
     });
-  }, [client]);
+  }, [client, reset]);
 
   useEffect(() => {
     console.log(tabs);
@@ -52,16 +56,12 @@ export const ClientAccount = ({ client }) => {
     return sum;
   }, [counterReset, getValues, setValue]);
 
-  const onSubmit = () => {
-    console.log(getValues());
-  };
-
   useEffect(() => {
     setValue("items", []);
     setValue("client", client.id);
   }, [client, setValue]);
   return (
-    <>
+    <MyContext functions={{ checkedTabs, setCheckedTabs }}>
       {infoModal && <Modal>{infoModal}</Modal>}
       <div className={styles.clientAccount}>
         <h1
@@ -104,14 +104,11 @@ export const ClientAccount = ({ client }) => {
                       watcher={watch}
                     />
                   ))}
-                  <StyledConfirmButton
-                    onClick={() => {
-                      console.log(getValues());
-                    }}
-                  ></StyledConfirmButton>
                 </div>
                 <div style={{ height: "40px", display: "block" }}>
-                  <h2>{`Total: ${total > 0 ? total : 0}`}</h2>
+                  <h2>{`Total: ${parseFloat(total > 0 ? total : 0).toFixed(
+                    2
+                  )}`}</h2>
                   <input {...register("total")} hidden />
                 </div>
                 <StyledConfirmButton
@@ -119,6 +116,9 @@ export const ClientAccount = ({ client }) => {
                     dataFetch({
                       simpleurl: "tabs/createclienttab",
                       init: formatInit({ data: getValues() }),
+                    }).then(() => {
+                      setValue("items", []);
+                      setReset((r) => r + 1);
                     });
                   }}
                 >
@@ -133,6 +133,6 @@ export const ClientAccount = ({ client }) => {
           </ColDiv>
         </div>
       </div>
-    </>
+    </MyContext>
   );
 };

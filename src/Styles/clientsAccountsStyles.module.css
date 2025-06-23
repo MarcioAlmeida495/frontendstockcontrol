@@ -20,8 +20,10 @@
   left: -200px;
   width: 250px;
   height: 100vh;
+  overflow-y: scroll;
   gap: 2px;
   transition: all 50ms ease-in;
+  z-index: 10;
 }
 .leftMenu:hover {
   transform: translateX(200px);
