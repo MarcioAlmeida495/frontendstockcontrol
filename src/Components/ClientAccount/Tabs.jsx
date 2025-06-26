@@ -2,22 +2,35 @@ import { useEffect, useRef } from "react";
 import styles from "./styles.module.css";
 import { useState } from "react";
 
-import { dataFetch, formatInit } from "../../utils/functions";
+import { dataFetch, formatarData, formatInit } from "../../utils/functions";
 import { useId } from "react";
 import { useContext } from "react";
 import { Context, MyContext } from "../Context";
+import { sum, sumArr } from "./Payment";
+import {
+  StyledCancelButton,
+  StyledConfirmButton,
+} from "../../Styles/styledConfirmButton";
 const Tab = ({ tab }) => {
+  const refDate = useRef(formatarData(tab.data));
   const [content, setContent] = useState(null);
   const refdiv = useRef(null);
   const functions = useContext(Context);
+  const refSum = useRef(sumArr(tab.pagamentos));
   console.log("tab renderizou");
   return (
-    <div className={styles.tab} ref={refdiv}>
+    <div
+      className={`${styles.tab} ${
+        refSum.current === tab.valor && styles.closedTab
+      }`}
+      ref={refdiv}
+    >
       {content ? (
         content
       ) : (
         <div>
-          {tab.data} | Valor: {parseFloat(tab.valor).toFixed(2)}
+          {refDate.current} | Valor: {parseFloat(tab.valor).toFixed(2)} | Total
+          Pago: {sumArr(tab.pagamentos)}
         </div>
       )}
       <div className={styles.functions}>
@@ -33,7 +46,7 @@ const Tab = ({ tab }) => {
                 console.log(r);
                 const jsx = (
                   <>
-                    <h3>{tab.data}</h3>
+                    {refDate.current}
                     <div className={styles.itemsComanda}>
                       {r.map((tab, index) => {
                         return (
@@ -44,18 +57,25 @@ const Tab = ({ tab }) => {
                         );
                       })}
                     </div>
-                    <h3>Valor Total: {parseFloat(tab.valor).toFixed(2)}</h3>
+                    Total: {parseFloat(tab.valor).toFixed(2)} || Total Pago:{" "}
+                    {refSum.current} || Restante:{" "}
+                    {parseFloat(tab.valor - refSum.current).toFixed(2)}
+                    <div className={`${styles.rowdiv} ${styles.h_25}`}>
+                      <StyledConfirmButton>Editar Compra</StyledConfirmButton>
+                      <StyledCancelButton>Excluir Compra</StyledCancelButton>
+                    </div>
                   </>
                 );
                 setContent(jsx);
               });
           }}
         >
-          x
+          {content ? "Esconder" : "Mostrar Mais"}
         </button>
         <input
+          defaultChecked
           type="checkbox"
-          className={""}
+          className={styles.checkbox}
           onClick={(e) => {
             const isChecked = e.target.checked;
 
@@ -80,6 +100,7 @@ export const Tabs = ({ tabs }) => {
   const [openTabs, setOpenTabs] = useState(true);
   const [closedTabs, setClosedTabs] = useState(false);
   const functions = useContext(Context);
+  const functionsRef = useRef(useContext(Context));
   // const [checkedTabs, setCheckedTabs] = useState([]);
 
   useEffect(() => {
@@ -87,18 +108,31 @@ export const Tabs = ({ tabs }) => {
   }, [tabs]);
 
   useEffect(() => {
-    console.log(openTabs);
-    console.log(closedTabs);
-  }, [openTabs, closedTabs]);
+    var newArray = [];
+    if (openTabs && tabs) {
+      const filteredOpen = tabs.filter((tab) => {
+        if (tab.status === "aberta") return tab;
+        else return null;
+      });
+      if (filteredOpen.length > 0) newArray = filteredOpen;
+    }
+    if (closedTabs && tabs) {
+      const filteredClosed = tabs.filter((tab) => {
+        if (tab.status === "fechada") return tab;
+        else return null;
+      });
+
+      if (filteredClosed.length > 0)
+        newArray = [...newArray, ...filteredClosed];
+    }
+    newArray.sort((a, b) => a.id - b.id);
+    console.log("ARRAY");
+    console.log(newArray);
+    functionsRef.current.setCheckedTabs(newArray);
+  }, [closedTabs, openTabs, tabs]);
 
   useEffect(() => {
-    totalSum.current = 0;
-    console.log("checkedtabs --");
     console.log(functions.checkedTabs);
-    functions.checkedTabs.forEach((tab) => {
-      totalSum.current += tab.valor;
-      console.log(totalSum);
-    });
   }, [functions.checkedTabs]);
 
   return (
@@ -137,19 +171,15 @@ export const Tabs = ({ tabs }) => {
           </div>
           <div className={styles.overflowed}>
             {tabs.map((tab, index) => {
-              if (openTabs && tab.status === "aberta")
+              if (openTabs && tab.status === "aberta") {
                 return <Tab key={index} tab={tab} />;
-              if (closedTabs && tab.status === "fechada")
+              }
+              if (closedTabs && tab.status === "fechada") {
                 return <Tab key={index} tab={tab} />;
-              else return null;
+              } else return null;
             })}
           </div>
-          <h3>
-            Total: R${" "}
-            {functions.checkedTabs
-              .reduce((total, each) => total + each.valor, 0)
-              .toFixed(2)}
-          </h3>
+          <h3>Total: R$ {sum(functions.checkedTabs)}</h3>
         </>
       )}
     </>

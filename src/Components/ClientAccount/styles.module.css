@@ -1,3 +1,46 @@
+.checkbox {
+  all: unset;
+  height: 20px;
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  animation: widthanimation 200ms forwards;
+  transition: all 200ms ease;
+}
+@keyframes widthanimation {
+  from {
+    width: 0px;
+  }
+  to {
+    width: 20px;
+  }
+}
+.checkbox:checked {
+  background-color: white;
+  border-radius: 5px;
+  background-color: rgb(116, 116, 255);
+}
+
+.checkbox:checked::after {
+  content: "✓";
+  color: white;
+  font-weight: bolder;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  animation: sizeanimation 200ms forwards;
+}
+@keyframes sizeanimation {
+  from {
+    font-size: 0px;
+  }
+  to {
+    font-size: 20px;
+  }
+}
 .clientAccount {
   box-sizing: border-box;
   height: 100vh;
@@ -35,16 +78,25 @@
   max-height: 100vh;
   height: 90%;
 }
+.h_30 {
+  height: 30px;
+}
+.h_25 {
+  margin: 10px 0px;
+  height: 25px;
+}
 .alltabs {
   display: flex;
+  position: relative;
   flex-direction: column;
   padding: 10px;
   gap: 10px;
   height: 100%;
-  width: 500px;
-  min-width: 500px;
+  width: 600px;
+  min-width: 550px;
   background-color: white;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0px 0px 5px black;
 }
 .newitem {
@@ -97,6 +149,20 @@
   padding: 20px;
   transition: all 1s ease-in-out;
   border-radius: 5px;
+  animation: opacityAnimation 300ms ease;
+}
+@keyframes opacityAnimation {
+  from {
+    transform: translateX(300px);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateX((-300px));
+  }
+}
+.closedTab {
+  background-color: rgb(197, 197, 197);
 }
 .tab.extended {
   max-height: 1000px;
@@ -138,10 +204,9 @@
 
 .maximizeButton {
   all: unset;
-
-  padding: 3px 10px;
-  background-color: #88f;
-  color: white;
+  border: 1px solid grey;
+  /* box-shadow: 0px 0px 3px black; */
+  padding: 1px 10px;
   cursor: pointer;
   border-radius: 5px;
   transition: all 200ms ease;
@@ -169,6 +234,7 @@
   padding-right: 10px;
   padding-top: 10px;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 .column {
   display: flex;
