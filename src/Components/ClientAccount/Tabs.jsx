@@ -2,11 +2,17 @@ import { useEffect, useRef } from "react";
 import styles from "./styles.module.css";
 import { useState } from "react";
 
-import { dataFetch, formatarData, formatInit } from "../../utils/functions";
+import {
+  dataFetch,
+  formatarData,
+  formatDataYYYYMMDD,
+  formatInit,
+  removeHours,
+} from "../../utils/functions";
 import { useId } from "react";
 import { useContext } from "react";
 import { Context, MyContext } from "../Context";
-import { sum, sumArr } from "./Payment";
+import { simpleSum, sum, sumArr, sumPayments } from "./Payment";
 import {
   StyledCancelButton,
   StyledConfirmButton,
@@ -96,11 +102,13 @@ const Tab = ({ tab }) => {
 export const Tabs = ({ tabs }) => {
   const openCheckId = useId();
   const closedCheckId = useId();
-  const totalSum = useRef(0);
   const [openTabs, setOpenTabs] = useState(true);
   const [closedTabs, setClosedTabs] = useState(false);
+  const [date, setDate] = useState();
   const functions = useContext(Context);
   const functionsRef = useRef(useContext(Context));
+  const refDate = useRef();
+  const refCheckDate = useRef();
   // const [checkedTabs, setCheckedTabs] = useState([]);
 
   useEffect(() => {
@@ -111,15 +119,21 @@ export const Tabs = ({ tabs }) => {
     var newArray = [];
     if (openTabs && tabs) {
       const filteredOpen = tabs.filter((tab) => {
-        if (tab.status === "aberta") return tab;
-        else return null;
+        if (tab.status === "aberta") {
+          if (!date) return tab;
+          else if (date === tab.data) return tab;
+          else return null;
+        } else return null;
       });
       if (filteredOpen.length > 0) newArray = filteredOpen;
     }
     if (closedTabs && tabs) {
       const filteredClosed = tabs.filter((tab) => {
-        if (tab.status === "fechada") return tab;
-        else return null;
+        if (tab.status === "fechada") {
+          if (!date) return tab;
+          else if (date === tab.data) return tab;
+          else return null;
+        } else return null;
       });
 
       if (filteredClosed.length > 0)
@@ -129,7 +143,7 @@ export const Tabs = ({ tabs }) => {
     console.log("ARRAY");
     console.log(newArray);
     functionsRef.current.setCheckedTabs(newArray);
-  }, [closedTabs, openTabs, tabs]);
+  }, [closedTabs, openTabs, tabs, date]);
 
   useEffect(() => {
     console.log(functions.checkedTabs);
@@ -139,7 +153,14 @@ export const Tabs = ({ tabs }) => {
     <>
       {tabs && (
         <>
-          <div>
+          <div
+            style={{
+              display: "flex",
+              height: "40px",
+              alignItems: "center",
+              gap: "3px",
+            }}
+          >
             <input
               type="checkbox"
               className={styles.checked}
@@ -168,18 +189,48 @@ export const Tabs = ({ tabs }) => {
             <label className={styles.checkLabel} htmlFor={closedCheckId}>
               Fechadas
             </label>
+            <input
+              type="date"
+              defaultValue={new Date().toISOString().split("T")[0]}
+              onChange={(e) => {
+                setDate(e.target.value);
+                refCheckDate.current.checked = true;
+              }}
+              ref={refDate}
+            />
+            <input
+              type="checkbox"
+              ref={refCheckDate}
+              className={styles.checkbox}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setDate(refDate.current.value);
+                } else {
+                  setDate(null);
+                }
+              }}
+            />
           </div>
           <div className={styles.overflowed}>
             {tabs.map((tab, index) => {
               if (openTabs && tab.status === "aberta") {
-                return <Tab key={index} tab={tab} />;
+                console.log(`comparando ${date} com ${removeHours(tab.data)}`);
+                if (date && date === removeHours(tab.data))
+                  return <Tab key={index} tab={tab} />;
+                else if (!date) return <Tab key={index} tab={tab} />;
+                else return null;
               }
               if (closedTabs && tab.status === "fechada") {
-                return <Tab key={index} tab={tab} />;
+                if (date && date === removeHours(tab.data))
+                  return <Tab key={index} tab={tab} />;
+                else if (!date) return <Tab key={index} tab={tab} />;
+                else return null;
               } else return null;
             })}
           </div>
-          <h3>Total: R$ {sum(functions.checkedTabs)}</h3>
+          <h3>Total: R$ {simpleSum(functions.checkedTabs)}</h3>
+          <h3>Total Pago: R$ {sumPayments(functions.checkedTabs)}</h3>
+          {/* <h3>Total a Pagar: R$ {sumPayments(functions.checkedTabs)}</h3> */}
         </>
       )}
     </>

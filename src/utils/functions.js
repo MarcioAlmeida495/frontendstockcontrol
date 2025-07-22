@@ -63,3 +63,13 @@ export const formatarData = (dataString) => {
   const [horaStr, minuto] = hora.split(":");
   return `${dia}-${mes}-${ano} ${horaStr}:${minuto}`;
 };
+
+export const formatDataYYYYMMDD = (dataString) => {
+  const [ano, mes, dia] = dataString.split("-");
+  return `${dia}-${mes}-${ano}`;
+};
+
+export const removeHours = (dataString) => {
+  const [date] = dataString.split(" ");
+  return date;
+};

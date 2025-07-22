@@ -22,9 +22,10 @@ import { Orders } from "./Pages/Orders";
 import { Items } from "./Pages/Items";
 import { CatalogSuppliers } from "./Pages/catalogsupplier";
 import { NewSupplierOrder } from "./Pages/NewSupplierOrder";
-import { SupplierOrders } from "./Pages/SupplierOrders";
+import { SupplierOrders } from "./Pages/SupplierOrders/SupplierOrders";
 import { Links } from "./Components/Link/LeftMenuLink";
 import { ClientsAccounts } from "./Pages/ClientsAccounts";
+import { TestSupplierOrder } from "./Pages/testSupplierOrder";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
               PEDIDOS: "/supplierorders",
               CATÁLOGOS: "/catalogs",
               "SISTEMA ANTIGO": "/",
+              TEST: "/testSuppliers",
             }}
           />
           {/* <StyledLink to={'/conf'}>
@@ -85,6 +87,7 @@ function App() {
             <Route path="/newsupplierorder" element={<NewSupplierOrder />} />
             <Route path="/catalogs" element={<CatalogSuppliers />} />
             <Route path="/accounts" element={<ClientsAccounts />} />
+            <Route path="/testSuppliers" element={<TestSupplierOrder />} />
           </Routes>
         </StyledContentBody>
       </BrowserRouter>

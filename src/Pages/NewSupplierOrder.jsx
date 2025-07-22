@@ -13,6 +13,7 @@ import { ItemsFormForOrders } from "../Components/Forms/ItemsFormForSupplierOrde
 import { Div } from "../Styles/styledDiv";
 import { dataFetch, formatInit } from "../utils/functions";
 import { StyledInput } from "../Styles/styledInput";
+import { NewSelect } from "../Components/NewSelect";
 export const NewSupplierOrder = () => {
   const [selectedID, setSelectedID] = useState();
 
@@ -30,7 +31,18 @@ export const NewSupplierOrder = () => {
   return (
     <Div width={"700px"}>
       <h1>NOVO PEDIDO</h1>
-      <Select
+      {/* <NewSelect
+        url={`supplier/getsuppliers`}
+        register={register}
+        setValue={setValue}
+      /> */}
+      <NewSelect
+        register={register}
+        registerName={"supplier_ID"}
+        setValue={setValue}
+        url={"supplier/getsuppliers"}
+      />
+      {/* <Select
         marg
         width={"100%"}
         defaultPlaceholder={"FORNECEDOR"}
@@ -40,7 +52,7 @@ export const NewSupplierOrder = () => {
           setValue("supplier_ID", value.id);
         }}
         url={`supplier/getsuppliers`}
-      />
+      /> */}
 
       <StyledConfirmButton
         width={"100%"}

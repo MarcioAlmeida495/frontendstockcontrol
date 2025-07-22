@@ -8,6 +8,7 @@ import {
 import { Select } from "../Select";
 import { StyledInput } from "../../Styles/styledInput";
 import { CancelIcon } from "../AnimationIcons/Cancel";
+import { NewSelect } from "../NewSelect";
 export const ArrayField = ({
   field,
   remove,
@@ -75,11 +76,18 @@ export const ArrayField = ({
         })}
         defaultValue={1}
       />
-      <Select
+      {/* <Select
         getSelected={(value) => setSelectedItem(value)}
         url={"items/getitems"}
         width={"300px"}
         {...register(registers.item)}
+      /> */}
+      <NewSelect
+        getSelected={(value) => setSelectedItem(value)}
+        register={register}
+        registerName={registers.item}
+        url={"items/getitems"}
+        setValue={setValue}
       />
       <StyledInput
         $width={"80px"}

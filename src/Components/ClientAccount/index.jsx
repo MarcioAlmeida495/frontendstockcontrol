@@ -15,6 +15,7 @@ import { ColDiv, Head, RowDiv } from "./styles";
 import { Payment } from "./Payment";
 import { dataFetch, formatInit } from "../../utils/functions";
 import { MyContext } from "../Context";
+import { useCallback } from "react";
 export const ClientAccount = ({ client }) => {
   const [infoModal, setInfoModal] = useState(false);
   const [counterReset, setCounterReset] = useState(0);
@@ -26,6 +27,14 @@ export const ClientAccount = ({ client }) => {
       items: [],
     },
   });
+
+  const attData = useCallback(() => {
+    const url = `tabs/getclienttabs/${client.id}`;
+    dataFetch({ simpleurl: url }).then((r) => {
+      setTabs(r);
+      console.log(r);
+    });
+  }, [client.id]);
 
   useEffect(() => {
     const url = `tabs/getclienttabs/${client.id}`;
@@ -61,7 +70,7 @@ export const ClientAccount = ({ client }) => {
     setValue("client", client.id);
   }, [client, setValue]);
   return (
-    <MyContext functions={{ checkedTabs, setCheckedTabs }}>
+    <MyContext functions={{ checkedTabs, setCheckedTabs, attData }}>
       {infoModal && <Modal>{infoModal}</Modal>}
       <div className={styles.clientAccount}>
         <h1
@@ -113,6 +122,7 @@ export const ClientAccount = ({ client }) => {
                 </div>
                 <StyledConfirmButton
                   onClick={() => {
+                    // console.log(getValues());
                     dataFetch({
                       simpleurl: "tabs/createclienttab",
                       init: formatInit({ data: getValues() }),

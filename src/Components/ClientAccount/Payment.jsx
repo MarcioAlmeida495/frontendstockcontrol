@@ -17,6 +17,24 @@ export const sum = (arrTabs) => {
     }, 0)
   ).toFixed(2);
 };
+export const simpleSum = (arrTabs) => {
+  return parseFloat(
+    arrTabs.reduce((acc, each) => {
+      return acc + each.valor;
+    }, 0)
+  ).toFixed(2);
+};
+export const sumPayments = (arrTabs) => {
+  return parseFloat(
+    arrTabs.reduce((acc, each) => {
+      const payments = each.pagamentos.reduce((acc, payment) => {
+        return acc + payment.valor;
+      }, 0);
+      console.log(payments);
+      return acc + payments;
+    }, 0)
+  ).toFixed(2);
+};
 
 export const sumArr = (arr) => {
   return parseFloat(
@@ -68,7 +86,11 @@ export const Payment = () => {
                 init: formatInit({
                   data: { tabs: functions.checkedTabs, payment: value },
                 }),
-              }).then(console.log);
+              }).then((r) => {
+                if (r) {
+                  functions.attData();
+                }
+              });
             }}
             width={"300px"}
           >

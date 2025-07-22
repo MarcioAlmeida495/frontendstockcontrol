@@ -4,10 +4,12 @@ import "../utils/functions";
 import { dataFetch } from "../utils/functions";
 import { ClientAccount } from "../Components/ClientAccount";
 import { StyledInput } from "../Styles/styledInput";
+import { OpenTabs } from "../Components/ClientAccount/OpenTabs";
 export const ClientsAccounts = () => {
   const [clients, setClients] = useState([]);
   const [openClient, setOpenClient] = useState(false);
   const [search, setSearch] = useState("");
+  const [openTabs, setOpenTabs] = useState(true);
   useEffect(() => {
     dataFetch({ simpleurl: "clients/getclients" }).then((r) => {
       setClients(r);
@@ -17,7 +19,14 @@ export const ClientsAccounts = () => {
     <>
       <div className={styles.accounts}>
         <div className={styles.leftMenu}>
-          <div className={styles.tabButton}>Comandas</div>
+          <div
+            className={styles.tabButton}
+            onClick={() => {
+              setOpenClient(false);
+            }}
+          >
+            Comandas
+          </div>
           <StyledInput
             value={search}
             onChange={(e) => {
@@ -48,6 +57,7 @@ export const ClientsAccounts = () => {
               })}
         </div>
         <div>{openClient && <ClientAccount client={openClient} />}</div>
+        {!openClient && <OpenTabs />}
       </div>
     </>
   );
