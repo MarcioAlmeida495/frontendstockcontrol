@@ -43,7 +43,7 @@ export const sumArr = (arr) => {
     }, 0)
   ).toFixed(2);
 };
-export const Payment = () => {
+export const Payment = ({ reset, setReset }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const functions = useContext(Context);
 
@@ -89,6 +89,7 @@ export const Payment = () => {
               }).then((r) => {
                 if (r) {
                   functions.attData();
+                  setReset(reset + 1);
                 }
               });
             }}

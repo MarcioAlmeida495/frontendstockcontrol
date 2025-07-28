@@ -241,7 +241,7 @@
   flex-direction: column;
   gap: 5px;
 }
-.openTabs {
+.openTabs1 {
   display: grid;
   padding: 10px;
   margin: 20px;
@@ -250,11 +250,32 @@
 
   gap: 16px; /* espaço entre os itens, pode ajustar */
   overflow: auto; /* ativa scroll se precisar */
-  max-height: 100vh; /* opcional: limita a altura da área com scroll */
+  max-height: 100dvh; /* opcional: limita a altura da área com scroll */
 }
+.openTabs2 {
+  display: grid;
+  padding: 10px;
+  margin: 20px;
+  width: 90dvw;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
-.openTabs > div {
-  width: 300px;
+  gap: 16px; /* espaço entre os itens, pode ajustar */
+  overflow: auto; /* ativa scroll se precisar */
+  max-height: 100dvh; /* opcional: limita a altura da área com scroll */
+}
+.openTabs3 {
+  display: grid;
+  padding: 10px;
+  margin: 20px;
+  width: 90dvw;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+  gap: 16px; /* espaço entre os itens, pode ajustar */
+  overflow: auto; /* ativa scroll se precisar */
+  max-height: 100dvh; /* opcional: limita a altura da área com scroll */
+}
+.eachtab1 {
+  width: 100%;
   height: 500px;
   background-color: #f0f0f0; /* cor de exemplo */
   border: 1px solid #ccc;

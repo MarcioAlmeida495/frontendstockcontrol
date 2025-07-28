@@ -1,27 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
 import styles from "./styles.module.css";
-export const TrowOrder = ({ each }) => {
+import { dataFetch, formatarData } from "../../utils/functions";
+import { ModalTable } from "./ModalTable";
+import { useMyContext } from "./OrderContext";
+export const TrowOrder = ({ each, setModalData }) => {
   const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    console.log(each);
+  }, []);
+
   return (
     <tr>
       <td>{each.id}</td>
       <td>{each.nome_fornecedor}</td>
-      <td>{each.data_pedido}</td>
-      {editing ? (
-        <td>
-          <select>
-            <option>1</option>
-            <option>2</option>
-          </select>
-        </td>
-      ) : (
-        <td>{each.status}</td>
-      )}
+      <td>{formatarData(each.data_pedido)}</td>
+
+      <td>{each.status}</td>
+
       <td className={styles.functions}>
-        <StyledConfirmButton>Ver</StyledConfirmButton>
-        <StyledConfirmButton onClick={() => setEditing(!editing)}>
-          Editar
+        <StyledConfirmButton
+          onClick={() => {
+            dataFetch({
+              simpleurl: `supplierorders/getorderbyid/${each.id}`,
+            }).then((r) => {
+              setModalData(<ModalTable items={r} orderData={each} />);
+            });
+          }}
+        >
+          Ver
         </StyledConfirmButton>
       </td>
     </tr>

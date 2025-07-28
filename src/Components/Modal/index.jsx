@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Overlay = styled.div.attrs(() => ({}))`
   ${({ $show }) => `
-    display: ${$show ? 'flex' : 'none'};
+    display: ${$show ? "flex" : "none"};
   `}
   position: fixed;
   top: 0;
@@ -12,17 +12,18 @@ const Overlay = styled.div.attrs(() => ({}))`
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
-
 const ModalContent = styled.div`
-  background: rgba(255,255,255, 1);
+  background: rgba(255, 255, 255, 1);
   padding: 2rem;
   border-radius: 5px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0px 300px rgba(0, 0, 0, 1);
   min-width: 800px;
   max-width: 80%;
-  height: ${({$width}) => $width ||  '80%'};
+  width: ${({ $width }) => $width || "80%"};
+  height: 90dvh;
   overflow: auto;
   position: relative;
 `;
@@ -37,7 +38,7 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const Modal = ({ show, onClose, children, width }) => {
+export const Modal = ({ show = true, onClose, children, width = "100%" }) => {
   return (
     <Overlay $show={show} onClick={onClose}>
       <ModalContent $width={width} onClick={(e) => e.stopPropagation()}>

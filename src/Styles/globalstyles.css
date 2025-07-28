@@ -7,3 +7,80 @@
   --primary-bg: rgba(246, 246, 255, 0.815);
   --secondary-bg: rgb(216, 234, 250);
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-shadow: 0 0px 5px black;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cabeçalho fixo */
+thead {
+  color: white;
+  box-sizing: border-box;
+}
+thead tr {
+  position: sticky;
+  box-sizing: border-box;
+  top: 0;
+  background-color: white;
+  color: black;
+  z-index: 2;
+  border-bottom: 2px solid black;
+}
+
+/* Células */
+td,
+th {
+  text-align: center;
+  padding: 12px 16px;
+  border-right: 2px solid black;
+}
+
+td:first-child,
+th:first-child {
+  border-left: none;
+}
+
+td:last-child,
+th:last-child {
+  border-right: none;
+}
+
+/* Corpo da tabela */
+tbody tr {
+  background-color: #f9fafb;
+  transition: background-color 0.3s;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+tbody tr:hover {
+  background-color: #e0e7ff;
+}
+
+/* Botões */
+.functions {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.functions button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background-color: #6366f1;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.functions button:hover {
+  background-color: #4f46e5;
+}

@@ -139,7 +139,7 @@ export const ClientAccount = ({ client }) => {
             {/* <div className={styles.newOrder}>
               <h1>Realizar Pagamento</h1>
               </div> */}
-            <Payment />
+            <Payment reset={reset} setReset={setReset} />
           </ColDiv>
         </div>
       </div>

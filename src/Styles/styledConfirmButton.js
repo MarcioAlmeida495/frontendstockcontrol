@@ -16,7 +16,6 @@ export const StyledConfirmButton = styled.button`
   box-shadow: 1px 1px 2px black;
   border: 1px solid rgba(0, 0, 0, 0);
   background-color: rgb(35, 109, 179);
-  padding: 2px;
   &:hover {
     background-color: rgb(82, 98, 117);
     border-radius: 10px;

@@ -117,6 +117,7 @@ export const Tabs = ({ tabs }) => {
 
   useEffect(() => {
     var newArray = [];
+    console.log(tabs);
     if (openTabs && tabs) {
       const filteredOpen = tabs.filter((tab) => {
         if (tab.status === "aberta") {
@@ -130,9 +131,12 @@ export const Tabs = ({ tabs }) => {
     if (closedTabs && tabs) {
       const filteredClosed = tabs.filter((tab) => {
         if (tab.status === "fechada") {
+          console.log(`Comparando ${date} com ${tab.data}`);
+
           if (!date) return tab;
-          else if (date === tab.data) return tab;
-          else return null;
+          else if (date === removeHours(tab.data)) {
+            return tab;
+          } else return null;
         } else return null;
       });
 
@@ -168,6 +172,10 @@ export const Tabs = ({ tabs }) => {
               value={openTabs}
               defaultChecked
               onChange={(e) => {
+                if (openTabs && !closedTabs) {
+                  setClosedTabs(!closedTabs);
+                }
+                document.getElementById(closedCheckId).checked = true;
                 setOpenTabs(e.target.checked);
               }}
               hidden
@@ -180,8 +188,12 @@ export const Tabs = ({ tabs }) => {
               type="checkbox"
               className={styles.checked}
               id={closedCheckId}
-              value={openTabs}
+              value={closedTabs}
               onChange={(e) => {
+                if (closedTabs && !openTabs) {
+                  setOpenTabs(!openTabs);
+                }
+                document.getElementById(openCheckId).checked = true;
                 setClosedTabs(e.target.checked);
               }}
               hidden
