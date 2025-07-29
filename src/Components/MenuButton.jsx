@@ -53,6 +53,7 @@ export const MenuButton = ({
   return (
     <DivPai onMouseEnter={() => onMouseEnter()}>
       <Checkbox
+        name="menuham"
         type="checkbox"
         value={clicked}
         onClick={() => {

@@ -1,32 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
+import {
+  StyledCancelButton,
+  StyledConfirmButton,
+} from "../../Styles/styledConfirmButton";
 import { dataFetch, formatInit } from "../../utils/functions";
 import { MyContext, useMyContext } from "./OrderContext";
 import { useContext } from "react";
+import { Context } from "../../Components/Modal";
 
-export const ModalTable = ({ items, orderData }) => {
+export const ModalTable = ({ items, orderData, setNewStatus }) => {
   var totalSum = 0;
   const [altered, setAltered] = useState(false);
   const refSelected = useRef(null);
   const context = useContext(MyContext);
-  console.log("context:", context);
-  console.log("orderdata");
-  console.log(orderData);
   const [data, setData] = useState(orderData);
-
+  const modalContext = useContext(Context);
+  console.log("MODALCONTEXT", modalContext);
   useEffect(() => {
-    console.log("RODANDO O DATAFETCH");
-    dataFetch({
-      simpleurl: `supplierorders/getorderbyorderid/${data.id}`,
-    }).then((r) => {
-      console.log("ALTERANDO O DATA");
-      console.log(
-        `supplierorders/getorderbyorderid/${data.id} fazendo o fetch`
-      );
-      console.log(r);
-      setData(r);
-    });
-  }, [context.reset]);
+    setData((prev) => ({ ...prev, status: refSelected.current.value }));
+    setNewStatus((prev) => ({ ...prev, status: refSelected.current.value }));
+    setAltered(false);
+  }, [context.reset, setNewStatus]);
 
   useEffect(() => {
     console.log("data>> ");
@@ -38,9 +32,26 @@ export const ModalTable = ({ items, orderData }) => {
   }, [altered]);
 
   return (
-    <div style={{ maxWidth: "800px", margin: "auto" }}>
+    <div style={{ maxWidth: "800px", margin: "auto", height: "100%" }}>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div>Nome do Fornecedor: {data.nome_fornecedor}</div>
+        <div>
+          Nome do Fornecedor: {data.nome_fornecedor}
+          <div style={{ float: "right" }}>
+            <StyledCancelButton
+              onClick={() => {
+                dataFetch({
+                  simpleurl: `supplierorders/deleteorderbyid/${data.id}`,
+                }).then((r) => {
+                  if (r.success) {
+                    modalContext.onClose();
+                  }
+                });
+              }}
+            >
+              Excluir Pedido
+            </StyledCancelButton>
+          </div>
+        </div>
         <div>Data do Pedido: {data.data_pedido}</div>
         <div>
           Status:{" "}
@@ -86,7 +97,7 @@ export const ModalTable = ({ items, orderData }) => {
       </div>
       <div
         style={{
-          height: "600px",
+          height: "80%",
           overflow: "auto",
           margin: "10px",
           padding: "10px",

@@ -1,6 +1,6 @@
 .table-container {
   display: block;
-  height: 90dvh; /* altura da tabela com rolagem */
+  max-height: 90dvh; /* altura da tabela com rolagem */
   width: 100%;
   border-radius: 10px;
   overflow-y: auto;

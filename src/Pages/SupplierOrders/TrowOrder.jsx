@@ -5,27 +5,25 @@ import { dataFetch, formatarData } from "../../utils/functions";
 import { ModalTable } from "./ModalTable";
 import { useMyContext } from "./OrderContext";
 export const TrowOrder = ({ each, setModalData }) => {
-  const [editing, setEditing] = useState(false);
-
-  useEffect(() => {
-    console.log(each);
-  }, []);
+  const [data, setData] = useState(each);
 
   return (
     <tr>
-      <td>{each.id}</td>
-      <td>{each.nome_fornecedor}</td>
-      <td>{formatarData(each.data_pedido)}</td>
+      <td>{data.id}</td>
+      <td>{data.nome_fornecedor}</td>
+      <td>{formatarData(data.data_pedido)}</td>
 
-      <td>{each.status}</td>
+      <td>{data.status}</td>
 
       <td className={styles.functions}>
         <StyledConfirmButton
           onClick={() => {
             dataFetch({
-              simpleurl: `supplierorders/getorderbyid/${each.id}`,
+              simpleurl: `supplierorders/getorderbyid/${data.id}`,
             }).then((r) => {
-              setModalData(<ModalTable items={r} orderData={each} />);
+              setModalData(
+                <ModalTable items={r} orderData={data} setNewStatus={setData} />
+              );
             });
           }}
         >

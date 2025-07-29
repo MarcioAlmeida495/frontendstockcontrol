@@ -1,3 +1,4 @@
+import { createContext } from "react";
 import styled from "styled-components";
 
 const Overlay = styled.div.attrs(() => ({}))`
@@ -38,13 +39,21 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
+export const Context = createContext();
+
+export const Provider = ({ children, value }) => {
+  return <Context.Provider value={value}>{children}</Context.Provider>;
+};
+
 export const Modal = ({ show = true, onClose, children, width = "100%" }) => {
   return (
-    <Overlay $show={show} onClick={onClose}>
-      <ModalContent $width={width} onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>&times;</CloseButton>
-        {children}
-      </ModalContent>
-    </Overlay>
+    <Provider value={onClose}>
+      <Overlay $show={show} onClick={onClose}>
+        <ModalContent $width={width} onClick={(e) => e.stopPropagation()}>
+          <CloseButton onClick={onClose}>&times;</CloseButton>
+          {children}
+        </ModalContent>
+      </Overlay>
+    </Provider>
   );
 };

@@ -15,11 +15,18 @@ export const SupplierOrders = () => {
   const [data, setData] = useState();
   const [modalData, setModalData] = useState(null);
   const [status, setStatus] = useState("Todos");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [checkedDate, setCheckedDate] = useState(false);
+  const [monthSelect, setMonthSelect] = useState(new Date().getMonth() + 1);
+  const [yearSelect, setYearSelect] = useState(new Date().getFullYear());
   useEffect(() => {
-    dataFetch({ simpleurl: "supplierorders/getallorders" }).then((r) => {
+    setData(null);
+    dataFetch({
+      simpleurl: `supplierorders/getordersbymonthyear/${monthSelect}/${new Date().getFullYear()}`,
+    }).then((r) => {
       setData(r);
     });
-  }, [setData]);
+  }, [setData, monthSelect]);
 
   useEffect(() => {
     console.log(reset);
@@ -37,10 +44,51 @@ export const SupplierOrders = () => {
                 <tr>
                   <td>ID</td>
                   <td>Forn.Nome</td>
-                  <td>Data</td>
+                  <td>
+                    Data{" "}
+                    <select
+                      name="monthselect"
+                      onChange={(e) => {
+                        setMonthSelect(e.target.value);
+                      }}
+                      value={monthSelect}
+                    >
+                      {console.log(new Date().getMonth())}
+                      <option value={1}>Janeiro</option>
+                      <option value={2}>Fevereiro</option>
+                      <option value={3}>Março</option>
+                      <option value={4}>Abril</option>
+                      <option value={5}>Maio</option>
+                      <option value={6}>Junho</option>
+                      <option value={7}>Julho</option>
+                      <option value={8}>Agosto</option>
+                      <option value={9}>Setembro</option>
+                      <option value={10}>Outubro</option>
+                      <option value={11}>Novembro</option>
+                      <option value={12}>Dezembro</option>
+                    </select>
+                    <select name="yearselect">{}</select>
+                    <input
+                      name="date"
+                      type="date"
+                      value={date}
+                      onChange={(e) => {
+                        setDate(e.target.value);
+                      }}
+                    />
+                    <input
+                      name="checkdate"
+                      type="checkbox"
+                      onChange={(e) => {
+                        setCheckedDate(e.target.checked);
+                      }}
+                      defaultChecked={false}
+                    />
+                  </td>
                   <td>
                     Status:{" "}
                     <select
+                      name="typeselect"
                       value={status}
                       onChange={(e) => {
                         setStatus(e.target.value);
@@ -61,7 +109,12 @@ export const SupplierOrders = () => {
                   if (status === "Todos") {
                     isReturning = true;
                   } else if (each.status === status) isReturning = true;
-
+                  if (checkedDate) {
+                    console.log(String(each.data_pedido).split(" ")[0]);
+                    if (String(each.data_pedido).split(" ")[0] === date) {
+                      isReturning = true;
+                    } else isReturning = false;
+                  }
                   return isReturning ? (
                     <TrowOrder
                       key={index}
