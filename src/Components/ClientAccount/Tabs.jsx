@@ -117,13 +117,20 @@ export const Tabs = ({ tabs }) => {
 
   useEffect(() => {
     var newArray = [];
+    console.log("tabelas!! .. ");
     console.log(tabs);
     if (openTabs && tabs) {
+      console.log("entrou 1if");
+
       const filteredOpen = tabs.filter((tab) => {
         if (tab.status === "aberta") {
+          console.log(`comparando ${date} com ${tab.data}`);
+
           if (!date) return tab;
-          else if (date === tab.data) return tab;
-          else return null;
+          else if (date === removeHours(tab.data)) {
+            console.log("dentro do elseif");
+            return tab;
+          } else return null;
         } else return null;
       });
       if (filteredOpen.length > 0) newArray = filteredOpen;
@@ -143,7 +150,7 @@ export const Tabs = ({ tabs }) => {
       if (filteredClosed.length > 0)
         newArray = [...newArray, ...filteredClosed];
     }
-    newArray.sort((a, b) => a.id - b.id);
+    // newArray.sort((a, b) => a.id - b.id);
     console.log("ARRAY");
     console.log(newArray);
     functionsRef.current.setCheckedTabs(newArray);

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import styles from "./styles.module.css";
 import { Select } from "../Components/Select";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useCallback, useEffect, useState } from "react";
 import {
   StyledCancelButton,
@@ -17,11 +17,12 @@ import { NewSelect } from "../Components/NewSelect";
 export const NewSupplierOrder = () => {
   const [selectedID, setSelectedID] = useState();
 
-  const { register, setValue, getValues, handleSubmit, control } = useForm({
-    defaultValues: {
-      items: [],
-    },
-  });
+  const { register, setValue, getValues, handleSubmit, control, onChange } =
+    useForm({
+      defaultValues: {
+        items: [],
+      },
+    });
 
   const { fields, prepend, remove } = useFieldArray({
     control,
@@ -59,7 +60,7 @@ export const NewSupplierOrder = () => {
         $margin={"0px"}
         height={"30px"}
         onClick={() => {
-          prepend();
+          prepend({ quantidade: 1 });
           console.log(getValues());
         }}
       >
@@ -78,10 +79,31 @@ export const NewSupplierOrder = () => {
         {fields.map((field, index) => {
           return (
             <div className={styles.row} key={field.id}>
-              <StyledInput
-                className={styles.w100}
-                placeholder="qtd"
-                {...register(`items.${index}.quantidade`)}
+              <Controller
+                control={control}
+                name={`items.${index}.quantidade`}
+                render={({ field }) => (
+                  <StyledInput
+                    value={field.value ?? 1}
+                    className={styles.w100}
+                    type="number"
+                    placeholder="qtd"
+                    onChange={(e) => {
+                      console.log(typeof e.target.value);
+                      const valor = getValues(`items.${index}.valor`);
+                      valor
+                        ? (document.getElementById(
+                            `items.${index}.total`
+                          ).value = e.target.value * valor)
+                        : setValue(
+                            `items.${index}.valor`,
+                            document.getElementById(`items.${index}.total`) /
+                              e.target.value
+                          );
+                      field.onChange(e);
+                    }}
+                  />
+                )}
               />
               <Select
                 url={"items/getitems"}
@@ -90,10 +112,35 @@ export const NewSupplierOrder = () => {
                   setValue(`items.${index}.id`, selected.id);
                 }}
               />
+              <Controller
+                control={control}
+                name={`items.${index}.valor`}
+                render={({ field }) => (
+                  <StyledInput
+                    className={styles.w100}
+                    placeholder="Valor"
+                    value={field.value || ""}
+                    onChange={(e) => {
+                      const valor = e.target.value;
+                      const qtd = getValues(`items.${index}.quantidade`);
+
+                      console.log(valor, qtd);
+                      document.getElementById(`items.${index}.total`).value =
+                        e.target.value * getValues(`items.${index}.quantidade`);
+                      field.onChange(e); // importante manter isso!
+                    }}
+                  />
+                )}
+              />
               <StyledInput
-                className={styles.w100}
-                placeholder="valor"
-                {...register(`items.${index}.valor`)}
+                placeholder="Total"
+                id={`items.${index}.total`}
+                onChange={(e) => {
+                  setValue(
+                    `items.${index}.valor`,
+                    e.target.value / getValues(`items.${index}.quantidade`)
+                  );
+                }}
               />
               <div className={styles.modalInfo}>
                 {/* {dataFetch({ simpleurl: "" })} */}
