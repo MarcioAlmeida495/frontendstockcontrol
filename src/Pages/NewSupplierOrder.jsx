@@ -14,15 +14,23 @@ import { Div } from "../Styles/styledDiv";
 import { dataFetch, formatInit } from "../utils/functions";
 import { StyledInput } from "../Styles/styledInput";
 import { NewSelect } from "../Components/NewSelect";
+import { onSuccess } from "../handles/handles";
 export const NewSupplierOrder = () => {
   const [selectedID, setSelectedID] = useState();
 
-  const { register, setValue, getValues, handleSubmit, control, onChange } =
-    useForm({
-      defaultValues: {
-        items: [],
-      },
-    });
+  const {
+    register,
+    setValue,
+    getValues,
+    handleSubmit,
+    control,
+    onChange,
+    reset,
+  } = useForm({
+    defaultValues: {
+      items: [],
+    },
+  });
 
   const { fields, prepend, remove } = useFieldArray({
     control,
@@ -175,6 +183,10 @@ export const NewSupplierOrder = () => {
           dataFetch({
             simpleurl: "supplierorders/createorder",
             init: formatInit({ data: getValues() }),
+          }).then((r) => {
+            if (r.success) {
+              reset();
+            }
           });
         }}
       >
