@@ -104,7 +104,7 @@ export const Tabs = ({ tabs }) => {
   const closedCheckId = useId();
   const [openTabs, setOpenTabs] = useState(true);
   const [closedTabs, setClosedTabs] = useState(false);
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const functions = useContext(Context);
   const functionsRef = useRef(useContext(Context));
   const refDate = useRef();
@@ -220,6 +220,7 @@ export const Tabs = ({ tabs }) => {
             <input
               type="checkbox"
               ref={refCheckDate}
+              defaultChecked
               className={styles.checkbox}
               onChange={(e) => {
                 if (e.target.checked) {

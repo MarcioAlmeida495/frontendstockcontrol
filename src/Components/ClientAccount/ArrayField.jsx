@@ -20,7 +20,6 @@ export const ArrayField = ({
   watcher,
 }) => {
   const [selectedItem, setSelectedItem] = useState();
-  const refs = useRef();
   var registers = {
     quantidade: `items.${index}.quantidade`,
     item: `items.${index}.item`,
@@ -59,8 +58,8 @@ export const ArrayField = ({
   return (
     <div key={field.id} className={styles.newitem}>
       <StyledInput
-        ref={refs}
         $width={"80px"}
+        autoFocus={false}
         type="number"
         placeholder="Qtd"
         {...register(registers.quantidade, {
@@ -68,20 +67,12 @@ export const ArrayField = ({
             // console.log(e.target.value);
             setValue(
               registers.total,
-              parseFloat(
-                getValues(registers.preco) * getValues(registers.quantidade)
-              ).toFixed(2)
+              parseFloat(getValues(registers.preco) * e.target.value).toFixed(2)
             );
           },
         })}
         defaultValue={1}
       />
-      {/* <Select
-        getSelected={(value) => setSelectedItem(value)}
-        url={"items/getitems"}
-        width={"300px"}
-        {...register(registers.item)}
-      /> */}
       <NewSelect
         getSelected={(value) => setSelectedItem(value)}
         register={register}

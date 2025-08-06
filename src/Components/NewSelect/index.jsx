@@ -2,6 +2,7 @@ import React, { useEffect, useId, useState } from "react";
 import styles from "./styles.module.css";
 import { StyledInput } from "../../Styles/styledInput";
 import { dataFetch } from "../../utils/functions";
+import { useRef } from "react";
 export const NewSelect = ({
   placeholder,
   setValue,
@@ -13,6 +14,7 @@ export const NewSelect = ({
   const checkId = useId();
   const [selectedOption, setSelectedOption] = useState();
   const [searchValue, setSearchValue] = useState("");
+  const refSearch = useRef(null);
   const [data, setData] = useState([]);
   const dataID = useId();
   useEffect(() => {
@@ -20,7 +22,9 @@ export const NewSelect = ({
       setData(r.sort((a, b) => a.nome.localeCompare(b.nome)))
     );
   }, [url, setData]);
-
+  useEffect(() => {
+    refSearch.current?.focus();
+  }, []);
   useEffect(() => {
     selectedOption && setValue(registerName, selectedOption.id);
     selectedOption && getSelected(selectedOption);
@@ -37,10 +41,15 @@ export const NewSelect = ({
         id={checkId}
         type="checkbox"
         className={styles.showoptionscheckbox}
+        onChange={(e) => {
+          if (e.target.checked) refSearch.current.focus();
+        }}
+        defaultChecked
         hidden
       />
       <div>
         <StyledInput
+          ref={refSearch}
           type="search"
           placeholder="Digite para filtrar"
           value={searchValue}

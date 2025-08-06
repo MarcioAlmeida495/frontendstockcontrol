@@ -67,7 +67,10 @@ export const ClientAccount = ({ client }) => {
 
   useEffect(() => {
     setValue("items", []);
-    setValue("client", client.id);
+    setValue("client", () => {
+      if (client.id) return client.id;
+      else return null;
+    });
   }, [client, setValue]);
   return (
     <MyContext functions={{ checkedTabs, setCheckedTabs, attData }}>

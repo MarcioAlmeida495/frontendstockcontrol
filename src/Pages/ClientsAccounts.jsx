@@ -12,7 +12,16 @@ export const ClientsAccounts = () => {
   const [openTabs, setOpenTabs] = useState(true);
   useEffect(() => {
     dataFetch({ simpleurl: "clients/getclients" }).then((r) => {
-      setClients(r);
+      const clientavulso = r.find((item) => item.id === 9999);
+
+      setClients([
+        clientavulso,
+        ...r
+          .filter((client) => client.id !== 9999)
+          .sort((a, b) =>
+            a.nome.toUpperCase().localeCompare(b.nome.toUpperCase())
+          ),
+      ]);
     });
   }, []);
   return (
@@ -35,26 +44,23 @@ export const ClientsAccounts = () => {
             placeholder="Buscar"
           />
           {clients &&
-            clients
-              .sort((a, b) =>
-                a.nome.toUpperCase().localeCompare(b.nome.toUpperCase())
-              )
-              .map((client, index) => {
-                if (client.nome.toUpperCase().includes(search.toUpperCase()))
-                  return (
-                    <div
-                      className={styles.clientButton}
-                      onClick={() => {
-                        setOpenClient(client);
-                        setSearch("");
-                      }}
-                      key={index}
-                    >
-                      {client.nome}
-                    </div>
-                  );
-                else return null;
-              })}
+            clients.map((client, index) => {
+              console.log(client);
+              if (client.nome.toUpperCase().includes(search.toUpperCase()))
+                return (
+                  <div
+                    className={styles.clientButton}
+                    onClick={() => {
+                      setOpenClient(client);
+                      setSearch("");
+                    }}
+                    key={index}
+                  >
+                    {client.nome}
+                  </div>
+                );
+              else return null;
+            })}
         </div>
         <div>{openClient && <ClientAccount client={openClient} />}</div>
         {!openClient && <OpenTabs />}
