@@ -7,6 +7,7 @@ import {
   formatarData,
   formatDataYYYYMMDD,
   formatInit,
+  getDate,
   removeHours,
 } from "../../utils/functions";
 import { useId } from "react";
@@ -104,7 +105,7 @@ export const Tabs = ({ tabs }) => {
   const closedCheckId = useId();
   const [openTabs, setOpenTabs] = useState(true);
   const [closedTabs, setClosedTabs] = useState(false);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState(getDate());
   const functions = useContext(Context);
   const functionsRef = useRef(useContext(Context));
   const refDate = useRef();
@@ -210,7 +211,7 @@ export const Tabs = ({ tabs }) => {
             </label>
             <input
               type="date"
-              defaultValue={new Date().toISOString().split("T")[0]}
+              defaultValue={getDate()}
               onChange={(e) => {
                 setDate(e.target.value);
                 refCheckDate.current.checked = true;

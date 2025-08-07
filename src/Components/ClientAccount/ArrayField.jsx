@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import styles from "./styles.module.css";
 import {
@@ -9,6 +9,8 @@ import { Select } from "../Select";
 import { StyledInput } from "../../Styles/styledInput";
 import { CancelIcon } from "../AnimationIcons/Cancel";
 import { NewSelect } from "../NewSelect";
+import { useRefsContext } from ".";
+
 export const ArrayField = ({
   field,
   remove,
@@ -19,6 +21,7 @@ export const ArrayField = ({
   resets,
   watcher,
 }) => {
+  const refsContext = useRefsContext();
   const [selectedItem, setSelectedItem] = useState();
   var registers = {
     quantidade: `items.${index}.quantidade`,
@@ -57,54 +60,57 @@ export const ArrayField = ({
   ]);
   return (
     <div key={field.id} className={styles.newitem}>
-      <StyledInput
-        $width={"80px"}
-        autoFocus={false}
-        type="number"
-        placeholder="Qtd"
-        {...register(registers.quantidade, {
-          onChange: (e) => {
-            // console.log(e.target.value);
-            setValue(
-              registers.total,
-              parseFloat(getValues(registers.preco) * e.target.value).toFixed(2)
-            );
-          },
-        })}
-        defaultValue={1}
-      />
-      <NewSelect
-        getSelected={(value) => setSelectedItem(value)}
-        register={register}
-        registerName={registers.item}
-        url={"items/getitems"}
-        setValue={setValue}
-      />
-      <StyledInput
-        $width={"80px"}
-        disabled
-        defaultValue={selectedItem && selectedItem.preco}
-        {...register(registers.preco)}
-      />
-      <StyledInput
-        $width={"80px"}
-        disabled
-        defaultValue={
-          selectedItem && parseFloat(Number(selectedItem.preco)).toFixed(2)
-        }
-        {...register(registers.total)}
-      />
+      <>
+        <StyledInput
+          $width={"80px"}
+          autoFocus={false}
+          type="number"
+          placeholder="Qtd"
+          {...register(registers.quantidade, {
+            onChange: (e) => {
+              setValue(
+                registers.total,
+                parseFloat(getValues(registers.preco) * e.target.value).toFixed(
+                  2
+                )
+              );
+            },
+          })}
+          defaultValue={1}
+        />
+        <NewSelect
+          getSelected={(value) => setSelectedItem(value)}
+          register={register}
+          registerName={registers.item}
+          url={"items/getitems"}
+          setValue={setValue}
+        />
+        <StyledInput
+          $width={"80px"}
+          disabled
+          defaultValue={selectedItem && selectedItem.preco}
+          {...register(registers.preco)}
+        />
+        <StyledInput
+          $width={"80px"}
+          disabled
+          defaultValue={
+            selectedItem && parseFloat(Number(selectedItem.preco)).toFixed(2)
+          }
+          {...register(registers.total)}
+        />
 
-      <StyledCancelButton
-        width={"40px"}
-        type="button"
-        onClick={() => {
-          resets.setCounterReset(resets.counterReset + 1);
-          remove(index);
-        }}
-      >
-        <CancelIcon />
-      </StyledCancelButton>
+        <StyledCancelButton
+          width={"40px"}
+          type="button"
+          onClick={() => {
+            resets.setCounterReset(resets.counterReset + 1);
+            remove(index);
+          }}
+        >
+          <CancelIcon />
+        </StyledCancelButton>
+      </>
     </div>
   );
 };

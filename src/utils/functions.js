@@ -73,3 +73,13 @@ export const removeHours = (dataString) => {
   const [date] = dataString.split(" ");
   return date;
 };
+
+export const getDate = () => {
+  const agora = new Date();
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, "0"); // mês começa em 0
+  const dia = String(agora.getDate()).padStart(2, "0");
+
+  const dataLocal = `${ano}-${mes}-${dia}`;
+  return dataLocal;
+};

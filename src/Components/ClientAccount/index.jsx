@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import styles from "./styles.module.css";
 import { Tabs } from "./Tabs";
@@ -16,6 +23,13 @@ import { Payment } from "./Payment";
 import { dataFetch, formatInit } from "../../utils/functions";
 import { MyContext } from "../Context";
 import { useCallback } from "react";
+
+export const refsContext = createContext();
+export const useRefsContext = () => useContext(refsContext);
+export const Provider = ({ children, value }) => {
+  return <refsContext.Provider value={value}>{children}</refsContext.Provider>;
+};
+
 export const ClientAccount = ({ client }) => {
   const [infoModal, setInfoModal] = useState(false);
   const [counterReset, setCounterReset] = useState(0);
@@ -67,10 +81,7 @@ export const ClientAccount = ({ client }) => {
 
   useEffect(() => {
     setValue("items", []);
-    setValue("client", () => {
-      if (client.id) return client.id;
-      else return null;
-    });
+    setValue("client", client.id);
   }, [client, setValue]);
   return (
     <MyContext functions={{ checkedTabs, setCheckedTabs, attData }}>
@@ -103,19 +114,21 @@ export const ClientAccount = ({ client }) => {
                 </RowDiv>
                 <input {...register("client")} hidden />
                 <div className={styles.itemsDiv}>
-                  {fields.map((field, index) => (
-                    <ArrayField
-                      field={field}
-                      index={index}
-                      register={register}
-                      remove={remove}
-                      key={field.id}
-                      getValues={getValues}
-                      setValue={setValue}
-                      resets={{ counterReset, setCounterReset }}
-                      watcher={watch}
-                    />
-                  ))}
+                  <Provider>
+                    {fields.map((field, index) => (
+                      <ArrayField
+                        field={field}
+                        index={index}
+                        register={register}
+                        remove={remove}
+                        key={field.id}
+                        getValues={getValues}
+                        setValue={setValue}
+                        resets={{ counterReset, setCounterReset }}
+                        watcher={watch}
+                      />
+                    ))}
+                  </Provider>
                 </div>
                 <div style={{ height: "40px", display: "block" }}>
                   <h2>{`Total: ${parseFloat(total > 0 ? total : 0).toFixed(
@@ -125,7 +138,8 @@ export const ClientAccount = ({ client }) => {
                 </div>
                 <StyledConfirmButton
                   onClick={() => {
-                    // console.log(getValues());
+                    console.log("VALUES!!!");
+                    console.log(getValues());
                     dataFetch({
                       simpleurl: "tabs/createclienttab",
                       init: formatInit({ data: getValues() }),
