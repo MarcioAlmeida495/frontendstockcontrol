@@ -12,38 +12,50 @@ import { StyledInput } from "../../Styles/styledInput";
 import { Select } from "../../Components/Select";
 
 import styles from "../styles.module.css";
-export const ModalTable = ({ items, orderData, setNewStatus }) => {
+import { NewSelect } from "../../Components/NewSelect";
+import { SimpleSelect } from "../../Components/SimpleSelect";
+export const ModalTable = ({
+  defaultItems,
+  orderData,
+  setNewStatus,
+  orderId,
+}) => {
   var totalSum = 0;
   const [isEditing, setIsEditing] = useState(false);
   const [altered, setAltered] = useState(false);
+  const [items, setItems] = useState(defaultItems);
   const refSelected = useRef(null);
   const context = useContext(MyContext);
   const [data, setData] = useState(orderData);
   const modalContext = useContext(Context);
-  const { register, control, getValues, setValue } = useForm({
+  const [itemsSelect, setItemsSelect] = useState(null);
+
+  const { register, control, getValues, setValue, reset } = useForm({
     defaultValues: {
-      items: items,
+      items: items || [],
     },
   });
+
+  useEffect(() => {
+    reset({ items });
+  }, [items, reset]);
   const { fields, prepend, remove } = useFieldArray({
     control,
     name: "items",
   });
-  console.log("MODALCONTEXT", modalContext);
+
+  useEffect(() => {
+    dataFetch({ simpleurl: "items/getitems" }).then((r) => setItemsSelect(r));
+  }, []);
   useEffect(() => {
     setData((prev) => ({ ...prev, status: refSelected.current.value }));
     setNewStatus((prev) => ({ ...prev, status: refSelected.current.value }));
     setAltered(false);
   }, [context.reset, setNewStatus]);
 
-  useEffect(() => {
-    console.log("data>> ");
-    console.log(data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
-  useEffect(() => {
-    console.log(altered);
-  }, [altered]);
+  useEffect(() => {}, [altered]);
 
   return (
     <div style={{ maxWidth: "800px", margin: "auto", height: "100%" }}>
@@ -101,9 +113,6 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
               width={"300px"}
               style={{ float: "right" }}
               onClick={() => {
-                console.log("status: ");
-                console.log(data.status);
-                console.log(`url :: supplierorders/setorderstatus/${data.id}`);
                 dataFetch({
                   simpleurl: `supplierorders/setorderstatus/${data.id}`,
                   init: formatInit({
@@ -114,6 +123,11 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
                   }),
                 }).then((r) => {
                   if (r.success) {
+                    dataFetch({
+                      simpleurl: `supplierorders/getorderbyid/${data.id}`,
+                    }).then((r) => {
+                      setItems(r);
+                    });
                     context.setReset(context.reset + 1);
                   }
                 });
@@ -145,7 +159,6 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
             <tbody>
               {items.map((value, index) => {
                 totalSum += value.quantidade * value.preco;
-                console.log(totalSum);
                 return (
                   <tr key={index}>
                     <td>{value.quantidade}</td>
@@ -165,9 +178,7 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
             {" "}
             <StyledConfirmButton
               type="button"
-              onClick={() =>
-                prepend({ quantidade: 1, item_nome: "", preco: 0 })
-              }
+              onClick={() => prepend({ quantidade: 1, preco: 0 })}
             >
               Adicionar Item
             </StyledConfirmButton>
@@ -175,14 +186,14 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                overflowY: "scroll",
+                overflowY: "auto",
                 gap: "5px",
                 width: "100%",
                 padding: "10px",
               }}
             >
               {fields.map((each, index) => {
-                console.log(each);
+                setValue(`items.${index}.item_id`, each.item_id);
                 return (
                   <div className={styles.row} key={each.id}>
                     <Controller
@@ -195,14 +206,13 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
                           type="number"
                           placeholder="qtd"
                           onChange={(e) => {
-                            console.log(typeof e.target.value);
-                            const valor = getValues(`items.${index}.valor`);
-                            valor
+                            const preco = getValues(`items.${index}.preco`);
+                            preco
                               ? (document.getElementById(
                                   `items.${index}.total`
-                                ).value = e.target.value * valor)
+                                ).value = e.target.value * preco)
                               : setValue(
-                                  `items.${index}.valor`,
+                                  `items.${index}.preco`,
                                   document.getElementById(
                                     `items.${index}.total`
                                   ) / e.target.value
@@ -212,27 +222,54 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
                         />
                       )}
                     />
-                    <Select
+                    {console.log(each.item_id)}
+                    {/* <NewSelect
+                      register={register}
+                      registerName={`items.${index}.item_id`}
+                      setValue={setValue}
+                      url={"items/getitems"}
+                      selected={each.item_id}
+                    /> */}
+                    {/* <select
+                      {...register(`items.${index}.item_id`)}
+                      defaultValue={each.item_id}
+                    >
+                      {itemsSelect.map((each, index) => {
+                        return (
+                          <option key={index} value={each.id}>
+                            {each.nome}
+                          </option>
+                        );
+                      })}
+                    </select> */}
+                    <SimpleSelect
+                      data={itemsSelect}
+                      register={register}
+                      registerName={`items.${index}.item_id`}
+                      selectedId={each.item_id}
+                      defaultPlaceholder={"Produto"}
+                    />
+                    {/* <Select
                       url={"items/getitems"}
                       selectedId={each.item_id}
                       showInfo={true}
+                      {...register(`items.${index}.item_id`)}
                       getSelected={(selected) => {
-                        setValue(`items.${index}.id`, selected.id);
+                        setValue(`items.${index}.item_id`, selected.id);
                       }}
-                    />
+                    /> */}
                     <Controller
                       control={control}
-                      name={`items.${index}.valor`}
+                      name={`items.${index}.preco`}
                       render={({ field }) => (
                         <StyledInput
                           className={styles.w100}
-                          placeholder="Valor"
+                          placeholder="preco"
                           value={field.value || each.preco}
                           onChange={(e) => {
-                            const valor = e.target.value;
+                            const preco = e.target.value;
                             const qtd = getValues(`items.${index}.quantidade`);
 
-                            console.log(valor, qtd);
                             document.getElementById(
                               `items.${index}.total`
                             ).value =
@@ -249,7 +286,7 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
                       defaultValue={`${each.quantidade * each.preco}`}
                       onChange={(e) => {
                         setValue(
-                          `items.${index}.valor`,
+                          `items.${index}.preco`,
                           e.target.value /
                             getValues(`items.${index}.quantidade`)
                         );
@@ -282,7 +319,6 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
             <StyledConfirmButton
               onClick={() => {
                 const updatedItems = getValues("items");
-                console.log("Itens atualizados:", updatedItems);
                 // Aqui você pode chamar seu backend com esses dados
                 dataFetch({
                   simpleurl: `supplierorders/updateitems/${data.id}`,
@@ -294,13 +330,27 @@ export const ModalTable = ({ items, orderData, setNewStatus }) => {
                 }).then((r) => {
                   if (r.success) {
                     setIsEditing(false);
+                    dataFetch({
+                      simpleurl: `supplierorders/getorderbyid/${data.id}`,
+                    }).then((r) => {
+                      console.log(r);
+                      setItems(r);
+                    });
                     context.setReset(context.reset + 1);
                   }
                 });
               }}
             >
-              Salvar Itens
+              Salvar Mudanças
             </StyledConfirmButton>
+            <button
+              onClick={() => {
+                const values = getValues();
+                console.log(values);
+              }}
+            >
+              xssd
+            </button>
           </div>
         )}
       </div>

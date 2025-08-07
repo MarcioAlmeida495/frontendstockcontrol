@@ -9,6 +9,7 @@ export const NewSelect = ({
   register,
   registerName,
   url,
+  selected = undefined,
   getSelected = () => {},
 }) => {
   const checkId = useId();
@@ -25,6 +26,13 @@ export const NewSelect = ({
   useEffect(() => {
     refSearch.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (!selected || !data.length) return;
+
+    const found = data.find((item) => item.id === selected);
+    if (found) setSelectedOption(found);
+  }, [selected, data]);
   useEffect(() => {
     selectedOption && setValue(registerName, selectedOption.id);
     selectedOption && getSelected(selectedOption);
@@ -44,7 +52,7 @@ export const NewSelect = ({
         onChange={(e) => {
           if (e.target.checked) refSearch.current.focus();
         }}
-        defaultChecked
+        defaultChecked={false}
         hidden
       />
       <div>
@@ -71,6 +79,7 @@ export const NewSelect = ({
                         className={styles.optioncheckbox}
                         type="radio"
                         hidden
+                        defaultChecked={selected === each.id}
                         onChange={(e) => {
                           console.log(each);
                           console.log(e.target);

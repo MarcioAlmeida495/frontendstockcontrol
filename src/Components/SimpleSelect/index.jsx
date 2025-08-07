@@ -12,7 +12,7 @@ const Div = styled.div`
   justify-content: start;
   height: 100%;
   max-height: 30px;
-  width: 100%;
+  width: ${({ $width }) => $width || "100%"};
   gap: 5px;
 `;
 
@@ -21,75 +21,24 @@ const AbsoluteDiv = styled.div`
   height: 35px;
 `;
 
-export const Select = ({
-  url,
+export const SimpleSelect = ({
   defaultPlaceholder,
-  getSelected = () => {},
   width = undefined,
-  showInfo = true,
-  register = undefined,
+  data,
+  register,
   selectedId = undefined,
-  refresh = true,
+  registerName,
 }) => {
-  const [data, setData] = useState([]);
-  const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [title, setTitle] = useState("");
+  const [selected, setSelected] = useState();
   const refSelect = useRef(null);
-
-  const attData = useCallback(() => {
-    dataFetch({ simpleurl: url })
-      .then((r) => {
-        setData(r);
-        setSelected(r[0]);
-      })
-      .catch((error) => window.alert(error));
-  }, [url]);
-
   useEffect(() => {
-    attData();
-  }, [attData]);
-
-  useEffect(() => {
-    console.log(selectedId);
+    setSelected(selectedId);
   }, [selectedId]);
 
-  useEffect(() => {
-    console.log(`SELECTED :: ${selected} no USEEFFECT`);
-    getSelected(selected);
-    setTitle("");
-  }, [selected, getSelected]);
-
-  useEffect(() => {
-    if (refSelect.current.options[0]) {
-      refSelect.current.value = refSelect.current.options[0].value;
-      data.map((each) => {
-        if (Number(each.id) === Number(refSelect.current.value)) {
-          // console.log('encontrado');
-          setSelected(each);
-          return true;
-        } else return null;
-      });
-      // console.log(refSelect.current.options[0])
-    }
-  }, [search, data]);
-
-  useEffect(() => {
-    // console.log(data);
-    if (selectedId) {
-      for (var i = 0; i < data.length; i++) {
-        if (selectedId === data[i].id) {
-          refSelect.current.value = data[i].id;
-
-          i = data.length;
-        }
-      }
-    }
-  }, [data, selectedId]);
-
   return (
-    <Div width={`${width ? width : undefined}`}>
+    <Div $width={width}>
       {isSearching ? (
         <>
           <StyledInput
@@ -149,50 +98,18 @@ export const Select = ({
         </>
       )}
       {
-        <StyledSelect
-          title={JSON.stringify(selected)}
-          {...register}
-          ref={refSelect}
-          defaultValue={selectedId}
-          onChange={(e) => {
-            data.map((each) => {
-              if (Number(each.id) === Number(e.target.value)) {
-                // console.log('encontrado');
-                setSelected(each);
-                return true;
-              } else return null;
-            });
-          }}
-        >
+        <StyledSelect {...register(registerName)} defaultValue={selectedId}>
           {data &&
             data.map((element, index) => {
-              try {
-                var test = false;
-                test = removeAccents(element.nome)
-                  .toUpperCase()
-                  .includes(removeAccents(search.toUpperCase()));
-              } catch (error) {}
-              if (test)
-                return (
-                  <option value={element.id} key={index}>
-                    {element.nome}
-                  </option>
-                );
-              else return null;
+              // console.log(element.id);
+              return (
+                <option value={Number(element.id)} key={index}>
+                  {element.nome}
+                </option>
+              );
             })}
         </StyledSelect>
       }
-
-      {refresh && (
-        <StyledConfirmButton
-          width={"30px"}
-          onClick={() => {
-            attData();
-          }}
-        >
-          <RefreshIcon />
-        </StyledConfirmButton>
-      )}
     </Div>
   );
 };

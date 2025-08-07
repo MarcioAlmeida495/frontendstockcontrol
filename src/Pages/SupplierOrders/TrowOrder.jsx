@@ -22,7 +22,12 @@ export const TrowOrder = ({ each, setModalData }) => {
               simpleurl: `supplierorders/getorderbyid/${data.id}`,
             }).then((r) => {
               setModalData(
-                <ModalTable items={r} orderData={data} setNewStatus={setData} />
+                <ModalTable
+                  defaultItems={r}
+                  orderData={data}
+                  setNewStatus={setData}
+                  orderId={data.id}
+                />
               );
             });
           }}
