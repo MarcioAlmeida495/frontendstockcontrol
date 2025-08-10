@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { dataFetch, removeAccents } from "../../utils/functions";
+import { useEffect, useRef, useState } from "react";
 import { StyledSelect } from "../../Styles/styledSelect";
 import styled from "styled-components";
 import { StyledInput } from "../../Styles/styledInput";
 import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
-import { RefreshIcon } from "../AnimationIcons/Refresh";
 
 const Div = styled.div`
   display: flex;
@@ -23,19 +21,35 @@ const AbsoluteDiv = styled.div`
 
 export const SimpleSelect = ({
   defaultPlaceholder,
-  width = undefined,
+  width,
   data,
   register,
-  selectedId = undefined,
+  setValue, // <-- vem do RHForm
+  selectedId,
   registerName,
 }) => {
   const [search, setSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [selected, setSelected] = useState();
   const refSelect = useRef(null);
+
+  // sempre que mudar selectedId vindo de fora
   useEffect(() => {
-    setSelected(selectedId);
-  }, [selectedId]);
+    if (selectedId !== undefined) {
+      setValue(registerName, selectedId); // atualiza no RHForm
+    }
+  }, [selectedId, registerName, setValue]);
+
+  // quando digitar algo, já coloca o primeiro achado no select
+  useEffect(() => {
+    if (search && data?.length) {
+      const firstMatch = data.find((el) =>
+        el.nome.toUpperCase().includes(search.toUpperCase())
+      );
+      if (firstMatch) {
+        setValue(registerName, firstMatch.id); // RHForm
+      }
+    }
+  }, [search, data, registerName, setValue]);
 
   return (
     <Div $width={width}>
@@ -66,50 +80,48 @@ export const SimpleSelect = ({
           </StyledConfirmButton>
         </>
       ) : (
-        <>
-          <AbsoluteDiv>
-            <div style={{ position: "absolute", top: "5px", left: "5px" }}>
-              <img
-                className="lupeimg"
-                alt="searchicon"
-                title={search}
-                onClick={() => {
-                  setIsSearching(true);
+        <AbsoluteDiv>
+          <div style={{ position: "absolute", top: "5px", left: "5px" }}>
+            <img
+              className="lupeimg"
+              alt="searchicon"
+              title={search}
+              onClick={() => {
+                setIsSearching(true);
+              }}
+              style={{ width: "25px", cursor: "pointer" }}
+              src="icons/loupe.png"
+            />
+            {search && (
+              <div
+                style={{
+                  display: "block",
+                  position: "absolute",
+                  top: "0px",
+                  right: "-5px",
+                  width: "3px",
+                  height: "3px",
+                  border: "4px solid red",
+                  borderRadius: "5px",
                 }}
-                style={{ width: "25px" }}
-                src="icons/loupe.png"
               />
-              {search && (
-                <div
-                  style={{
-                    display: "block",
-                    position: "absolute",
-                    top: "0px",
-                    right: "-5px",
-                    width: "3px",
-                    height: "3px",
-                    border: "4px solid red",
-                    borderRadius: "5px",
-                  }}
-                />
-              )}
-            </div>
-          </AbsoluteDiv>
-        </>
+            )}
+          </div>
+        </AbsoluteDiv>
       )}
-      {
-        <StyledSelect {...register(registerName)} defaultValue={selectedId}>
-          {data &&
-            data.map((element, index) => {
-              // console.log(element.id);
+      <StyledSelect ref={refSelect} {...register(registerName)}>
+        {data &&
+          data.map((element, index) => {
+            if (element.nome.toUpperCase().includes(search.toUpperCase())) {
               return (
                 <option value={Number(element.id)} key={index}>
                   {element.nome}
                 </option>
               );
-            })}
-        </StyledSelect>
-      }
+            }
+            return null;
+          })}
+      </StyledSelect>
     </Div>
   );
 };

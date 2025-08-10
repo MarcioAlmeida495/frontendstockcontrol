@@ -245,6 +245,7 @@ export const ModalTable = ({
                     <SimpleSelect
                       data={itemsSelect}
                       register={register}
+                      setValue={setValue}
                       registerName={`items.${index}.item_id`}
                       selectedId={each.item_id}
                       defaultPlaceholder={"Produto"}
@@ -345,7 +346,7 @@ export const ModalTable = ({
             </StyledConfirmButton>
             <button
               onClick={() => {
-                const values = getValues();
+                const values = getValues("items");
                 console.log(values);
               }}
             >
