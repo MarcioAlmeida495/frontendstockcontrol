@@ -41,7 +41,11 @@ export const Select = ({
   const attData = useCallback(() => {
     dataFetch({ simpleurl: url })
       .then((r) => {
-        setData(r);
+        setData(
+          r.sort((a, b) =>
+            a.nome.toUpperCase().localeCompare(b.nome.toUpperCase())
+          )
+        );
         setSelected(r[0]);
       })
       .catch((error) => window.alert(error));

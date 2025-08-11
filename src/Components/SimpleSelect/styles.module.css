@@ -1,0 +1,95 @@
+/* styles.module.css */
+
+/* Container principal do select e campo de busca */
+.divContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
+  max-height: 30px;
+  width: 100%;
+  gap: 5px;
+}
+
+/* Versão com largura customizada (se for preciso via inline style) */
+.widthCustom {
+  width: var(--custom-width, 100%);
+}
+
+/* Div absoluta para o ícone da lupa */
+.absoluteDiv {
+  position: absolute;
+  height: 35px;
+}
+
+/* Ícone da lupa */
+.lupeimg {
+  width: 25px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.lupeimg:hover {
+  transform: scale(1.1);
+}
+
+/* Pontinho vermelho que indica busca ativa */
+.searchDot {
+  display: block;
+  position: absolute;
+  top: 0px;
+  right: -5px;
+  width: 3px;
+  height: 3px;
+  border: 4px solid red;
+  border-radius: 5px;
+}
+
+/* Estilo do select */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 6px 32px 6px 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-width: 200px;
+}
+
+/* Ícone de seta no select */
+.select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20'%3E%3Cpath fill='%236b7280' d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1rem;
+}
+
+.select:hover {
+  border-color: #9ca3af;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+/* Estilo das opções */
+.select option {
+  padding: 6px;
+  font-size: 0.95rem;
+}
+
+/* Estado desabilitado */
+.select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  background-color: #f3f4f6;
+  color: #9ca3af;
+}

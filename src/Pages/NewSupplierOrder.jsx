@@ -15,8 +15,10 @@ import { dataFetch, formatInit } from "../utils/functions";
 import { StyledInput } from "../Styles/styledInput";
 import { NewSelect } from "../Components/NewSelect";
 import { onSuccess } from "../handles/handles";
-export const NewSupplierOrder = () => {
+import { SimpleSelect } from "../Components/SimpleSelect";
+export const NewSupplierOrder = ({ defaultItems }) => {
   const [selectedID, setSelectedID] = useState();
+  const [suppliers, setSuppliers] = useState();
 
   const {
     register,
@@ -28,10 +30,20 @@ export const NewSupplierOrder = () => {
     reset,
   } = useForm({
     defaultValues: {
-      items: [],
+      items: defaultItems || [],
     },
   });
+  useEffect(() => {
+    dataFetch({ simpleurl: "supplier/getsuppliers" }).then((r) => {
+      setSuppliers(
+        r.sort((a, b) =>
+          a.nome.toUpperCase().localeCompare(b.nome.toUpperCase())
+        )
+      );
 
+      console.log(r);
+    });
+  }, []);
   const { fields, prepend, remove } = useFieldArray({
     control,
     name: "items",
@@ -45,12 +57,15 @@ export const NewSupplierOrder = () => {
         register={register}
         setValue={setValue}
       /> */}
-      <NewSelect
-        register={register}
-        registerName={"supplier_ID"}
-        setValue={setValue}
-        url={"supplier/getsuppliers"}
-      />
+      {suppliers && (
+        <SimpleSelect
+          data={suppliers}
+          register={register}
+          registerName={"supplier_ID"}
+          setValue={setValue}
+          url={"supplier/getsuppliers"}
+        />
+      )}
       {/* <Select
         marg
         width={"100%"}

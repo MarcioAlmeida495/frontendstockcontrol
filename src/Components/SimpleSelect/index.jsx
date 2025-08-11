@@ -3,7 +3,7 @@ import { StyledSelect } from "../../Styles/styledSelect";
 import styled from "styled-components";
 import { StyledInput } from "../../Styles/styledInput";
 import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
-
+import styles from "./styles.module.css";
 const Div = styled.div`
   display: flex;
   align-items: center;
@@ -111,16 +111,20 @@ export const SimpleSelect = ({
       )}
       <StyledSelect ref={refSelect} {...register(registerName)}>
         {data &&
-          data.map((element, index) => {
-            if (element.nome.toUpperCase().includes(search.toUpperCase())) {
-              return (
-                <option value={Number(element.id)} key={index}>
-                  {element.nome}
-                </option>
-              );
-            }
-            return null;
-          })}
+          data
+            .sort((a, b) =>
+              a.nome.toUpperCase().localeCompare(b.nome.toUpperCase())
+            )
+            .map((element, index) => {
+              if (element.nome.toUpperCase().includes(search.toUpperCase())) {
+                return (
+                  <option value={Number(element.id)} key={index}>
+                    {element.nome}
+                  </option>
+                );
+              }
+              return null;
+            })}
       </StyledSelect>
     </Div>
   );
