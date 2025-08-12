@@ -12,7 +12,6 @@ export const sum = (arrTabs) => {
       const payments = each.pagamentos.reduce((acc, payment) => {
         return acc + payment.valor;
       }, 0);
-      console.log(payments);
       return acc + each.valor - payments;
     }, 0)
   ).toFixed(2);
@@ -30,7 +29,6 @@ export const sumPayments = (arrTabs) => {
       const payments = each.pagamentos.reduce((acc, payment) => {
         return acc + payment.valor;
       }, 0);
-      console.log(payments);
       return acc + payments;
     }, 0)
   ).toFixed(2);
@@ -88,6 +86,8 @@ export const Payment = ({ reset, setReset }) => {
                 }),
               }).then((r) => {
                 if (r) {
+                  console.log("pagamento att");
+                  console.log(r);
                   functions.attData();
                   setReset(reset + 1);
                 }

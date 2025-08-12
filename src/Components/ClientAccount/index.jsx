@@ -43,11 +43,16 @@ export const ClientAccount = ({ client }) => {
   });
 
   const attData = useCallback(() => {
+    setTabs(null);
+    setCheckedTabs([]);
     const url = `tabs/getclienttabs/${client.id}`;
-    dataFetch({ simpleurl: url }).then((r) => {
-      setTabs(r);
-      console.log(r);
-    });
+    setTimeout(() => {
+      dataFetch({ simpleurl: url }).then((r) => {
+        setTabs(r);
+        console.log("ATT DATA DATA:: ");
+        console.log(r);
+      });
+    }, 500);
   }, [client.id]);
 
   useEffect(() => {
@@ -97,7 +102,7 @@ export const ClientAccount = ({ client }) => {
 
         <div className={styles.rowdiv}>
           <div className={styles.alltabs}>
-            <Tabs tabs={tabs.comandas} />
+            <Tabs tabs={tabs ? tabs.comandas : null} />
           </div>
           <ColDiv>
             <div onClick={() => {}} className={styles.newOrder}>

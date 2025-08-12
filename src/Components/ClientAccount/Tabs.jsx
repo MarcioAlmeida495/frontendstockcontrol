@@ -24,7 +24,6 @@ const Tab = ({ tab }) => {
   const refdiv = useRef(null);
   const functions = useContext(Context);
   const refSum = useRef(sumArr(tab.pagamentos));
-  console.log("tab renderizou");
   return (
     <div
       className={`${styles.tab} ${
@@ -44,13 +43,11 @@ const Tab = ({ tab }) => {
         <button
           className={styles.maximizeButton}
           onClick={() => {
-            console.log(tab);
             refdiv.current.classList.toggle(styles.extended);
             const url = `tabs/getcomandabyid/${tab.id}`;
             if (content) setContent(null);
             else
               dataFetch({ simpleurl: url }).then((r) => {
-                console.log(r);
                 const jsx = (
                   <>
                     {refDate.current}
@@ -69,7 +66,19 @@ const Tab = ({ tab }) => {
                     {parseFloat(tab.valor - refSum.current).toFixed(2)}
                     <div className={`${styles.rowdiv} ${styles.h_25}`}>
                       <StyledConfirmButton>Editar Compra</StyledConfirmButton>
-                      <StyledCancelButton>Excluir Compra</StyledCancelButton>
+                      <StyledCancelButton
+                        onClick={() => {
+                          dataFetch({
+                            simpleurl: `tabs/deletetab/${tab.id}`,
+                          }).then((r) => {
+                            if (r) {
+                              functions.attData();
+                            }
+                          });
+                        }}
+                      >
+                        Excluir Compra
+                      </StyledCancelButton>
                     </div>
                   </>
                 );
@@ -118,18 +127,11 @@ export const Tabs = ({ tabs }) => {
 
   useEffect(() => {
     var newArray = [];
-    console.log("tabelas!! .. ");
-    console.log(tabs);
     if (openTabs && tabs) {
-      console.log("entrou 1if");
-
       const filteredOpen = tabs.filter((tab) => {
         if (tab.status === "aberta") {
-          console.log(`comparando ${date} com ${tab.data}`);
-
           if (!date) return tab;
           else if (date === removeHours(tab.data)) {
-            console.log("dentro do elseif");
             return tab;
           } else return null;
         } else return null;
@@ -139,8 +141,6 @@ export const Tabs = ({ tabs }) => {
     if (closedTabs && tabs) {
       const filteredClosed = tabs.filter((tab) => {
         if (tab.status === "fechada") {
-          console.log(`Comparando ${date} com ${tab.data}`);
-
           if (!date) return tab;
           else if (date === removeHours(tab.data)) {
             return tab;
@@ -152,8 +152,6 @@ export const Tabs = ({ tabs }) => {
         newArray = [...newArray, ...filteredClosed];
     }
     // newArray.sort((a, b) => a.id - b.id);
-    console.log("ARRAY");
-    console.log(newArray);
     functionsRef.current.setCheckedTabs(newArray);
   }, [closedTabs, openTabs, tabs, date]);
 
@@ -163,7 +161,7 @@ export const Tabs = ({ tabs }) => {
 
   return (
     <>
-      {tabs && (
+      {
         <>
           <div
             style={{
@@ -233,27 +231,27 @@ export const Tabs = ({ tabs }) => {
             />
           </div>
           <div className={styles.overflowed}>
-            {tabs.map((tab, index) => {
-              if (openTabs && tab.status === "aberta") {
-                console.log(`comparando ${date} com ${removeHours(tab.data)}`);
-                if (date && date === removeHours(tab.data))
-                  return <Tab key={index} tab={tab} />;
-                else if (!date) return <Tab key={index} tab={tab} />;
-                else return null;
-              }
-              if (closedTabs && tab.status === "fechada") {
-                if (date && date === removeHours(tab.data))
-                  return <Tab key={index} tab={tab} />;
-                else if (!date) return <Tab key={index} tab={tab} />;
-                else return null;
-              } else return null;
-            })}
+            {tabs &&
+              tabs.map((tab, index) => {
+                if (openTabs && tab.status === "aberta") {
+                  if (date && date === removeHours(tab.data))
+                    return <Tab key={index} tab={tab} />;
+                  else if (!date) return <Tab key={index} tab={tab} />;
+                  else return null;
+                }
+                if (closedTabs && tab.status === "fechada") {
+                  if (date && date === removeHours(tab.data))
+                    return <Tab key={index} tab={tab} />;
+                  else if (!date) return <Tab key={index} tab={tab} />;
+                  else return null;
+                } else return null;
+              })}
           </div>
           <h3>Total: R$ {simpleSum(functions.checkedTabs)}</h3>
           <h3>Total Pago: R$ {sumPayments(functions.checkedTabs)}</h3>
           {/* <h3>Total a Pagar: R$ {sumPayments(functions.checkedTabs)}</h3> */}
         </>
-      )}
+      }
     </>
   );
 };
