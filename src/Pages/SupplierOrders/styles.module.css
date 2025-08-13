@@ -30,7 +30,12 @@ thead tr {
   z-index: 2;
   border-bottom: 2px solid black;
 }
-
+thead tr td:hover {
+  background-color: #d6d5f0;
+  cursor: pointer;
+  transition: all 200ms ease;
+  user-select: none;
+}
 /* Células */
 td,
 th {
@@ -60,7 +65,7 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:hover {
-  background-color: #e0e7ff;
+  background-color: #c6d1f5;
 }
 
 /* Botões */

@@ -51,16 +51,12 @@ th:last-child {
 
 /* Corpo da tabela */
 tbody tr {
-  background-color: #f9fafb;
+  background-color: #1164b8;
   transition: background-color 0.3s;
 }
 
 tbody tr:nth-child(even) {
   background-color: #f1f1f1;
-}
-
-tbody tr:hover {
-  background-color: #e0e7ff;
 }
 
 /* Botões */
