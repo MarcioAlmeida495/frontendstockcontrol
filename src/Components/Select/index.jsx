@@ -55,13 +55,12 @@ export const Select = ({
     attData();
   }, [attData]);
 
-  useEffect(() => {
-    console.log(selectedId);
-  }, [selectedId]);
+  useEffect(() => {}, [selectedId]);
 
   useEffect(() => {
-    console.log(`SELECTED :: ${selected} no USEEFFECT`);
     getSelected(selected);
+    console.log("RODANDO GETSELECTED:: ");
+    console.log(selected);
     setTitle("");
   }, [selected, getSelected]);
 

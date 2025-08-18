@@ -60,18 +60,19 @@ export const Items2 = () => {
   return (
     <Provider value={{ items: items, setItems: setItems }}>
       <div className={`${styles.column} ${styles.tam80} ${styles.fadin}`}>
-        <div className={`${styles.divblock}`}>adicionar</div>
-        <div className={`${styles.divblock}`}>
-          <StyledInput
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            type="text"
-            $width={"100%"}
-          />
+        <div className={`${styles.h150}`}>
+          <div className={`${styles.divblock}`}>adicionar</div>
+          <div className={`${styles.divblock}`}>
+            <StyledInput
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              type="text"
+              $width={"100%"}
+            />
+          </div>
         </div>
-        <br />
         {items && (
           <div className={`${styles.centralized} ${styles.tableh500}`}>
             <table className={`${styles.table100w100h}`}>

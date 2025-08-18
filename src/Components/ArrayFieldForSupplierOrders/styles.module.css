@@ -1,0 +1,25 @@
+.infodiv {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  max-width: 100px;
+  overflow: hidden;
+  box-shadow: 0px 0px 3px black;
+  transition: all 1s ease;
+  max-height: 300px;
+  border: 10px solid white;
+}
+.infodiv:hover {
+  width: auto;
+  max-width: 300px;
+  background-color: white;
+  overflow: auto;
+  color: black;
+  font-size: 14px;
+  user-select: none;
+  box-shadow: 0px 0px 20px black;
+}
+.infodiv span {
+  display: block;
+  white-space: nowrap;
+}
