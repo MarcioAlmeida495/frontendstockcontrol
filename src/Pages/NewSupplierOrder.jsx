@@ -73,6 +73,7 @@ export const NewSupplierOrder = ({ defaultItems }) => {
           }).then((r) => {
             if (r.success) {
               form.reset();
+              window.alert("PEDIDO ADICIONADO");
             }
           });
         }}
