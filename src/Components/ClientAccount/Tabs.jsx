@@ -157,6 +157,17 @@ export const Tabs = ({ tabs }) => {
   }, [tabs]);
 
   useEffect(() => {
+    var status = null;
+    if (openTabs && closedTabs) status = null;
+    else if (openTabs) status = "aberta";
+    else status = "fechada";
+
+    functions.setFilter((f) => {
+      return { ...f, status: status };
+    });
+  }, [openTabs, closedTabs]);
+
+  useEffect(() => {
     let newArray = [];
     if (openTabs && tabs) {
       const filteredOpen = tabs.filter(
@@ -231,6 +242,7 @@ export const Tabs = ({ tabs }) => {
           defaultValue={getDate()}
           onChange={(e) => {
             setDate(e.target.value);
+            functions.setFilter({ ...functions.filter, date: e.target.value });
             refCheckDate.current.checked = true;
           }}
           ref={refDate}
@@ -245,6 +257,7 @@ export const Tabs = ({ tabs }) => {
               setDate(refDate.current.value);
             } else {
               setDate(null);
+              functions.setFilter({ ...functions.filter, date: null });
             }
           }}
         />

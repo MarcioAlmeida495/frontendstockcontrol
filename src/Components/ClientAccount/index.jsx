@@ -19,10 +19,11 @@ import { StyledInput } from "../../Styles/styledInput";
 import { CancelIcon } from "../AnimationIcons/Cancel";
 import { ArrayField } from "./ArrayField";
 import { ColDiv, Head, RowDiv } from "./styles";
-import { Payment } from "./Payment";
-import { dataFetch, formatInit } from "../../utils/functions";
+import { Payment, simpleSum } from "./Payment";
+import { dataFetch, formatInit, getDate } from "../../utils/functions";
 import { MyContext } from "../Context";
 import { useCallback } from "react";
+import { ButtonsAddItem } from "./ButtonsAddItem";
 
 export const refsContext = createContext();
 export const useRefsContext = () => useContext(refsContext);
@@ -36,32 +37,13 @@ export const ClientAccount = ({ client }) => {
   const [tabs, setTabs] = useState([]);
   const [reset, setReset] = useState(0);
   const [checkedTabs, setCheckedTabs] = useState([]);
-  const [frequentItems, setFrequentItems] = useState(null);
+  const [filter, setFilter] = useState({ status: "aberta", data: getDate() });
 
   const { register, setValue, getValues, control, watch } = useForm({
     defaultValues: {
       items: [],
     },
   });
-
-  const attFrequentItems = useCallback(() => {
-    const sql = `
-  SELECT ci.item_id, i.nome, SUM(ci.quantidade) AS total_comprada
-  FROM comanda_items ci
-  JOIN comandas c ON c.id = ci.comanda_id
-  JOIN items i ON i.id = ci.item_id
-  WHERE c.cliente_id = ${client.id}
-  GROUP BY ci.item_id
-  ORDER BY total_comprada DESC
-`;
-
-    dataFetch({
-      simpleurl: "test/testsql",
-      init: formatInit({ data: { sql: sql } }),
-    }).then((r) => {
-      setFrequentItems(r.result);
-    });
-  }, [client, reset]);
 
   const attData = useCallback(() => {
     setTabs(null);
@@ -78,17 +60,24 @@ export const ClientAccount = ({ client }) => {
   }, [client.id]);
 
   useEffect(() => {
-    const url = `tabs/getclienttabs/${client.id}`;
+    // const url = `tabs/getclienttabs/${client.id}`;
+    const url = `tabs/getclienttabsfilter/${client.id}`;
+    const date = filter?.date ?? null;
+    const status = filter?.status ?? null;
     console.log(url);
-    dataFetch({ simpleurl: url }).then((r) => {
-      setTabs(r);
+    dataFetch({
+      simpleurl: url,
+      init: formatInit({ data: { status: status, date: date } }),
+    }).then((r) => {
       console.log(r);
+      setTabs(r);
     });
-  }, [client, reset]);
+    // dataFetch({ simpleurl: url }).then((r) => {
+    //   setTabs(r);
+    //   console.log(r);
+    // });
+  }, [client, reset, filter]);
 
-  useEffect(() => {
-    attFrequentItems();
-  }, [client, attFrequentItems]);
   useEffect(() => {
     console.log(tabs);
   }, [tabs]);
@@ -114,7 +103,9 @@ export const ClientAccount = ({ client }) => {
     setValue("client", client.id);
   }, [client, setValue]);
   return (
-    <MyContext functions={{ checkedTabs, setCheckedTabs, attData, client }}>
+    <MyContext
+      functions={{ checkedTabs, setCheckedTabs, attData, client, setFilter }}
+    >
       {infoModal && <Modal>{infoModal}</Modal>}
       <div className={styles.clientAccount}>
         <h1
@@ -124,24 +115,7 @@ export const ClientAccount = ({ client }) => {
         >
           {client.nome}
         </h1>
-        <div
-          style={{
-            position: "absolute",
-            top: "3px",
-            left: "200px",
-            display: "flex",
-            gap: "3px",
-          }}
-        >
-          {frequentItems &&
-            frequentItems.map((item, index) => {
-              return (
-                <StyledConfirmButton key={index}>
-                  {item.nome}
-                </StyledConfirmButton>
-              );
-            })}
-        </div>
+        <ButtonsAddItem client={client} />
         <div className={styles.rowdiv}>
           <div className={styles.alltabs}>
             <Tabs tabs={tabs ? tabs.comandas : null} />
