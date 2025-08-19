@@ -294,12 +294,25 @@
   color: white;
   border: 1px solid white;
   border-radius: 5px;
-  max-height: 24px;
+  max-height: 25px;
   transition: all 200ms ease;
   overflow: hidden;
 }
 .frequentItems:hover {
-  max-height: 50px;
   background-color: #77f;
+  border-radius: 10px;
   cursor: pointer;
+}
+.togglecheckbox + div {
+  max-width: 0px;
+  overflow: hidden;
+  transition: all 200ms ease;
+  height: auto;
+}
+
+.togglecheckbox:checked ~ div {
+  max-width: calc(100% - 200px);
+  max-width: 400px;
+  overflow: auto;
+  height: 500px;
 }

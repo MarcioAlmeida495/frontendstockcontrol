@@ -255,6 +255,7 @@ export const Tabs = ({ tabs }) => {
           onChange={(e) => {
             if (e.target.checked) {
               setDate(refDate.current.value);
+              // functions.setFilter({ ...functions.filter, date: date });
             } else {
               setDate(null);
               functions.setFilter({ ...functions.filter, date: null });

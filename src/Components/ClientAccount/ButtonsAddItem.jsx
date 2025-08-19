@@ -35,20 +35,26 @@ ORDER BY total_comprada DESC;
   }, [attFrequentItems]);
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "3px",
-        left: "200px",
-        display: "flex",
-        gap: "3px",
-      }}
-    >
-      {frequentItems &&
-        frequentItems.map((item, index) => {
-          console.log(item);
-          return <ButtonAddItem item={item} key={index} />;
-        })}
-    </div>
+    <>
+      <div
+        style={{
+          position: "absolute",
+          height: "20px",
+          top: "3px",
+          right: "0px",
+          display: "flex",
+          gap: "3px",
+        }}
+      >
+        <input type="checkbox" className={styles.togglecheckbox} />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {frequentItems &&
+            frequentItems.map((item, index) => {
+              console.log(item);
+              return <ButtonAddItem item={item} key={index} />;
+            })}
+        </div>
+      </div>
+    </>
   );
 };

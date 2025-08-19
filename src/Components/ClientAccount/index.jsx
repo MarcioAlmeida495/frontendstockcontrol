@@ -65,12 +65,15 @@ export const ClientAccount = ({ client }) => {
     const date = filter?.date ?? null;
     const status = filter?.status ?? null;
     console.log(url);
+    setTabs([]);
     dataFetch({
       simpleurl: url,
       init: formatInit({ data: { status: status, date: date } }),
     }).then((r) => {
       console.log(r);
-      setTabs(r);
+      setTimeout(() => {
+        setTabs(r);
+      }, 100);
     });
     // dataFetch({ simpleurl: url }).then((r) => {
     //   setTabs(r);
@@ -117,9 +120,13 @@ export const ClientAccount = ({ client }) => {
         </h1>
         <ButtonsAddItem client={client} />
         <div className={styles.rowdiv}>
-          <div className={styles.alltabs}>
-            <Tabs tabs={tabs ? tabs.comandas : null} />
-          </div>
+          {tabs ? (
+            <div className={styles.alltabs}>
+              <Tabs tabs={tabs ? tabs.comandas : null} />
+            </div>
+          ) : (
+            <>ASDUQWHEUWQHD</>
+          )}
           <ColDiv>
             <div onClick={() => {}} className={styles.newOrder}>
               <>
