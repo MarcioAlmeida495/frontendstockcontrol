@@ -39,21 +39,23 @@ export const TestSupplierOrder = () => {
             console.log(each);
             return (
               <EachContent key={index}>
-                <button
-                  onClick={() => {
-                    const sql = getValues("sql");
-                    const table = sql.split(" ")[3];
-                    const deletesql = `DELETE FROM ${table} WHERE id = ${each.id}`;
-                    dataFetch({
-                      simpleurl: `test/testsql`,
-                      init: formatInit({ data: { sql: deletesql } }),
-                    }).then((r) => {
-                      console.log(r);
-                    });
-                  }}
-                >
-                  Excluir
-                </button>
+                {each.id && (
+                  <button
+                    onClick={() => {
+                      const sql = getValues("sql");
+                      const table = sql.split(" ")[3];
+                      const deletesql = `DELETE FROM ${table} WHERE id = ${each.id}`;
+                      dataFetch({
+                        simpleurl: `test/testsql`,
+                        init: formatInit({ data: { sql: deletesql } }),
+                      }).then((r) => {
+                        console.log(r);
+                      });
+                    }}
+                  >
+                    Excluir
+                  </button>
+                )}
                 {Object.keys(each).map((value, index) => {
                   return (
                     <div key={`values${index}`}>

@@ -27,8 +27,13 @@ import { ButtonsAddItem } from "./ButtonsAddItem";
 
 export const refsContext = createContext();
 export const useRefsContext = () => useContext(refsContext);
-export const Provider = ({ children, value }) => {
-  return <refsContext.Provider value={value}>{children}</refsContext.Provider>;
+export const Provider = ({ children, functions }) => {
+  const [refs, setRefs] = useState([]);
+  return (
+    <refsContext.Provider value={{ refs, setRefs, functions }}>
+      {children}
+    </refsContext.Provider>
+  );
 };
 
 export const ClientAccount = ({ client }) => {
@@ -37,6 +42,7 @@ export const ClientAccount = ({ client }) => {
   const [tabs, setTabs] = useState([]);
   const [reset, setReset] = useState(0);
   const [checkedTabs, setCheckedTabs] = useState([]);
+  const [closedMode, setClosedMode] = useState(false);
   const [filter, setFilter] = useState({ status: "aberta", data: getDate() });
 
   const { register, setValue, getValues, control, watch } = useForm({
@@ -50,6 +56,9 @@ export const ClientAccount = ({ client }) => {
     setReset((r) => r + 1);
     setCheckedTabs([]);
     const url = `tabs/getclienttabs/${client.id}`;
+    //CLIENTE AVULSO
+    if (client.id === 9999 && !closedMode) setClosedMode(true);
+    else setClosedMode(false);
     setTimeout(() => {
       dataFetch({ simpleurl: url }).then((r) => {
         setTabs(r);
@@ -57,7 +66,7 @@ export const ClientAccount = ({ client }) => {
         console.log(r);
       });
     }, 500);
-  }, [client.id]);
+  }, [client.id, closedMode]);
 
   useEffect(() => {
     // const url = `tabs/getclienttabs/${client.id}`;
@@ -107,7 +116,16 @@ export const ClientAccount = ({ client }) => {
   }, [client, setValue]);
   return (
     <MyContext
-      functions={{ checkedTabs, setCheckedTabs, attData, client, setFilter }}
+      functions={{
+        checkedTabs,
+        setCheckedTabs,
+        attData,
+        client,
+        setFilter,
+        closedMode,
+        setClosedMode,
+        filter,
+      }}
     >
       {infoModal && <Modal>{infoModal}</Modal>}
       <div className={styles.clientAccount}>

@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, useContext, useId } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useId,
+  useCallback,
+} from "react";
 import styles from "./styles.module.css";
 import {
   dataFetch,
@@ -13,144 +20,25 @@ import {
   StyledCancelButton,
   StyledConfirmButton,
 } from "../../Styles/styledConfirmButton";
-
-const Tab = ({ tab }) => {
-  const refDate = useRef(formatarData(tab.data));
-  const [items, setItems] = useState([]); // agora só salvo os itens
-  const [expanded, setExpanded] = useState(false); // controla se está expandido
-  const refdiv = useRef(null);
-  const functions = useContext(Context);
-  const refSum = useRef(sumArr(tab.pagamentos));
-
-  useEffect(() => {
-    console.log("ITEMS ATUALIZADOS", items);
-  }, [items]);
-
-  const toggleExpand = () => {
-    refdiv.current.classList.toggle(styles.extended);
-    if (expanded) {
-      setExpanded(false);
-      setItems([]); // fecha e limpa
-    } else {
-      const url = `tabs/getcomandabyid/${tab.id}`;
-      dataFetch({ simpleurl: url }).then((r) => {
-        setItems(r);
-        setExpanded(true);
-      });
-    }
-  };
-
-  return (
-    <div
-      onClick={() => {
-        console.log(tab);
-      }}
-      className={`${styles.tab} ${
-        refSum.current === tab.valor && styles.closedTab
-      }`}
-      ref={refdiv}
-    >
-      {/* Cabeçalho da comanda */}
-      {!expanded ? (
-        <div>
-          {refDate.current} | Valor: {parseFloat(tab.valor).toFixed(2)} | Total
-          Pago: {sumArr(tab.pagamentos)}
-        </div>
-      ) : (
-        <div>
-          {refDate.current}
-          <div className={styles.itemsComanda}>
-            {items.map((it, index) => (
-              <div key={index}>
-                {it.quantidade} {it.nome_item} {parseFloat(it.valor).toFixed(2)}
-              </div>
-            ))}
-          </div>
-          Total: {parseFloat(tab.valor).toFixed(2)} || Total Pago:{" "}
-          {refSum.current} || Restante:{" "}
-          {parseFloat(tab.valor - refSum.current).toFixed(2)}
-          <div className={`${styles.rowdiv} ${styles.h_25}`}>
-            <StyledConfirmButton
-              onClick={() => {
-                //valor quantidade e item_id
-                var sum = 0;
-                const values = items.map((it) => {
-                  sum += it.valor * it.quantidade;
-                  return {
-                    item: it.item_id,
-                    quantidade: it.quantidade,
-                    total: it.valor * it.quantidade,
-                  };
-                });
-
-                const datas = {
-                  client: functions.client.id,
-                  items: values,
-                  total: sum,
-                };
-                console.log("data: ", datas);
-                dataFetch({
-                  simpleurl: "tabs/createclienttab",
-                  init: formatInit({ data: datas }),
-                }).then((r) => {
-                  if (r) functions.attData();
-                });
-              }}
-            >
-              Copiar Compra
-            </StyledConfirmButton>
-            <StyledConfirmButton>Editar Compra</StyledConfirmButton>
-            <StyledCancelButton
-              onClick={() => {
-                dataFetch({ simpleurl: `tabs/deletetab/${tab.id}` }).then(
-                  (r) => {
-                    if (r) functions.attData();
-                  }
-                );
-              }}
-            >
-              Excluir Compra
-            </StyledCancelButton>
-          </div>
-        </div>
-      )}
-
-      {/* Botão de expandir/esconder */}
-      <div className={styles.functions}>
-        <button className={styles.maximizeButton} onClick={toggleExpand}>
-          {expanded ? "Esconder" : "Mostrar Mais"}
-        </button>
-
-        <input
-          defaultChecked
-          type="checkbox"
-          className={styles.checkbox}
-          onClick={(e) => {
-            const isChecked = e.target.checked;
-            if (isChecked) {
-              functions.setCheckedTabs([...functions.checkedTabs, tab]);
-            } else {
-              functions.setCheckedTabs(
-                functions.checkedTabs.filter((each) => each.id !== tab.id)
-              );
-            }
-          }}
-        />
-      </div>
-    </div>
-  );
-};
+import { Tab } from "./Tab";
 
 export const Tabs = ({ tabs }) => {
   const openCheckId = useId();
   const closedCheckId = useId();
   const [openTabs, setOpenTabs] = useState(true);
   const [closedTabs, setClosedTabs] = useState(false);
-  const [date, setDate] = useState(getDate());
   const functions = useContext(Context);
+  const [date, setDate] = useState(
+    functions.client.id === 9999 ? getDate() : null
+  );
   const functionsRef = useRef(useContext(Context));
   const refDate = useRef();
   const refCheckDate = useRef();
+
+  useEffect(() => {
+    console.log("filter:: ");
+    console.log(functions.filter);
+  });
 
   useEffect(() => {
     console.log(tabs);
@@ -190,6 +78,50 @@ export const Tabs = ({ tabs }) => {
   useEffect(() => {
     console.log(functions.checkedTabs);
   }, [functions.checkedTabs]);
+
+  const renderTabs = useCallback(() => {
+    if (!tabs) return null;
+
+    // Criar um Map agrupando por data (somente ano-mês-dia)
+    const tabsMap = new Map();
+
+    tabs.forEach((tab) => {
+      // filtrar abertas/fechadas + data
+      if (
+        (openTabs && tab.status === "aberta") ||
+        (closedTabs && tab.status === "fechada")
+      ) {
+        if (!date || date === removeHours(tab.data)) {
+          const dia = tab.data.split(" ")[0];
+          if (!tabsMap.has(dia)) {
+            tabsMap.set(dia, []);
+          }
+          tabsMap.get(dia).push(tab);
+        }
+      }
+    });
+
+    // ordenar as datas (mais recentes primeiro, por exemplo)
+    const orderedEntries = Array.from(tabsMap.entries()).sort(
+      ([d1], [d2]) => new Date(d2) - new Date(d1)
+    );
+
+    return orderedEntries.map(([dia, tabsDoDia]) => (
+      <div className={`${styles.oneday}`} key={dia}>
+        <label htmlFor={dia}>
+          <h4>{dia}</h4>
+        </label>
+        <input type="checkbox" id={dia} className={styles.showday} hidden />
+        <div className={styles.onedayContent}>
+          {tabsDoDia
+            .sort((a, b) => b.valor_total - a.valor_total) // exemplo: ordenar por valor dentro do dia
+            .map((tab, i) => (
+              <Tab key={i} tab={tab} />
+            ))}
+        </div>
+      </div>
+    ));
+  }, [tabs, openTabs, closedTabs, date]);
 
   return (
     <>
@@ -250,7 +182,7 @@ export const Tabs = ({ tabs }) => {
         <input
           type="checkbox"
           ref={refCheckDate}
-          defaultChecked
+          defaultChecked={functions.client.id === 9999}
           className={styles.checkbox}
           onChange={(e) => {
             if (e.target.checked) {
@@ -263,22 +195,7 @@ export const Tabs = ({ tabs }) => {
           }}
         />
       </div>
-      <div className={styles.overflowed}>
-        {tabs &&
-          tabs.map((tab, index) => {
-            if (openTabs && tab.status === "aberta") {
-              if (!date || date === removeHours(tab.data))
-                return <Tab key={index} tab={tab} />;
-              return null;
-            }
-            if (closedTabs && tab.status === "fechada") {
-              if (!date || date === removeHours(tab.data))
-                return <Tab key={index} tab={tab} />;
-              return null;
-            }
-            return null;
-          })}
-      </div>
+      <div className={styles.overflowed}>{renderTabs()}</div>
       <h3>Total: R$ {simpleSum(functions.checkedTabs)}</h3>
       <h3>Total Pago: R$ {sumPayments(functions.checkedTabs)}</h3>
     </>
