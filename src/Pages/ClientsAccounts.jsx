@@ -5,11 +5,28 @@ import { dataFetch } from "../utils/functions";
 import { ClientAccount } from "../Components/ClientAccount";
 import { StyledInput } from "../Styles/styledInput";
 import { OpenTabs } from "../Components/ClientAccount/OpenTabs";
+import { LoadIcon } from "../Components/AnimationIcons/LoadIcon/LoadIcon";
+const timeout = 100;
+
 export const ClientsAccounts = () => {
   const [clients, setClients] = useState([]);
   const [openClient, setOpenClient] = useState(false);
   const [search, setSearch] = useState("");
-  const [openTabs, setOpenTabs] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loading &&
+      setTimeout(() => {
+        setLoading(false);
+      }, timeout);
+  }, [loading]);
+
+  const renderTimer = ({ Component }) => {
+    return loading ? <LoadIcon /> : <Component />;
+  };
+  useEffect(() => {
+    setLoading(true);
+  }, [openClient]);
   useEffect(() => {
     dataFetch({ simpleurl: "clients/getclients" }).then((r) => {
       const clientavulso = r.find((item) => item.id === 9999);
@@ -45,7 +62,6 @@ export const ClientsAccounts = () => {
           />
           {clients &&
             clients.map((client, index) => {
-              console.log(client);
               if (client.nome.toUpperCase().includes(search.toUpperCase()))
                 return (
                   <div
@@ -62,8 +78,13 @@ export const ClientsAccounts = () => {
               else return null;
             })}
         </div>
-        <div>{openClient && <ClientAccount client={openClient} />}</div>
-        {!openClient && <OpenTabs />}
+        <div>
+          {openClient &&
+            renderTimer({
+              Component: () => <ClientAccount client={openClient} />,
+            })}
+        </div>
+        {!openClient && renderTimer({ Component: () => <OpenTabs /> })}
       </div>
     </>
   );

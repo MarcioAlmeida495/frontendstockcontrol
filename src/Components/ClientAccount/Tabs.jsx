@@ -5,6 +5,7 @@ import {
   useContext,
   useId,
   useCallback,
+  createContext,
 } from "react";
 import styles from "./styles.module.css";
 import {
@@ -22,7 +23,18 @@ import {
 } from "../../Styles/styledConfirmButton";
 import { Tab } from "./Tab";
 
+export const ScrollContext = createContext();
+export const ScrollProvider = ({ children, functions }) => {
+  return (
+    <ScrollContext.Provider value={functions}>
+      {children}
+    </ScrollContext.Provider>
+  );
+};
+export const useScollContext = () => useContext(ScrollContext);
+
 export const Tabs = ({ tabs }) => {
+  const refOverflowed = useRef(null);
   const openCheckId = useId();
   const closedCheckId = useId();
   const [openTabs, setOpenTabs] = useState(true);
@@ -34,6 +46,13 @@ export const Tabs = ({ tabs }) => {
   const functionsRef = useRef(useContext(Context));
   const refDate = useRef();
   const refCheckDate = useRef();
+
+  const setScroll = () => {
+    if (refOverflowed.current) {
+      console.log(refOverflowed.current);
+      refOverflowed.current.scrollTop = refOverflowed.current.scrollHeight;
+    }
+  };
 
   useEffect(() => {
     console.log("filter:: ");
@@ -114,7 +133,7 @@ export const Tabs = ({ tabs }) => {
         <input type="checkbox" id={dia} className={styles.showday} hidden />
         <div className={styles.onedayContent}>
           {tabsDoDia
-            .sort((a, b) => b.valor_total - a.valor_total) // exemplo: ordenar por valor dentro do dia
+            .sort((a, b) => b.id - a.id)
             .map((tab, i) => (
               <Tab key={i} tab={tab} />
             ))}
@@ -195,7 +214,9 @@ export const Tabs = ({ tabs }) => {
           }}
         />
       </div>
-      <div className={styles.overflowed}>{renderTabs()}</div>
+      <div ref={refOverflowed} className={styles.overflowed}>
+        {renderTabs()}
+      </div>
       <h3>Total: R$ {simpleSum(functions.checkedTabs)}</h3>
       <h3>Total Pago: R$ {sumPayments(functions.checkedTabs)}</h3>
     </>

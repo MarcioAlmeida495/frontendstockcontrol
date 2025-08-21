@@ -10,6 +10,7 @@ import { StyledInput } from "../../Styles/styledInput";
 import { CancelIcon } from "../AnimationIcons/Cancel";
 import { NewSelect } from "../NewSelect";
 import { useRefsContext } from ".";
+import e from "cors";
 
 export const ArrayField = ({
   field,
@@ -21,6 +22,7 @@ export const ArrayField = ({
   resets,
   watcher,
 }) => {
+  const [refQtd, setRefQtd] = useState(useRef());
   const refsContext = useRefsContext();
   const [selectedItem, setSelectedItem] = useState();
   var registers = {
@@ -30,10 +32,21 @@ export const ArrayField = ({
     total: `items.${index}.total`,
   };
 
+  useEffect(() => {
+    console.log("TENTANDO SELECIONAR");
+
+    console.log(refQtd.current);
+    if (refQtd.current) {
+      refQtd.current.focus();
+      refQtd.current.select();
+    }
+  }, [refQtd]);
   const watchedField = watcher(`items.${index}.total`);
+
   useEffect(() => {
     resets.setCounterReset(resets.counterReset + 1);
   }, [watchedField]);
+
   useEffect(() => {
     if (selectedItem) {
       // console.log(selectedItem);
@@ -58,26 +71,62 @@ export const ArrayField = ({
     selectedItem,
     setValue,
   ]);
+
+  const watchedQuantidade = watcher(registers.quantidade);
+
+  useEffect(() => {
+    setValue(
+      registers.total,
+      parseFloat(getValues(registers.preco) * watchedQuantidade).toFixed(2)
+    );
+  }, [
+    watchedQuantidade,
+    getValues,
+    registers.preco,
+    registers.total,
+    setValue,
+  ]);
+
   return (
     <div key={field.id} className={styles.newitem}>
       <>
-        <StyledInput
-          $width={"80px"}
-          autoFocus={false}
-          type="number"
-          placeholder="Qtd"
-          {...register(registers.quantidade, {
-            onChange: (e) => {
-              setValue(
-                registers.total,
-                parseFloat(getValues(registers.preco) * e.target.value).toFixed(
-                  2
-                )
-              );
-            },
-          })}
-          defaultValue={1}
-        />
+        <div style={{ position: "relative" }}>
+          <StyledInput
+            $width={"80px"}
+            type="number"
+            placeholder="Qtd"
+            {...register(registers.quantidade, {
+              onChange: (e) => {
+                console.log(e.target.value);
+              },
+            })}
+            defaultValue={1}
+          />
+          <div className={styles.divPlusRemove}>
+            <button
+              className={styles.buttonModifiqueQtd}
+              onClick={() => {
+                setValue(
+                  registers.quantidade,
+                  parseFloat(getValues(registers.quantidade)) + 1.0
+                );
+              }}
+            >
+              ▲
+            </button>
+            <button
+              className={styles.buttonModifiqueQtd}
+              onClick={() => {
+                setValue(
+                  registers.quantidade,
+                  parseFloat(getValues(registers.quantidade)) - 1.0
+                );
+              }}
+            >
+              ▼
+            </button>
+          </div>
+        </div>
         <NewSelect
           getSelected={(value) => setSelectedItem(value)}
           register={register}

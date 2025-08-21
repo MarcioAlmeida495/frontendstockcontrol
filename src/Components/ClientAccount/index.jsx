@@ -62,8 +62,6 @@ export const ClientAccount = ({ client }) => {
     setTimeout(() => {
       dataFetch({ simpleurl: url }).then((r) => {
         setTabs(r);
-        console.log("ATT DATA DATA:: ");
-        console.log(r);
       });
     }, 500);
   }, [client.id, closedMode]);
@@ -73,13 +71,11 @@ export const ClientAccount = ({ client }) => {
     const url = `tabs/getclienttabsfilter/${client.id}`;
     const date = filter?.date ?? null;
     const status = filter?.status ?? null;
-    console.log(url);
     setTabs([]);
     dataFetch({
       simpleurl: url,
       init: formatInit({ data: { status: status, date: date } }),
     }).then((r) => {
-      console.log(r);
       setTimeout(() => {
         setTabs(r);
       }, 100);
@@ -90,9 +86,7 @@ export const ClientAccount = ({ client }) => {
     // });
   }, [client, reset, filter]);
 
-  useEffect(() => {
-    console.log(tabs);
-  }, [tabs]);
+  useEffect(() => {}, [tabs]);
 
   const { fields, prepend, remove } = useFieldArray({
     control,
@@ -106,7 +100,6 @@ export const ClientAccount = ({ client }) => {
       sum += parseFloat(value.total);
     });
     setValue("total", sum);
-    console.log(typeof sum);
     return sum;
   }, [counterReset, getValues, setValue]);
 
@@ -129,13 +122,7 @@ export const ClientAccount = ({ client }) => {
     >
       {infoModal && <Modal>{infoModal}</Modal>}
       <div className={styles.clientAccount}>
-        <h1
-          onClick={() => {
-            // setInfoModal(client);
-          }}
-        >
-          {client.nome}
-        </h1>
+        <h1>{client.nome}</h1>
         <ButtonsAddItem client={client} />
         <div className={styles.rowdiv}>
           {tabs ? (
@@ -184,8 +171,6 @@ export const ClientAccount = ({ client }) => {
                 </div>
                 <StyledConfirmButton
                   onClick={() => {
-                    console.log("VALUES!!!");
-                    console.log(getValues());
                     dataFetch({
                       simpleurl: "tabs/createclienttab",
                       init: formatInit({ data: getValues() }),

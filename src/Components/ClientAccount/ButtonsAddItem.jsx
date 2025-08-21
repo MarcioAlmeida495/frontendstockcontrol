@@ -50,7 +50,6 @@ ORDER BY total_comprada DESC;
         <div style={{ display: "flex", flexDirection: "column" }}>
           {frequentItems &&
             frequentItems.map((item, index) => {
-              console.log(item);
               return <ButtonAddItem item={item} key={index} />;
             })}
         </div>

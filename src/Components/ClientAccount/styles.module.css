@@ -346,3 +346,29 @@
   overflow: auto;
   height: 500px;
 }
+.buttonModifiqueQtd {
+  all: unset;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 15px;
+  color: #88f;
+  height: calc(50%);
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.buttonModifiqueQtd:hover {
+  color: #77f;
+  transform: scale(1.2);
+}
+.divPlusRemove {
+  position: absolute;
+  top: -5px;
+  right: -2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  height: 30px;
+}
