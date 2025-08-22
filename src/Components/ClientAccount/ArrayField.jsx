@@ -21,6 +21,7 @@ export const ArrayField = ({
   setValue,
   resets,
   watcher,
+  selectedId = null,
 }) => {
   const [refQtd, setRefQtd] = useState(useRef());
   const refsContext = useRefsContext();
@@ -31,7 +32,13 @@ export const ArrayField = ({
     preco: `items.${index}.preco`,
     total: `items.${index}.total`,
   };
+  useEffect(() => {
+    setSelectedItem(selectedId);
+  }, [selectedId]);
 
+  useEffect(() => {
+    setValue(registers.item, selectedItem);
+  }, [selectedItem, registers.item, setValue]);
   useEffect(() => {
     console.log("TENTANDO SELECIONAR");
 
@@ -132,7 +139,9 @@ export const ArrayField = ({
           register={register}
           registerName={registers.item}
           url={"items/getitems"}
+          selected={selectedId}
           setValue={setValue}
+          getValues={getValues}
         />
         <StyledInput
           $width={"80px"}

@@ -4,6 +4,7 @@ import { StyledInput } from "../../Styles/styledInput";
 import { dataFetch } from "../../utils/functions";
 import { useRef } from "react";
 export const NewSelect = ({
+  getValues = () => {},
   placeholder,
   setValue,
   register,
@@ -15,6 +16,7 @@ export const NewSelect = ({
   const checkId = useId();
   const [selectedOption, setSelectedOption] = useState();
   const [searchValue, setSearchValue] = useState("");
+  const [selectedId, setSelectedId] = useState(getValues(registerName));
   const refSearch = useRef(null);
   const [data, setData] = useState([]);
   const dataID = useId();
@@ -25,18 +27,23 @@ export const NewSelect = ({
   }, [url, setData]);
   useEffect(() => {
     refSearch.current?.focus();
+    const value = getValues(registerName);
+    console.log(value);
   }, []);
 
   useEffect(() => {
-    if (!selected || !data.length) return;
+    console.log("valor no registro: ", getValues(registerName));
+  });
 
-    const found = data.find((item) => item.id === selected);
-    if (found) setSelectedOption(found);
-  }, [selected, data]);
   useEffect(() => {
-    selectedOption && setValue(registerName, selectedOption.id);
-    selectedOption && getSelected(selectedOption);
-  }, [selectedOption, setValue, registerName, getSelected]);
+    if (!selectedId || !data.length) return;
+
+    const found = data.find((item) => item.id === selectedId);
+    if (found) {
+      getSelected(found);
+      setSelectedOption(found);
+    }
+  }, [selected, data, getSelected]);
 
   return (
     <div className={styles.selectbody}>
@@ -79,11 +86,13 @@ export const NewSelect = ({
                         className={styles.optioncheckbox}
                         type="radio"
                         hidden
-                        defaultChecked={selected === each.id}
+                        defaultChecked={
+                          selected === each.id || selectedId === each.id
+                        }
                         onChange={(e) => {
-                          console.log(each);
-                          console.log(e.target);
                           setSelectedOption(each);
+                          setValue(registerName, each.id);
+                          getSelected(each);
                           setTimeout(() => {
                             document.getElementById(checkId).checked = false;
                           }, 300);

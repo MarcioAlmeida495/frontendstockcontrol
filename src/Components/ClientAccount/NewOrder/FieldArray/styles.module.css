@@ -1,0 +1,11 @@
+.flexdiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 30px;
+  width: 100%;
+}
+.numberInput {
+  width: 50px;
+  text-align: center;
+}

@@ -1,0 +1,7 @@
+.chekdid:checked ~ div {
+  position: absolute;
+  z-index: 100;
+}
+.chekdid ~ div {
+  z-index: 0;
+}

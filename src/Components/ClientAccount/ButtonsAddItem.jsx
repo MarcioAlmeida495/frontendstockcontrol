@@ -1,22 +1,40 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { dataFetch, formatInit } from "../../utils/functions";
+import { useRefsContext } from ".";
 
 const ButtonAddItem = ({ item }) => {
-  return <div className={styles.frequentItems}>{item.nome}</div>;
+  const context = useRefsContext();
+
+  return (
+    <div
+      className={styles.frequentItems}
+      title={JSON.stringify(item)}
+      onClick={() => {
+        context.functions.prepend({ item: item.item_id });
+      }}
+    >
+      {item.nome}
+    </div>
+  );
 };
 
-export const ButtonsAddItem = ({ client }) => {
+export const ButtonsAddItem = ({ client, counterReset }) => {
   const [frequentItems, setFrequentItems] = useState();
 
   const attFrequentItems = useCallback(() => {
+    const days = 7;
+    var sqlDays = "";
+    for (var i = 1; i <= days; i++) {
+      sqlDays += `, DATE('now', '-${i} day', 'localtime')`;
+    }
     const sql = `
-    SELECT ci.item_id, i.nome, SUM(ci.quantidade) AS total_comprada
+    SELECT ci.item_id, i.nome, COUNT(i.id) AS total_comprada
 FROM comanda_items ci
 JOIN comandas c ON c.id = ci.comanda_id
 JOIN items i ON i.id = ci.item_id
 WHERE c.cliente_id = ${client.id}
-  AND DATE(c.data) = DATE('now')
+  AND DATE(c.data) IN (DATE('now', 'localtime')${sqlDays})
 GROUP BY ci.item_id
 ORDER BY total_comprada DESC;
 
@@ -28,7 +46,7 @@ ORDER BY total_comprada DESC;
     }).then((r) => {
       setFrequentItems(r.result.slice(0, 10));
     });
-  }, [client]);
+  }, [client, counterReset]);
 
   useEffect(() => {
     attFrequentItems();
@@ -46,8 +64,7 @@ ORDER BY total_comprada DESC;
           gap: "3px",
         }}
       >
-        <input type="checkbox" className={styles.togglecheckbox} />
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div className={styles.divrightfrequentitems}>
           {frequentItems &&
             frequentItems.map((item, index) => {
               return <ButtonAddItem item={item} key={index} />;

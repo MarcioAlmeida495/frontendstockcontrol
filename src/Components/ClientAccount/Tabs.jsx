@@ -49,18 +49,18 @@ export const Tabs = ({ tabs }) => {
 
   const setScroll = () => {
     if (refOverflowed.current) {
-      console.log(refOverflowed.current);
+      // console.log(refOverflowed.current);
       refOverflowed.current.scrollTop = refOverflowed.current.scrollHeight;
     }
   };
 
   useEffect(() => {
-    console.log("filter:: ");
-    console.log(functions.filter);
+    // console.log("filter:: ");
+    // console.log(functions.filter);
   });
 
   useEffect(() => {
-    console.log(tabs);
+    // console.log(tabs);
   }, [tabs]);
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const Tabs = ({ tabs }) => {
   }, [closedTabs, openTabs, tabs, date]);
 
   useEffect(() => {
-    console.log(functions.checkedTabs);
+    // console.log(functions.checkedTabs);
   }, [functions.checkedTabs]);
 
   const renderTabs = useCallback(() => {

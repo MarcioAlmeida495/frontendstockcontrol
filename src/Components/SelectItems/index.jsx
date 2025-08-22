@@ -20,14 +20,15 @@ const AbsoluteDiv = styled.div`
   height: 35px;
 `;
 
-export const SimpleSelect = ({
+export const SelectItems = ({
   defaultPlaceholder,
   width,
   data,
   register,
   setValue, // <-- vem do RHForm
-  selectedId,
+  selectedItem,
   registerName,
+  getSelected = () => {},
 }) => {
   const [search, setSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -41,12 +42,12 @@ export const SimpleSelect = ({
     }
   }, [datas]);
 
-  // sempre que mudar selectedId vindo de fora
+  // sempre que mudar selectedItem vindo de fora
   useEffect(() => {
-    if (selectedId !== undefined) {
-      setValue(registerName, selectedId); // atualiza no RHForm
+    if (selectedItem !== undefined) {
+      setValue(registerName, selectedItem.item_id); // atualiza no RHForm
     }
-  }, [selectedId, registerName, setValue]);
+  }, [selectedItem, registerName, setValue, datas]);
 
   // quando digitar algo, já coloca o primeiro achado no select
   useEffect(() => {
@@ -118,7 +119,16 @@ export const SimpleSelect = ({
           </div>
         </AbsoluteDiv>
       )}
-      <StyledSelect ref={refSelect} {...register(registerName)}>
+      <StyledSelect
+        ref={refSelect}
+        {...register(registerName, {
+          onChange: (e) => {
+            const id = e.target.value;
+            const selectedItem = datas.find((item) => String(item.id) === id);
+            setValue(registerName, selectedItem);
+          },
+        })}
+      >
         {datas &&
           datas
             .sort((a, b) =>
@@ -127,7 +137,7 @@ export const SimpleSelect = ({
             .map((element, index) => {
               if (element.nome.toUpperCase().includes(search.toUpperCase())) {
                 return (
-                  <option value={Number(element.id)} key={index}>
+                  <option value={element.id} key={index}>
                     {element.nome}
                   </option>
                 );
