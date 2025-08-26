@@ -69,8 +69,11 @@ export const ComponentFieldArray = ({
       />
       <input
         className={styles.numberInput}
-        {...register(registers.total)}
-        readOnly
+        {...register(registers.total, {
+          onChange: (e) => {
+            console.log(e.target.value);
+          },
+        })}
       />
       <StyledCancelButton width={"40px"}>
         <CancelIcon />

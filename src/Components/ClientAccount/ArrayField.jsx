@@ -26,6 +26,8 @@ export const ArrayField = ({
   const [refQtd, setRefQtd] = useState(useRef());
   const refsContext = useRefsContext();
   const [selectedItem, setSelectedItem] = useState();
+  const [focused, setFocused] = useState(false);
+
   var registers = {
     quantidade: `items.${index}.quantidade`,
     item: `items.${index}.item`,
@@ -82,17 +84,23 @@ export const ArrayField = ({
   const watchedQuantidade = watcher(registers.quantidade);
 
   useEffect(() => {
-    setValue(
-      registers.total,
-      parseFloat(getValues(registers.preco) * watchedQuantidade).toFixed(2)
-    );
+    if (!focused)
+      setValue(
+        registers.total,
+        parseFloat(getValues(registers.preco) * watchedQuantidade).toFixed(2)
+      );
   }, [
+    focused,
     watchedQuantidade,
     getValues,
     registers.preco,
     registers.total,
     setValue,
   ]);
+
+  useEffect(() => {
+    console.log(focused);
+  }, [focused]);
 
   return (
     <div key={field.id} className={styles.newitem}>
@@ -104,6 +112,12 @@ export const ArrayField = ({
             placeholder="Qtd"
             {...register(registers.quantidade, {
               onChange: (e) => {
+                setValue(
+                  registers.total,
+                  parseFloat(
+                    getValues(registers.preco) * watchedQuantidade
+                  ).toFixed(2)
+                );
                 console.log(e.target.value);
               },
             })}
@@ -151,11 +165,28 @@ export const ArrayField = ({
         />
         <StyledInput
           $width={"80px"}
-          disabled
+          onFocus={() => {
+            setFocused(true);
+          }}
           defaultValue={
             selectedItem && parseFloat(Number(selectedItem.preco)).toFixed(2)
           }
-          {...register(registers.total)}
+          {...register(registers.total, {
+            onBlur: (e) => {
+              // setValue(registers.total, parseFloat(e.target.value).toFixed(2));
+              setFocused(false);
+            },
+            onFocus: (e) => {
+              setFocused(true);
+            },
+            onChange: (e) => {
+              console.log(focused);
+              setValue(
+                registers.quantidade,
+                e.target.value / getValues(registers.preco)
+              );
+            },
+          })}
         />
 
         <StyledCancelButton

@@ -24,7 +24,6 @@ import {
 export const Tab = ({ tab }) => {
   const refDate = useRef(formatarData(tab.data).split(" ")[1]);
   const [items, setItems] = useState(null); // agora só salvo os itens
-  const [expanded, setExpanded] = useState(false); // controla se está expandido
   const refdiv = useRef(null);
   const functions = useContext(Context);
   const refSum = useRef(sumArr(tab.pagamentos));
@@ -40,28 +39,16 @@ export const Tab = ({ tab }) => {
       setItems(r);
     });
   }, [tab.id]);
-
-  const toggleExpand = useCallback(() => {
-    refdiv.current.classList.toggle(styles.extended);
-    if (items) {
-      setItems(null); // fecha e limpa
-    } else {
-      getItems();
-    }
-  }, [tab.id]);
-
   useEffect(() => {
-    toggleExpand();
-  }, [toggleExpand]);
+    getItems();
+  }, []);
 
   return (
     <div
       onClick={() => {
         console.log(tab);
       }}
-      className={`${styles.tab} ${
-        refSum.current === tab.valor && styles.closedTab
-      }`}
+      className={`${styles.tab} ${styles.extended}`}
       ref={refdiv}
     >
       {/* Cabeçalho da comanda */}
@@ -137,11 +124,20 @@ export const Tab = ({ tab }) => {
         <button
           className={styles.maximizeButton}
           onClick={() => {
-            toggleExpand();
-            items && setItems(null);
+            console.log("escondendo");
+            refdiv.current.classList.toggle(styles.extended);
+            console.log(refdiv.current.classList);
+            console.log("items", items);
+            if (items) {
+              console.log("fechou");
+              setItems(null); // fecha e limpa
+              return;
+            } else {
+              getItems();
+            }
           }}
         >
-          {expanded ? "Esconder" : "Mostrar Mais"}
+          {items ? "Esconder" : "Mostrar Mais"}
         </button>
 
         <input

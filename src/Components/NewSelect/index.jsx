@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useState } from "react";
 import styles from "./styles.module.css";
 import { StyledInput } from "../../Styles/styledInput";
-import { dataFetch } from "../../utils/functions";
+import { dataFetch, removeAccents } from "../../utils/functions";
 import { useRef } from "react";
 export const NewSelect = ({
   getValues = () => {},
@@ -76,38 +76,47 @@ export const NewSelect = ({
           <div className={styles.options}>
             <input {...register(registerName)} hidden />
             {data &&
-              data.map((each, index) => {
-                if (each.nome.toUpperCase().includes(searchValue.toUpperCase()))
-                  return (
-                    <React.Fragment key={index}>
-                      <input
-                        name="select"
-                        id={`${dataID}optncheckbox${index}`}
-                        className={styles.optioncheckbox}
-                        type="radio"
-                        hidden
-                        defaultChecked={
-                          selected === each.id || selectedId === each.id
-                        }
-                        onChange={(e) => {
-                          setSelectedOption(each);
-                          setValue(registerName, each.id);
-                          getSelected(each);
-                          setTimeout(() => {
-                            document.getElementById(checkId).checked = false;
-                          }, 300);
-                        }}
-                      />
-                      <label
-                        className={styles.option}
-                        htmlFor={`${dataID}optncheckbox${index}`}
-                      >
-                        {each.nome}
-                      </label>
-                    </React.Fragment>
+              data
+                .filter((each) => {
+                  const search = removeAccents(
+                    searchValue.trim().toUpperCase()
                   );
-                else return null;
-              })}
+                  if (!search) return true; // sem filtro, mostra tudo
+
+                  const nome = removeAccents(each.nome.toUpperCase());
+                  const searchWords = search.split(" ").filter((w) => w !== "");
+
+                  // Todas as palavras do search devem existir em alguma parte do nome
+                  return searchWords.every((word) => nome.includes(word));
+                })
+                .map((each, index) => (
+                  <React.Fragment key={index}>
+                    <input
+                      name="select"
+                      id={`${dataID}optncheckbox${index}`}
+                      className={styles.optioncheckbox}
+                      type="radio"
+                      hidden
+                      defaultChecked={
+                        selected === each.id || selectedId === each.id
+                      }
+                      onChange={() => {
+                        setSelectedOption(each);
+                        setValue(registerName, each.id);
+                        getSelected(each);
+                        setTimeout(() => {
+                          document.getElementById(checkId).checked = false;
+                        }, 300);
+                      }}
+                    />
+                    <label
+                      className={styles.option}
+                      htmlFor={`${dataID}optncheckbox${index}`}
+                    >
+                      {each.nome}
+                    </label>
+                  </React.Fragment>
+                ))}
           </div>
         </div>
       </div>

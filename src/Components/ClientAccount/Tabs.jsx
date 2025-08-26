@@ -130,6 +130,7 @@ export const Tabs = ({ tabs }) => {
         <label htmlFor={dia}>
           <h4>{dia}</h4>
         </label>
+
         <input type="checkbox" id={dia} className={styles.showday} hidden />
         <div className={styles.onedayContent}>
           {tabsDoDia
