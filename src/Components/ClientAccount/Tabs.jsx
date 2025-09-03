@@ -47,22 +47,6 @@ export const Tabs = ({ tabs }) => {
   const refDate = useRef();
   const refCheckDate = useRef();
 
-  const setScroll = () => {
-    if (refOverflowed.current) {
-      // console.log(refOverflowed.current);
-      refOverflowed.current.scrollTop = refOverflowed.current.scrollHeight;
-    }
-  };
-
-  useEffect(() => {
-    // console.log("filter:: ");
-    // console.log(functions.filter);
-  });
-
-  useEffect(() => {
-    // console.log(tabs);
-  }, [tabs]);
-
   useEffect(() => {
     var status = null;
     if (openTabs && closedTabs) status = null;
@@ -100,6 +84,7 @@ export const Tabs = ({ tabs }) => {
 
   const renderTabs = useCallback(() => {
     if (!tabs) return null;
+    console.log(tabs);
 
     // Criar um Map agrupando por data (somente ano-mês-dia)
     const tabsMap = new Map();
@@ -214,6 +199,13 @@ export const Tabs = ({ tabs }) => {
             }
           }}
         />
+        <StyledConfirmButton width="150px" height="20px">
+          {`${
+            functions.checkedTabs?.length === tabs?.length
+              ? "Desmarcar Todas"
+              : "Marcar Todas"
+          }`}
+        </StyledConfirmButton>
       </div>
       <div ref={refOverflowed} className={styles.overflowed}>
         {renderTabs()}

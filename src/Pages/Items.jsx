@@ -175,13 +175,14 @@ const Trow = ({ item }) => {
 };
 
 export const Items = () => {
-  const [changed, setChanged] = useState(false);
+  const [changed, setChanged] = useState(true);
 
   return (
     <>
       <label style={{ position: "absolute", top: "25px", left: "55px" }}>
         <input
           type="checkbox"
+          defaultChecked
           onChange={(e) => {
             setChanged(e.target.checked);
           }}

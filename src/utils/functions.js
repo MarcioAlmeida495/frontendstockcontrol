@@ -83,3 +83,16 @@ export const getDate = () => {
   const dataLocal = `${ano}-${mes}-${dia}`;
   return dataLocal;
 };
+
+export const FilterData = (data, searchValue) => {
+  return data.filter((each) => {
+    const search = removeAccents(searchValue.trim().toUpperCase());
+    if (!search) return true; // sem filtro, mostra tudo
+
+    const nome = removeAccents(each.nome.toUpperCase());
+    const searchWords = search.split(" ").filter((w) => w !== "");
+
+    // Todas as palavras do search devem existir em alguma parte do nome
+    return searchWords.every((word) => nome.includes(word));
+  });
+};

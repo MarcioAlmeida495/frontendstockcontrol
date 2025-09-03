@@ -17,6 +17,7 @@ const {
   formatInit,
   orderByKey,
   removeAccents,
+  FilterData,
 } = require("../../utils/functions");
 const { Head, HeadColumn, TBody, Table } = require("./styles");
 const Div = styled.div`
@@ -195,6 +196,7 @@ export const DinamicTable = ({
                 {data.map((each, index) => {
                   const values = Object.values(each);
                   var component = null;
+                  // FilterData(values, )
                   for (var i = 0; i < values.length; i++) {
                     try {
                       if (

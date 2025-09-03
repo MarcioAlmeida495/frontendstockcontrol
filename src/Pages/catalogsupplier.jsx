@@ -9,6 +9,7 @@ import { StyledConfirmButton } from "../Styles/styledConfirmButton";
 import { useCallback, useEffect, useState } from "react";
 import { dataFetch, formatInit } from "../utils/functions";
 import { Div } from "../Styles/styledDiv";
+import { NewSelect } from "../Components/NewSelect";
 
 export const CatalogSuppliers = () => {
   const { register, handleSubmit, setValue, getValues } = useForm();
@@ -16,13 +17,32 @@ export const CatalogSuppliers = () => {
   const [data, setData] = useState([]);
   const [dataOfItem, setDataOfItem] = useState();
 
+  useEffect(() => {}, []);
+
   const attData = useCallback(
     async (callback = () => {}) => {
       dataFetch({
-        simpleurl: "catalog/getcatalogitems",
-        init: formatInit({ data: { fornecedor_id: selected.id } }),
+        simpleurl: `test/testsql`,
+        init: formatInit({
+          data: {
+            sql: `SELECT 
+            c.id,
+    i.nome AS item,
+    i.quantidade AS estoque,
+    COALESCE(AVG(ci.quantidade), 0) AS media_semanal,
+    (COALESCE(AVG(ci.quantidade), 0) * 10) AS sugestao_estoque
+FROM catalogo_fornecedor c
+JOIN fornecedores f ON f.id = c.fornecedor_id
+JOIN items i ON i.id = c.item_id
+LEFT JOIN comanda_items ci ON ci.item_id = i.id 
+    AND ci.data >= DATE('now', '-7 days') -- consumo da última semana
+WHERE f.id = ${selected.id}
+GROUP BY c.id, f.id, i.id, i.nome, i.quantidade;`,
+          },
+        }),
       }).then((r) => {
-        setData(r);
+        console.log(r);
+        setData(r.result);
         callback();
       });
     },
@@ -53,6 +73,7 @@ export const CatalogSuppliers = () => {
   return (
     <Div width={"700px"}>
       <h1>CATÁLOGOS DE FORNECEDORES</h1>
+      {/* <NewSelect placeholder={'FORNECEDOR'} register={register} registerName={'fornecedor_id'}/> */}
       <Select
         {...register("fornecedor_id")}
         defaultPlaceholder={"FORNECEDOR"}
@@ -91,7 +112,7 @@ export const CatalogSuppliers = () => {
               allowEdit={true}
               defaultData={data}
               crudUrls={{
-                r: `catalog/getcatalogitems/${selected.id}`,
+                // r: `catalog/getcatalogitems/${selected.id}`,
                 u: "catalog/updatecatalogvalue",
                 d: "catalog/deletecatalogitem",
               }}

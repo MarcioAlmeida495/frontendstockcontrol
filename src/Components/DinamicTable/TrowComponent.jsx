@@ -92,7 +92,7 @@ export const TrowComponent = ({
                 (Object.keys(data)[index] === "id") |
                 (Object.keys(data)[index] === "quantidade")
               ) {
-                value = each;
+                value = parseInt(String(each).replaceAll(",", "."));
               }
               return (
                 <div
@@ -123,6 +123,8 @@ export const TrowComponent = ({
                   </StyledConfirmButton>
                   <StyledCancelButton
                     onClick={() => {
+                      console.log("executando func : excluir ");
+                      console.log(`url: ${crudUrls.d}, data: ${data}`);
                       dataFetch({
                         simpleurl: crudUrls.d,
                         init: formatInit({ data: data }),
