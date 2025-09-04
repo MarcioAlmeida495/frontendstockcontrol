@@ -6,9 +6,10 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { dataFetch } from "../../utils/functions";
 import styled from "./styles.module.css";
 import React from "react";
+import { NewSelect } from "../NewSelect";
 
 // memoiza o Select para evitar re-render quando as props não mudam
-const MemoSelect = React.memo(Select);
+const MemoSelect = React.memo(NewSelect);
 
 export const ItemsArrayField = ({ form, fields, remove, styles }) => {
   const [info, setInfo] = useState(undefined);
@@ -49,11 +50,12 @@ export const ItemsArrayField = ({ form, fields, remove, styles }) => {
   return (
     <div
       style={{
-        display: "flex",
+        display: "block",
         flexDirection: "column",
         overflowY: "scroll",
         gap: "5px",
         width: "100%",
+        height: "calc(100dvh - 300px)",
         padding: "10px",
       }}
     >
@@ -104,7 +106,9 @@ export const ItemsArrayField = ({ form, fields, remove, styles }) => {
             {/* Select do item - NÃO remonta e NÃO recria handler */}
             <MemoSelect
               url={"items/getitems"}
-              showInfo={true}
+              register={form.register}
+              setValue={form.setValue}
+              registerName={`items.${index}.id`}
               getSelected={handleSelect}
             />
 

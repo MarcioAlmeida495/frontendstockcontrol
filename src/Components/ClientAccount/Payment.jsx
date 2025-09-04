@@ -41,10 +41,10 @@ export const sumArr = (arr) => {
     }, 0)
   ).toFixed(2);
 };
-export const Payment = ({ reset, setReset }) => {
+export const Payment = ({ reset, setReset, register, registerName }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const functions = useContext(Context);
-
+  const [paymentType, setPaymentType] = useState("dinheiro");
   const [value, setValue] = useState(
     sum(functions.checkedTabs.filter((tab) => tab.status === "aberta"))
   );
@@ -82,7 +82,11 @@ export const Payment = ({ reset, setReset }) => {
               dataFetch({
                 simpleurl: "tabs/newpayment",
                 init: formatInit({
-                  data: { tabs: functions.checkedTabs, payment: value },
+                  data: {
+                    tabs: functions.checkedTabs,
+                    payment: value,
+                    paymentType: paymentType,
+                  },
                 }),
               }).then((r) => {
                 if (r) {
@@ -104,17 +108,38 @@ export const Payment = ({ reset, setReset }) => {
               id="cash"
               name="payment"
               type="radio"
-              value={"cash"}
-              defaultChecked
+              value={"dinheiro"}
+              checked={paymentType === "dinheiro"}
+              onChange={(e) => {
+                setPaymentType(e.target.value);
+              }}
             />
             <p>Dinheiro</p>
           </label>
           <label className={styles.label} htmlFor="card">
-            <input id="card" name="payment" type="radio" value={"card"} />
+            <input
+              id="card"
+              name="payment"
+              type="radio"
+              value={"cartão"}
+              checked={paymentType === "cartão"}
+              onChange={(e) => {
+                setPaymentType(e.target.value);
+              }}
+            />
             Cartão
           </label>
           <label className={styles.label} htmlFor="pix">
-            <input id="pix" name="payment" type="radio" value={"pix"} />
+            <input
+              id="pix"
+              type="radio"
+              name="payment"
+              value={"pix"}
+              onChange={(e) => {
+                setPaymentType(e.target.value);
+              }}
+              checked={paymentType === "pix"}
+            />
             PIX
           </label>
         </div>

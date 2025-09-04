@@ -6,7 +6,7 @@ import { StyledInput } from "../Styles/styledInput";
 import { OpenTabs } from "../Components/ClientAccount/OpenTabs";
 import { LoadIcon } from "../Components/AnimationIcons/LoadIcon/LoadIcon";
 
-const timeout = 100;
+const timeout = 300;
 
 export const ClientsAccounts = () => {
   const [clients, setClients] = useState([]);

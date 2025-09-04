@@ -65,7 +65,7 @@ export const Tab = ({ tab }) => {
               {items.map((it, index) => (
                 <div key={index}>
                   {it.quantidade} {it.nome_item}{" "}
-                  {parseFloat(it.valor).toFixed(2)}
+                  {parseFloat(it.valor * it.quantidade).toFixed(2)}
                 </div>
               ))}
             </div>

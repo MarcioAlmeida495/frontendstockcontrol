@@ -7,6 +7,7 @@ import { Div } from "../Styles/styledDiv";
 import { dataFetch, formatInit } from "../utils/functions";
 import { SimpleSelect } from "../Components/SimpleSelect";
 import { ItemsArrayField } from "../Components/ArrayFieldForSupplierOrders";
+import { NewSelect } from "../Components/NewSelect";
 
 export const NewSupplierOrder = ({ defaultItems }) => {
   const [suppliers, setSuppliers] = useState();
@@ -36,8 +37,7 @@ export const NewSupplierOrder = ({ defaultItems }) => {
     <Div width={"700px"}>
       <h1>NOVO PEDIDO</h1>
       {suppliers && (
-        <SimpleSelect
-          data={suppliers}
+        <NewSelect
           register={form.register}
           registerName={"supplier_ID"}
           setValue={form.setValue}
@@ -46,7 +46,7 @@ export const NewSupplierOrder = ({ defaultItems }) => {
       )}
 
       <StyledConfirmButton
-        width={"100%"}
+        width={"65%"}
         $margin={"0px"}
         height={"30px"}
         onClick={() => prepend({ quantidade: 1 })}
@@ -63,7 +63,7 @@ export const NewSupplierOrder = ({ defaultItems }) => {
       />
 
       <StyledConfirmButton
-        width={"100%"}
+        width={"65%"}
         $margin={"0px"}
         height={"30px"}
         onClick={() => {

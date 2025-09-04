@@ -32,7 +32,7 @@ export const NewSelect = ({
   }, []);
 
   useEffect(() => {
-    console.log("valor no registro: ", getValues(registerName));
+    console.log("valor no registro: ", selectedOption);
   });
 
   useEffect(() => {

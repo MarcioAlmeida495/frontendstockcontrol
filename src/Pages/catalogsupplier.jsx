@@ -29,6 +29,7 @@ export const CatalogSuppliers = () => {
             c.id,
     i.nome AS item,
     i.quantidade AS estoque,
+    c.valor,
     COALESCE(AVG(ci.quantidade), 0) AS media_semanal,
     (COALESCE(AVG(ci.quantidade), 0) * 10) AS sugestao_estoque
 FROM catalogo_fornecedor c
@@ -73,8 +74,18 @@ GROUP BY c.id, f.id, i.id, i.nome, i.quantidade;`,
   return (
     <Div width={"700px"}>
       <h1>CATÁLOGOS DE FORNECEDORES</h1>
-      {/* <NewSelect placeholder={'FORNECEDOR'} register={register} registerName={'fornecedor_id'}/> */}
-      <Select
+      <NewSelect
+        placeholder={"FORNECEDOR"}
+        register={register}
+        registerName={"fornecedor_id"}
+        url={"supplier/getsuppliers"}
+        setValue={setValue}
+        getSelected={(value) => {
+          setSelected(value);
+          setValue("fornecedor_id", value.id);
+        }}
+      />
+      {/* <Select
         {...register("fornecedor_id")}
         defaultPlaceholder={"FORNECEDOR"}
         getSelected={(value) => {
@@ -82,11 +93,25 @@ GROUP BY c.id, f.id, i.id, i.nome, i.quantidade;`,
           setValue("fornecedor_id", value.id);
         }}
         url={"supplier/getsuppliers"}
-      />
+      /> */}
       {selected ? (
         <>
           <RowDiv>
-            <Select
+            <NewSelect
+              registerName={"item_id"}
+              register={register}
+              defaultPlaceholder={"PRODUTO"}
+              setValue={setValue}
+              getSelected={(value) => {
+                setValue("item_id", value.id);
+                dataFetch({
+                  simpleurl: "catalog/getcatalogbyitem",
+                  init: formatInit({ data: { item_id: value.id } }),
+                }).then((r) => console.log(r));
+              }}
+              url={"items/getitems"}
+            />
+            {/* <Select
               {...register("item_id")}
               defaultPlaceholder={"PRODUTO"}
               getSelected={(value) => {
@@ -97,7 +122,7 @@ GROUP BY c.id, f.id, i.id, i.nome, i.quantidade;`,
                 }).then((r) => console.log(r));
               }}
               url={"items/getitems"}
-            />
+            /> */}
 
             <StyledInput {...register("valor")} placeholder={"valor"} />
             <StyledConfirmButton

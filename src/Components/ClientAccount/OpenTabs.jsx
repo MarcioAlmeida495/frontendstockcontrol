@@ -2,18 +2,49 @@ import { useForm } from "react-hook-form";
 import { NewSelect } from "../NewSelect";
 import styles from "./styles.module.css";
 import { StyledConfirmButton } from "../../Styles/styledConfirmButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { StyledInput } from "../../Styles/styledInput";
+
+export const TabContent = ({ tabId }) => {
+  const form = useForm();
+
+  return <StyledInput {...form.register(`name${tabId}`)} />;
+};
 
 export const NewTab = () => {
-  const { register, setValue } = useForm();
+  const [clientName, setClientName] = useState("");
+
+  const [isRegistredClient, setIsRegistredClient] = useState(false);
+  const { register, setValue, getValues } = useForm();
+
   return (
-    <div>
-      <NewSelect
-        registerName={"client"}
-        url={"clients/getclients"}
-        register={register}
-        setValue={setValue}
-      />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "3px",
+      }}
+    >
+      <StyledConfirmButton
+        width={"200px"}
+        onClick={() => {
+          setIsRegistredClient(!isRegistredClient);
+        }}
+      >{`${
+        isRegistredClient ? "Cliente já cadastrado" : "Cliente não cadastrado"
+      }`}</StyledConfirmButton>
+      {isRegistredClient ? (
+        <NewSelect
+          getValues={getValues}
+          registerName={"client"}
+          url={"clients/getclients"}
+          register={register}
+          setValue={setValue}
+        />
+      ) : (
+        <StyledInput register={"nome"} />
+      )}
     </div>
   );
 };
@@ -23,11 +54,13 @@ export const OpenTabs = () => {
   const [tabIdCounter, setTabIdCounter] = useState(1);
   const [tabStyle, setTabStyle] = useState(styles.openTabs1);
 
+  useEffect(() => {}, []);
+
   const addTab = () => {
     const newTabs = new Map(tabs); // copiar o Map atual
     newTabs.set(tabIdCounter, {
       title: `Aba ${tabIdCounter}`,
-      content: "...",
+      content: <NewTab />,
     });
     setTabs(newTabs);
     setTabIdCounter(tabIdCounter + 1);
@@ -72,7 +105,6 @@ export const OpenTabs = () => {
 
         {[...tabs.entries()].map(([key, tab]) => (
           <div key={key} className={styles.eachtab1}>
-            <strong>{tab.title}</strong>
             <div>{tab.content}</div>
             <button
               onClick={() => {

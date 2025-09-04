@@ -81,6 +81,7 @@ export const ClientAccount = ({ client }) => {
       init: formatInit({ data: { status: status, date: date } }),
     }).then((r) => {
       setTimeout(() => {
+        console.log(r);
         setTabs(r);
       }, 100);
     });
@@ -202,7 +203,12 @@ export const ClientAccount = ({ client }) => {
             {/* <div className={styles.newOrder}>
               <h1>Realizar Pagamento</h1>
               </div> */}
-            <Payment reset={reset} setReset={setReset} />
+            <Payment
+              reset={reset}
+              register={register}
+              registerName={"paymentType"}
+              setReset={setReset}
+            />
           </ColDiv>
         </div>
       </div>
