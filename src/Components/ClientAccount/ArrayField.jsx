@@ -84,6 +84,15 @@ export const ArrayField = ({
   const watchedQuantidade = watcher(registers.quantidade);
 
   useEffect(() => {
+    setValue(
+      registers.total,
+      parseFloat(
+        getValues(registers.quantidade) * getValues(registers.preco)
+      ).toFixed(2)
+    );
+  }, [watchedQuantidade]);
+
+  useEffect(() => {
     console.log(focused);
   }, [focused]);
 
