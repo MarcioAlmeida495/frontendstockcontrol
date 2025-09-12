@@ -9,8 +9,6 @@ import { ComponentFieldArray } from "./FieldArray";
 import { Provider } from "./Context";
 
 export const NewOrder = ({ client, setReset = () => {} }) => {
-  const [counterReset, setCounterReset] = useState(0);
-
   const RHF = useForm({
     defaultValues: {
       items: [],

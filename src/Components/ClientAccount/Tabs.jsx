@@ -37,6 +37,8 @@ export const Tabs = ({ tabs }) => {
   const refOverflowed = useRef(null);
   const openCheckId = useId();
   const closedCheckId = useId();
+  const paymentCheckId = useId();
+  const [showPayments, setShowPayments] = useState(false);
   const [openTabs, setOpenTabs] = useState(true);
   const [closedTabs, setClosedTabs] = useState(false);
   const functions = useContext(Context);
@@ -174,6 +176,7 @@ export const Tabs = ({ tabs }) => {
         <label className={styles.checkLabel} htmlFor={closedCheckId}>
           Fechadas
         </label>
+
         <input
           type="date"
           defaultValue={getDate()}
@@ -199,6 +202,26 @@ export const Tabs = ({ tabs }) => {
             }
           }}
         />
+        <input
+          type="checkbox"
+          className={styles.checked}
+          id={paymentCheckId}
+          value={showPayments}
+          defaultChecked={showPayments}
+          onChange={(e) => {
+            if (e.target.checked) {
+              document.getElementById(openCheckId).checked = false;
+              document.getElementById(closedCheckId).checked = false;
+              setOpenTabs(false);
+              setClosedTabs(false);
+            }
+            setShowPayments(e.target.checked);
+          }}
+          hidden
+        />
+        <label className={styles.checkLabel} htmlFor={paymentCheckId}>
+          Pagamentos
+        </label>
         <StyledConfirmButton width="150px" height="20px">
           {`${
             functions.checkedTabs?.length === tabs?.length

@@ -48,7 +48,6 @@ export const NewTab = () => {
     </div>
   );
 };
-
 export const OpenTabs = () => {
   const [tabs, setTabs] = useState(new Map());
   const [tabIdCounter, setTabIdCounter] = useState(1);

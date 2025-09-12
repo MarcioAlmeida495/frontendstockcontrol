@@ -151,9 +151,12 @@ export const ClientAccount = ({ client }) => {
                     </StyledConfirmButton>
                     <RowDiv>
                       <Head $width={"80px"}>Quantidade</Head>
-                      <Head $width={"288px"}>Item</Head>
+                      <Head $width={"240px"}>Item</Head>
                       <Head $width={"80px"}>Valor</Head>
-                      <Head $width={"80px"}>Total</Head>
+                      <Head $width={"100px"}>Desconto</Head>
+                      <Head $width={"120px"} $padding={"0px 70px 0px 20px"}>
+                        Total
+                      </Head>
                     </RowDiv>
                     <input {...register("client")} hidden />
                     <ButtonsAddItem
@@ -184,7 +187,7 @@ export const ClientAccount = ({ client }) => {
                     </div>
                     <StyledConfirmButton
                       onClick={() => {
-                        // console.log(getValues());
+                        console.log(getValues());
                         dataFetch({
                           simpleurl: "tabs/createclienttab",
                           init: formatInit({ data: getValues() }),

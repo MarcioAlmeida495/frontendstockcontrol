@@ -7,6 +7,7 @@ export const Head = styled.span`
   justify-content: center;
   align-items: center;
   color: black;
+  padding: ${({ $padding }) => $padding || "0px"};
 `;
 
 export const RowDiv = styled.div`

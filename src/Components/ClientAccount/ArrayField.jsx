@@ -10,7 +10,6 @@ import { StyledInput } from "../../Styles/styledInput";
 import { CancelIcon } from "../AnimationIcons/Cancel";
 import { NewSelect } from "../NewSelect";
 import { useRefsContext } from ".";
-import e from "cors";
 
 export const ArrayField = ({
   field,
@@ -32,6 +31,7 @@ export const ArrayField = ({
     quantidade: `items.${index}.quantidade`,
     item: `items.${index}.item`,
     preco: `items.${index}.preco`,
+    desconto: `items.${index}.desconto`,
     total: `items.${index}.total`,
   };
   useEffect(() => {
@@ -53,7 +53,7 @@ export const ArrayField = ({
   const watchedField = watcher(`items.${index}.total`);
 
   useEffect(() => {
-    resets.setCounterReset(resets.counterReset + 1);
+    resets.setCounterReset((r) => r + 1);
   }, [watchedField]);
 
   useEffect(() => {
@@ -84,21 +84,6 @@ export const ArrayField = ({
   const watchedQuantidade = watcher(registers.quantidade);
 
   useEffect(() => {
-    if (!focused)
-      setValue(
-        registers.total,
-        parseFloat(getValues(registers.preco) * watchedQuantidade).toFixed(2)
-      );
-  }, [
-    focused,
-    watchedQuantidade,
-    getValues,
-    registers.preco,
-    registers.total,
-    setValue,
-  ]);
-
-  useEffect(() => {
     console.log(focused);
   }, [focused]);
 
@@ -112,10 +97,11 @@ export const ArrayField = ({
             placeholder="Qtd"
             {...register(registers.quantidade, {
               onChange: (e) => {
+                console.log("disparou evento");
                 setValue(
                   registers.total,
                   parseFloat(
-                    getValues(registers.preco) * watchedQuantidade
+                    getValues(registers.preco) * e.target.value
                   ).toFixed(2)
                 );
                 console.log(e.target.value);
@@ -164,7 +150,13 @@ export const ArrayField = ({
           {...register(registers.preco)}
         />
         <StyledInput
+          $width={"70px"}
+          defaultValue={0.0}
+          {...register(registers.desconto)}
+        />
+        <StyledInput
           $width={"80px"}
+          type="Number"
           onFocus={() => {
             setFocused(true);
           }}
@@ -173,18 +165,11 @@ export const ArrayField = ({
           }
           {...register(registers.total, {
             onBlur: (e) => {
-              // setValue(registers.total, parseFloat(e.target.value).toFixed(2));
+              setValue(registers.total, parseFloat(e.target.value).toFixed(2));
               setFocused(false);
             },
             onFocus: (e) => {
               setFocused(true);
-            },
-            onChange: (e) => {
-              console.log(focused);
-              setValue(
-                registers.quantidade,
-                e.target.value / getValues(registers.preco)
-              );
             },
           })}
         />
