@@ -242,13 +242,12 @@ export const ModalTable = ({
                         );
                       })}
                     </select> */}
-                    <SimpleSelect
-                      data={itemsSelect}
+                    <NewSelect
+                      url={"items/getitems"}
                       register={register}
                       setValue={setValue}
                       registerName={`items.${index}.item_id`}
-                      selectedId={each.item_id}
-                      defaultPlaceholder={"Produto"}
+                      selected={each.item_id}
                     />
                     {/* <Select
                       url={"items/getitems"}

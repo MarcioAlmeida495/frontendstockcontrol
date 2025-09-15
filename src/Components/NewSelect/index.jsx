@@ -32,6 +32,18 @@ export const NewSelect = ({
   }, []);
 
   useEffect(() => {
+    const found = data.find((item) => {
+      console.log(`testando ${item.id} = ${selected} `);
+      return Number(item.id) === Number(selected);
+    });
+    if (found) {
+      console.log("ACHWOWWOW");
+      getSelected(found);
+      setSelectedOption(found);
+    }
+  }, [selected, registerName, setValue, data]);
+
+  useEffect(() => {
     console.log("valor no registro: ", selectedOption);
   });
 

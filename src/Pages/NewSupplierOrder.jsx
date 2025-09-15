@@ -67,6 +67,7 @@ export const NewSupplierOrder = ({ defaultItems }) => {
         $margin={"0px"}
         height={"30px"}
         onClick={() => {
+          console.log(form.getValues());
           dataFetch({
             simpleurl: "supplierorders/createorder",
             init: formatInit({ data: form.getValues() }),
