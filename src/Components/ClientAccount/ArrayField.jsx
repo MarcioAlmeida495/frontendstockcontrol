@@ -112,7 +112,11 @@ export const ArrayField = ({
             type="number"
             placeholder="Qtd"
             onKeyDown={(e) => {
-              if (e.key === " ") setFocusCounter(focusCounter + 1);
+              if (e.key === " ") {
+                e.preventDefault();
+                e.stopPropagation();
+                setFocusCounter(focusCounter + 1);
+              }
             }}
             {...register(registers.quantidade, {
               onChange: (e) => {

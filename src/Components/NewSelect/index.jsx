@@ -97,6 +97,15 @@ export const NewSelect = ({
               e.stopPropagation();
               document.getElementsByName(`${dataID}select`)[0].click();
             }
+            if (e.key === "Escape") {
+              e.preventDefault();
+              e.stopPropagation();
+              setSearchValue("");
+              document.getElementById(checkId).checked = false;
+            }
+            if (e.key === " ") {
+              e.stopPropagation();
+            }
           }}
         />
         <div className={styles.scrollbox}>

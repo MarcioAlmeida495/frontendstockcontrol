@@ -71,7 +71,7 @@ export const ClientAccount = ({ client }) => {
   }, [client.id, closedMode]);
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Enter") {
+      if (e.key === " ") {
         prepend();
       }
       if (e.key === "esc") {
