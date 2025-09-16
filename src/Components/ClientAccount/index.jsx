@@ -69,7 +69,21 @@ export const ClientAccount = ({ client }) => {
       });
     }, 500);
   }, [client.id, closedMode]);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        prepend();
+      }
+      if (e.key === "esc") {
+        console.log("esq");
+      }
+    };
 
+    window.addEventListener("keydown", handleKeyDown);
+
+    // cleanup pra não acumular listener
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
   useEffect(() => {
     // const url = `tabs/getclienttabs/${client.id}`;
     const url = `tabs/getclienttabsfilter/${client.id}`;

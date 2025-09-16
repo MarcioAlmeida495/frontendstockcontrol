@@ -6,6 +6,7 @@ import { useRef } from "react";
 export const NewSelect = ({
   getValues = () => {},
   placeholder,
+  getFocus = 0,
   setValue,
   register,
   registerName,
@@ -30,6 +31,13 @@ export const NewSelect = ({
     const value = getValues(registerName);
     console.log(value);
   }, []);
+
+  useEffect(() => {
+    if (getFocus !== 0) {
+      document.getElementById(checkId).checked = true;
+      refSearch.current.focus();
+    }
+  }, [getFocus, checkId]);
 
   useEffect(() => {
     const found = data.find((item) => {
@@ -83,6 +91,13 @@ export const NewSelect = ({
           onChange={(e) => {
             setSearchValue(e.target.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              e.stopPropagation();
+              document.getElementsByName(`${dataID}select`)[0].click();
+            }
+          }}
         />
         <div className={styles.scrollbox}>
           <div className={styles.options}>
@@ -104,7 +119,7 @@ export const NewSelect = ({
                 .map((each, index) => (
                   <React.Fragment key={index}>
                     <input
-                      name="select"
+                      name={`${dataID}select`}
                       id={`${dataID}optncheckbox${index}`}
                       className={styles.optioncheckbox}
                       type="radio"

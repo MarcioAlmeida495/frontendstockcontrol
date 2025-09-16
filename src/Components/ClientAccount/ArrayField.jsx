@@ -26,6 +26,7 @@ export const ArrayField = ({
   const refsContext = useRefsContext();
   const [selectedItem, setSelectedItem] = useState();
   const [focused, setFocused] = useState(false);
+  const [focusCounter, setFocusCounter] = useState(0);
 
   var registers = {
     quantidade: `items.${index}.quantidade`,
@@ -96,6 +97,12 @@ export const ArrayField = ({
     console.log(focused);
   }, [focused]);
 
+  useEffect(() => {
+    // setTimeout(() => {
+    //   setFocusCounter(focusCounter + 1);
+    // }, 50);
+  }, []);
+
   return (
     <div key={field.id} className={styles.newitem}>
       <>
@@ -104,9 +111,11 @@ export const ArrayField = ({
             $width={"80px"}
             type="number"
             placeholder="Qtd"
+            onKeyDown={(e) => {
+              if (e.key === " ") setFocusCounter(focusCounter + 1);
+            }}
             {...register(registers.quantidade, {
               onChange: (e) => {
-                console.log("disparou evento");
                 setValue(
                   registers.total,
                   parseFloat(
@@ -145,6 +154,7 @@ export const ArrayField = ({
         </div>
         <NewSelect
           getSelected={(value) => setSelectedItem(value)}
+          getFocus={focusCounter}
           register={register}
           registerName={registers.item}
           url={"items/getitems"}
