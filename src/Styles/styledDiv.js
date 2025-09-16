@@ -13,6 +13,7 @@ export const Div = styled.div`
   padding: 10px;
   gap: 10px;
   resize: both;
+  overflow: hidden;
   & > * {
     margin: 0px;
   }

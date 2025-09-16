@@ -26,19 +26,21 @@ export const CatalogSuppliers = () => {
         init: formatInit({
           data: {
             sql: `SELECT 
-            c.id,
+    c.id,
     i.nome AS item,
     i.quantidade AS estoque,
     c.valor,
-    COALESCE(AVG(ci.quantidade), 0) AS media_semanal,
-    (COALESCE(AVG(ci.quantidade), 0) * 10) AS sugestao_estoque
+    COALESCE(SUM(ci.quantidade), 0) / 7.0 AS media_semanal,  -- consumo médio por dia
+    (COALESCE(SUM(ci.quantidade), 0) / 7.0) * 10 AS sugestao_estoque
 FROM catalogo_fornecedor c
 JOIN fornecedores f ON f.id = c.fornecedor_id
 JOIN items i ON i.id = c.item_id
-LEFT JOIN comanda_items ci ON ci.item_id = i.id 
-    AND ci.data >= DATE('now', '-7 days') -- consumo da última semana
+LEFT JOIN comanda_items ci 
+       ON ci.item_id = i.id 
+      AND ci.data >= DATE('now', '-7 days')
 WHERE f.id = ${selected.id}
-GROUP BY c.id, f.id, i.id, i.nome, i.quantidade;`,
+GROUP BY c.id, f.id, i.id, i.nome, i.quantidade;
+`,
           },
         }),
       }).then((r) => {
