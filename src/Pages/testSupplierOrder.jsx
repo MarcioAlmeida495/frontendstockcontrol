@@ -62,6 +62,27 @@ export const TestSupplierOrder = () => {
           Items/Week
         </StyledConfirmButton>
 
+        <StyledInput
+          type="date"
+          onChange={(e) => {
+            console.log(e.target.value);
+            setValue(
+              "sql",
+              `SELECT
+  SUM(CASE WHEN status = 'fechada' THEN valor_total ELSE 0 END) AS totalFechadas,
+  SUM(CASE WHEN status = 'aberta' THEN valor_total ELSE 0 END) AS totalAbertas,
+  SUM(CASE WHEN status = 'fechada' THEN valor_total ELSE 0 END) +
+  SUM(CASE WHEN status = 'aberta' THEN valor_total ELSE 0 END) AS Total
+FROM comandas
+WHERE DATE(data) = DATE('${e.target.value}');
+
+`
+            );
+            setTimeout(() => {
+              document.getElementById("sendsql").click();
+            }, 50);
+          }}
+        />
         {/* BOTÃO PARA CALCULAR E ATUALIZAR MÉDIA SEMANAL */}
         <StyledConfirmButton
           onClick={() => {
