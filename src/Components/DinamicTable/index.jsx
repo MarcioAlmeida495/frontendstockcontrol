@@ -24,9 +24,10 @@ const Div = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
 `;
 const DivLabel = styled.div`
   width: 100%;
