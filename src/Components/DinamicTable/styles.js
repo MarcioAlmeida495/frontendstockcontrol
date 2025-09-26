@@ -4,7 +4,7 @@ export const Table = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 100px);
 `;
 export const Head = styled.div`
   display: flex;
